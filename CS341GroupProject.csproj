@@ -59,8 +59,8 @@
 	  <Compile Update="CameraPage.xaml.cs">
 	    <DependentUpon>CameraPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="FilterDatePage.xaml.cs">
-	    <DependentUpon>FilterDatePage.xaml</DependentUpon>
+	  <Compile Update="FilterDataPage.xaml.cs">
+	    <DependentUpon>FilterDataPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -71,7 +71,7 @@
 	  <MauiXaml Update="CameraPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="FilterDatePage.xaml">
+	  <MauiXaml Update="FilterDataPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

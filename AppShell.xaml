@@ -8,17 +8,20 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <Tab Title="Map Page">
+        <Tab Title="Map-JTH">
             <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"/>
         </Tab>
-        <Tab Title="Camera Page">
+        <Tab Title="Camera-JTH">
             <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"/>
         </Tab>
-        <Tab Title="Community Feed Page">
+        <Tab Title="Feed-AMW">
             <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"/>
         </Tab>
-        <Tab Title="Post Details Page">
+        <Tab Title="PostDetails-AMW">
             <ShellContent ContentTemplate="{DataTemplate pages:PostDetailsPage}"/>
+        </Tab>
+        <Tab Title="FilterData-JTH">
+            <ShellContent ContentTemplate="{DataTemplate pages:FilterDataPage}"/>
         </Tab>
     </TabBar>
     

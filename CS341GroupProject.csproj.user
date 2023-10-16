@@ -20,7 +20,7 @@
     <MauiXaml Update="CameraPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="FilterDatePage.xaml">
+    <MauiXaml Update="FilterDataPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="Platforms\Windows\App.xaml">
