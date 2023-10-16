@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CS341GroupProject"
              x:Class="CS341GroupProject.FilterDataPage"
              Title="FilterDataPage">
-    <VerticalStackLayout>
-        <ImageButton Source="filter.png"
-                     HorizontalOptions="Start"
-                     VerticalOptions="Start"/>
+    
+    <VerticalStackLayout
+            Spacing="5"
+            Padding="30,0"
+            VerticalOptions="Start">
+        
+        <HorizontalStackLayout 
+            Spacing="5">
+            
+            <ImageButton Source="filter.png" HeightRequest="40" WidthRequest="40"/>
+            <Label HorizontalOptions="Start" VerticalOptions="Center" Text="Genus --> Amelanchier"/>
+        </HorizontalStackLayout>
+
+        <CollectionView>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemsSource>
+                <x:Array Type="{x:Type local:FilterItem}">
+                    <local:FilterItem Photo="amelanchier_arborea.webp" Plant="Amelanchier Arborea"/>
+                    <local:FilterItem Photo="amelanchier_laevis.webp" Plant="Amelanchier Laevis"/>
+                    <local:FilterItem Photo="amelanchier_stolonifera.webp" Plant="Amelanchier Stolonifera"/>
+                </x:Array>
+            </CollectionView.ItemsSource>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Stroke="#000000"
+                                StrokeThickness="3"
+                                Background="#E6E6E6"
+                                Padding="6,8"
+                                HorizontalOptions="Fill">
+                        <Grid Padding="20" RowDefinitions="10*,*,*" ColumnDefinitions="5*,4*,1" ColumnSpacing="6">
+                            <Image Grid.Row="0" Grid.Column="0" Source="{Binding Photo}"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Plant}" VerticalTextAlignment="Start"/>
+                            <Image Grid.Row="0" Grid.Column="2" Source="pin.png" HeightRequest="25" WidthRequest="25"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    
     </VerticalStackLayout>
+
 </ContentPage>
