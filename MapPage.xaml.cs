@@ -1,3 +1,4 @@
+using Microsoft.Maui.Maps;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 /**
  * Author: Joshua T. Hill
@@ -9,7 +10,10 @@ public partial class MapPage : ContentPage
 
     public MapPage()
     {
-        Map map = new();
+        Location location = new Location(44.0263, -88.5507);
+        MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+        Map map = new(mapSpan);
+
         Content = map;
     }
 
