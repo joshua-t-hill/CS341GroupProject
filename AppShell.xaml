@@ -23,6 +23,15 @@
         <Tab Title="FilterData-JTH">
             <ShellContent ContentTemplate="{DataTemplate pages:FilterDataPage}"/>
         </Tab>
+        <Tab Title="AdminPage-ARC">
+            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"/>
+        </Tab>
+        <Tab Title="UserSearchPage-ARC">
+            <ShellContent ContentTemplate="{DataTemplate pages:UserSearchPage}"/>
+        </Tab>
+        <Tab Title="BannedUsers-ARC">
+            <ShellContent ContentTemplate="{DataTemplate pages:BannedUsersPage}"/>
+        </Tab>
     </TabBar>
     
 </Shell>

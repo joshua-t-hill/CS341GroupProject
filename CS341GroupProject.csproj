@@ -53,6 +53,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="BannedUsersPage.xaml.cs">
+	    <DependentUpon>BannedUsersPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="MapPage.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
