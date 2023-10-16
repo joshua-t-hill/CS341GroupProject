@@ -8,11 +8,17 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <Tab Title="Map">
+        <Tab Title="Map Page">
             <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"/>
         </Tab>
-        <Tab Title="Camera">
+        <Tab Title="Camera Page">
             <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"/>
+        </Tab>
+        <Tab Title="Community Feed Page">
+            <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"/>
+        </Tab>
+        <Tab Title="Post Details Page">
+            <ShellContent ContentTemplate="{DataTemplate pages:PostDetailsPage}"/>
         </Tab>
     </TabBar>
     
