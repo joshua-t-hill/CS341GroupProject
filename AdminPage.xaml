@@ -1,0 +1,27 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS341GroupProject.AdminPage"
+             Title="ADMIN">
+
+
+    <Grid Padding="20">
+
+        <!-- Header -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Back Arrow and ADMIN Text -->
+        <StackLayout Orientation="Horizontal" Spacing="10">
+            <Image Source="back_button.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
+        </StackLayout>
+
+        <!-- List of Admin Options -->
+        <StackLayout Grid.Row="1" Spacing="20">
+            <Button x:Name="SearchUserButton" Text="Search Users" BackgroundColor="LightBlue" TextColor="White" HeightRequest="50" CornerRadius="10" Clicked="OnSearchClicked" />
+            <Button x:Name="BannedUserButton" Text="Banned Users" BackgroundColor="LightBlue" TextColor="White" HeightRequest="50" CornerRadius="10" Clicked="OnBanListClicked"/>
+        </StackLayout>
+
+    </Grid>
+</ContentPage>
