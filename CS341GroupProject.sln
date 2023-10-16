@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS341GroupProject", "CS341GroupProject.csproj", "{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CS341GroupProject", "CS341GroupProject.csproj", "{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,17 +11,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1EC3BE42-0205-4427-8DE0-10E23AB42CA6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CACDBF3-C2D9-48CD-8089-BC793BF1C76D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7941ED74-60F1-4A10-9948-BBDAE8ACB03C}
+		SolutionGuid = {BF7B7A4F-DF99-4B49-A68D-3F17E3B47425}
 	EndGlobalSection
 EndGlobal

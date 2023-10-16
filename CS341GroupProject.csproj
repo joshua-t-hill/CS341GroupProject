@@ -15,8 +15,8 @@
 		<ApplicationTitle>CS341GroupProject</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.cs341groupproject</ApplicationId>
-		<ApplicationIdGuid>e162b3b2-c9b4-4edd-9d9c-6c2fd12c24e0</ApplicationIdGuid>
+		<ApplicationId>com.companyname.CS341GroupProject</ApplicationId>
+		<ApplicationIdGuid>5c7a4d08-194e-4826-9822-0092adf1f933</ApplicationIdGuid>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -49,7 +49,32 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.96" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="MapPage.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="CameraPage.xaml.cs">
+	    <DependentUpon>CameraPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="FilterDatePage.xaml.cs">
+	    <DependentUpon>FilterDatePage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="MapPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CameraPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="FilterDatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
