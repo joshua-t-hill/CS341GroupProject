@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
-
+/**
+ * Author: Alex Ceithamer
+ */
 namespace CS341GroupProject
 {
     public partial class BannedUsersPage : ContentPage

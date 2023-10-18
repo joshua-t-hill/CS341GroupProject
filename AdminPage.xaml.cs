@@ -1,4 +1,7 @@
-﻿namespace CS341GroupProject
+﻿/**
+ * Author: Alex Ceithamer
+ */
+namespace CS341GroupProject
 {
     public partial class AdminPage : ContentPage
     {

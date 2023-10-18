@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Maui.Controls;
-
+/**
+ * Author: Alex Ceithamer
+ */
 namespace CS341GroupProject
 {
     public partial class UserSearchPage : ContentPage
