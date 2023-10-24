@@ -13,14 +13,17 @@ namespace CS341GroupProject
         {
             InitializeComponent();
 
-            // Sample data
+            /*
+             * TODO: Implement a way to get the list of banned users from the database.
+             */
+
+            //SAMPLE DATA
             BannedUsers = new ObservableCollection<BannedUser>
             {
                 new BannedUser { Name = "User1" },
                 new BannedUser { Name = "User2" }
-                // Add more banned users as needed
+                
             };
-
             BannedUsersListView.ItemsSource = BannedUsers;
         }
 
@@ -29,15 +32,22 @@ namespace CS341GroupProject
             var selectedUser = BannedUsersListView.SelectedItem as BannedUser;
             if (selectedUser != null)
             {
-                // Implement your unbanning logic here
+                // Implement unbanning logic here
                 // For example, removing the user from the list:
                 BannedUsers.Remove(selectedUser);
 
-                // If you have any backend or database, you'd also remove the ban there.
+                // If there is any backend or database, we'd also remove the ban there.
             }
         }
     }
 
+    /*FIXME: This class should be moved to a separate file perhaps? Or implemented in a different way (having a user class to store info from
+     * the database with a 'bool banned' field, for example). This would only make sense if we need to pull user's info from the database for
+     * another reason. Otherwise it would make sense to just querry the database for the banned users when enteirng this page.
+     * 
+     * Thought/update: UserSearchPage also needs a list of users (non-banned), so we could load a list of all users from the database when 
+     * loading the admin page (1 list for normal users, another for banned users), and just have a User.java class that has a banned field.
+    */
     public class BannedUser
     {
         public string Name { get; set; }

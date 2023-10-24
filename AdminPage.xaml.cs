@@ -13,13 +13,13 @@ namespace CS341GroupProject
 
         private void OnBanListClicked(object sender, EventArgs e)
         {
-            //give notification saying "banlist worked"
+            // Navigate to the BannedUsersPage
 
         }
 
         private void OnSearchClicked(object sender, EventArgs e)
         {
-
+            // Navigate to the UserSearchPage
         }
     }
 }

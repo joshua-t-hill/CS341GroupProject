@@ -14,6 +14,9 @@ namespace CS341GroupProject
         public UserSearchPage()
         {
             InitializeComponent();
+            /*
+             * TODO: Implement a way to get the list of users from the database. Refer to BannedUsersPage.xaml.cs for additional information/thoughts.
+             */
 
             // Sample data
             AllUsers = new ObservableCollection<User>
@@ -61,6 +64,9 @@ namespace CS341GroupProject
         }
     }
 
+    /*
+     * Refer to BannedUsersPage.xaml.cs for additional information/thoughts on user object class
+     */
     public class User
     {
         public string Name { get; set; }
