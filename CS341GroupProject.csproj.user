@@ -8,10 +8,16 @@
     <DefaultDevice>pixel_5_-_api_33</DefaultDevice>
   </PropertyGroup>
   <ItemGroup>
+    <MauiXaml Update="AddPlantPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="App.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="AppShell.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="EmailAddressConfirmationPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="MapPage.xaml">

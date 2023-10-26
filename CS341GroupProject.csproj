@@ -48,13 +48,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\flower.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.96" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="AddPlantPage.xaml.cs">
+	    <DependentUpon>AddPlantPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="BannedUsersPage.xaml.cs">
 	    <DependentUpon>BannedUsersPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="EmailAddressConfirmationPage.xaml.cs">
+	    <DependentUpon>EmailAddressConfirmationPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="MapPage.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
@@ -68,6 +78,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="AddPlantPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="EmailAddressConfirmationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="MapPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -77,10 +93,6 @@
 	  <MauiXaml Update="FilterDataPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 </Project>

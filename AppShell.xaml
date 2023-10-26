@@ -32,6 +32,12 @@
         <Tab Title="BannedUsers-ARC">
             <ShellContent ContentTemplate="{DataTemplate pages:BannedUsersPage}"/>
         </Tab>
+        <Tab Title="EmailConf-SA">
+            <ShellContent ContentTemplate="{DataTemplate pages:EmailAddressConfirmationPage}"/>
+        </Tab>
+        <Tab Title="AddPlant-SA">
+            <ShellContent ContentTemplate="{DataTemplate pages:AddPlantPage}"/>
+        </Tab>
     </TabBar>
     
 </Shell>

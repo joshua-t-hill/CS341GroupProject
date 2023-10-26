@@ -1,4 +1,7 @@
-﻿namespace CS341GroupProject
+﻿/**
+ * Author: Alex Ceithamer
+ */
+namespace CS341GroupProject
 {
     public partial class AdminPage : ContentPage
     {
@@ -10,13 +13,13 @@
 
         private void OnBanListClicked(object sender, EventArgs e)
         {
-            //give notification saying "banlist worked"
+            // Navigate to the BannedUsersPage
 
         }
 
         private void OnSearchClicked(object sender, EventArgs e)
         {
-
+            // Navigate to the UserSearchPage
         }
     }
 }
