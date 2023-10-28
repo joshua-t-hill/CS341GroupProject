@@ -13,3 +13,6 @@ Resource Attribution:
 Sprint2 Changes:
 	Added users name, with fields name and password
 	Added some functionality to LoginPage
+
+	Moved all pages besides App and AppShell into Pages folder for organization purposes
+	Added icons to Map, Camera, and Feed tabs; reduced amount of tabs
