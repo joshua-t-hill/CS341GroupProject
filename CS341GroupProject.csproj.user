@@ -8,7 +8,7 @@
     <DefaultDevice>pixel_5_-_api_33</DefaultDevice>
   </PropertyGroup>
   <ItemGroup>
-    <MauiXaml Update="AddPlantPage.xaml">
+    <MauiXaml Update="Pages\AddPlantPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="App.xaml">
@@ -17,19 +17,19 @@
     <MauiXaml Update="AppShell.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="EmailAddressConfirmationPage.xaml">
+    <MauiXaml Update="Pages\EmailAddressConfirmationPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="LoginPage.xaml">
+    <MauiXaml Update="Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="MapPage.xaml">
+    <MauiXaml Update="Pages\MapPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="CameraPage.xaml">
+    <MauiXaml Update="Pages\CameraPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="FilterDataPage.xaml">
+    <MauiXaml Update="Pages\FilterDataPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="Platforms\Windows\App.xaml">

@@ -58,43 +58,43 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="AddPlantPage.xaml.cs">
+	  <Compile Update="Pages\AddPlantPage.xaml.cs">
 	    <DependentUpon>AddPlantPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="BannedUsersPage.xaml.cs">
+	  <Compile Update="Pages\BannedUsersPage.xaml.cs">
 	    <DependentUpon>BannedUsersPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="EmailAddressConfirmationPage.xaml.cs">
+	  <Compile Update="Pages\EmailAddressConfirmationPage.xaml.cs">
 	    <DependentUpon>EmailAddressConfirmationPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="MapPage.xaml.cs">
+	  <Compile Update="Pages\MapPage.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
-	  <Compile Update="CameraPage.xaml.cs">
+	  <Compile Update="Pages\CameraPage.xaml.cs">
 	    <DependentUpon>CameraPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="FilterDataPage.xaml.cs">
+	  <Compile Update="Pages\FilterDataPage.xaml.cs">
 	    <DependentUpon>FilterDataPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="AddPlantPage.xaml">
+	  <MauiXaml Update="Pages\AddPlantPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="EmailAddressConfirmationPage.xaml">
+	  <MauiXaml Update="Pages\EmailAddressConfirmationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="LoginPage.xaml">
+	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MapPage.xaml">
+	  <MauiXaml Update="Pages\MapPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="CameraPage.xaml">
+	  <MauiXaml Update="Pages\CameraPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="FilterDataPage.xaml">
+	  <MauiXaml Update="Pages\FilterDataPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
