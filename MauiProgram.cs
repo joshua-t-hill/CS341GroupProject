@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CS341GroupProject.Model;
+using Microsoft.Extensions.Logging;
 
 namespace CS341GroupProject
 {
     public static class MauiProgram
     {
+        public static IBusinessLogic BusinessLogic = new BusinessLogic();
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();

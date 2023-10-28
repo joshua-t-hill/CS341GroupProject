@@ -1,4 +1,4 @@
-﻿namespace CS341Lab3;
+﻿namespace CS341GroupProject;
 /// <summary>
 /// Strings and warnings that come up repeatedly.
 /// </summary>

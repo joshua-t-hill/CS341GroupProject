@@ -20,6 +20,9 @@
     <MauiXaml Update="EmailAddressConfirmationPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="LoginPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="MapPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

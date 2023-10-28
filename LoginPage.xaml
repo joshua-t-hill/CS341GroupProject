@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS341GroupProject.LoginPage"
+             xmlns:model="clr-namespace:CS341GroupProject.Model"
+             x:DataType="model:BusinessLogic"
+             Title="LoginPage">
+    
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30,0"
+        VerticalOptions="Center">
+
+        <Image
+        Source="app_icon.png"
+        HeightRequest="200"
+        HorizontalOptions="Center" />
+
+        <Entry
+        x:Name="UsernameENT"
+        Placeholder="Username" />
+
+        <Entry
+        x:Name="PasswordENT"
+        Placeholder="Password" />
+
+        <Button
+        Text="Login"
+        Clicked="OnLoginBtnClicked"
+        HorizontalOptions="Center" />
+        
+        <Label HorizontalOptions="Center" >
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="NewUserTapped" />
+            </Label.GestureRecognizers>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="New User? Click " />
+                    <Span Text="here" TextColor="DodgerBlue" TextDecorations="Underline" />
+                    <Span Text=" to sign up." />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <Label HorizontalOptions="Center" >
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ForgotPasswordTapped" />
+            </Label.GestureRecognizers>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Forgot Password?" TextColor="DodgerBlue" TextDecorations="Underline" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+    </VerticalStackLayout>
+    
+</ContentPage>
