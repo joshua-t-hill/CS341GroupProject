@@ -8,16 +8,19 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <Tab Title="Map-JTH">
+        <Tab Title="Map"
+             Icon="maptabicon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"/>
         </Tab>
-        <Tab Title="Camera-JTH">
+        <Tab Title="Camera"
+             Icon="cameratabicon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"/>
         </Tab>
-        <Tab Title="Feed-AMW">
+        <Tab Title="Feed"
+             Icon="feedtabicon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"/>
         </Tab>
-        <Tab Title="PostDetails-AMW">
+        <!--<Tab Title="PostDetails-AMW">
             <ShellContent ContentTemplate="{DataTemplate pages:PostDetailsPage}"/>
         </Tab>
         <Tab Title="FilterData-JTH">
@@ -37,7 +40,7 @@
         </Tab>
         <Tab Title="AddPlant-SA">
             <ShellContent ContentTemplate="{DataTemplate pages:AddPlantPage}"/>
-        </Tab>
+        </Tab>-->
     </TabBar>
     
 </Shell>
