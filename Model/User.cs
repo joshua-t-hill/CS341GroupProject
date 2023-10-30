@@ -10,6 +10,7 @@ namespace CS341GroupProject.Model
     {
         String username;
         String password;
+        String email;
 
         public String Username 
         { 
@@ -23,10 +24,17 @@ namespace CS341GroupProject.Model
             set { password = value; }
         }
 
-        public User(String username, String password) 
+        public String Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
+
+        public User(String username, String password, String email) 
         {
             Username = username;
             Password = password;
+            Email = email;
         }
     }
 }

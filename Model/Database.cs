@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AndroidX.Emoji2.Text.FlatBuffer;
+﻿using System.Collections.ObjectModel;
 using Npgsql;
 
 namespace CS341GroupProject.Model
@@ -41,35 +35,79 @@ namespace CS341GroupProject.Model
             users.Clear();
             var conn = new NpgsqlConnection(connString);
             conn.Open(); // opens connection to the database
-            using var cmd = new NpgsqlCommand("SELECT username, password FROM users", conn);
+            using var cmd = new NpgsqlCommand("SELECT username, password, email FROM users", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read()) // reads one line from the database at a time
             {
                 String username = reader.GetString(0);
                 String password = reader.GetString(1);
-                User userToAdd = new(username, password); // creates a new user
+                String email = reader.GetString(2);
+                User userToAdd = new(username, password, email); // creates a new user
                 users.Add(userToAdd);
                 Console.WriteLine(userToAdd);
             }
             return users;
         }
 
-        public User SelectUser(String username)
+        public User SelectUserWithUsername(String username)
         {
             var conn = new NpgsqlConnection(connString);
             conn.Open();
             using var cmd = new NpgsqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = ("SELECT password FROM users WHERE username = @username");
+            cmd.CommandText = ("SELECT password, email FROM users WHERE username = @username");
             cmd.Parameters.AddWithValue("username", username); // gets a user from the database given the username
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 String password = reader.GetString(0);
-                User user = new(username, password);
+                String email = reader.GetString(1);
+                User user = new(username, password, email);
                 return user;
             }
             return null;
+        }
+
+        public User SelectUserWithEmail(String email)
+        {
+            var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = ("SELECT username, password FROM users WHERE email = @email");
+            cmd.Parameters.AddWithValue("email", email); // gets a user from the database given the username
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                String username = reader.GetString(0);
+                String password = reader.GetString(1);
+                User user = new(username, password, email);
+                return user;
+            }
+            return null;
+        }
+
+        public UserCreationError InsertUser(User user)
+        {
+            try
+            {
+                using var conn = new NpgsqlConnection(connString);
+                conn.Open();
+                var cmd = new NpgsqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = "INSERT INTO users (username, password, email) VALUES (@username, @password, @email)";
+                cmd.Parameters.AddWithValue("username", user.Username);
+                cmd.Parameters.AddWithValue("password", user.Password);
+                cmd.Parameters.AddWithValue("email", user.Email);
+                cmd.ExecuteNonQuery();
+                SelectAllUsers();
+            }
+            catch (Npgsql.PostgresException pe)
+            {
+                Console.WriteLine("Insert failed, {0}", pe);
+                return UserCreationError.DBInsertionError;
+            }
+            return UserCreationError.NoError;
         }
     }
 }

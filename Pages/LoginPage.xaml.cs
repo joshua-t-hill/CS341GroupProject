@@ -1,4 +1,5 @@
 namespace CS341GroupProject;
+using CS341GroupProject.Pages;
 
 public partial class LoginPage : ContentPage
 {
@@ -32,10 +33,9 @@ public partial class LoginPage : ContentPage
 		Navigation.RemovePage(this);
 	}
 
-	void NewUserTapped(object sender, TappedEventArgs args)
+	async void NewUserTapped(object sender, TappedEventArgs args)
 	{
-		// await Navigation.PushAsync(new NewUserPage());
-		throw new NotImplementedException();
+		await Navigation.PushAsync(new CreateAccountPage());
 	}
 
 	void ForgotPasswordTapped(object sender, TappedEventArgs args)

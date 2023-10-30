@@ -17,6 +17,9 @@
     <MauiXaml Update="AppShell.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="Pages\CreateAccountPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="Pages\EmailAddressConfirmationPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

@@ -11,5 +11,6 @@ namespace CS341GroupProject.Model
     {
         public ObservableCollection<User> Users { get; }
         public Boolean ConfirmLogin(String username, String password);
+        public UserCreationError CreateUser(String username, String password, String email);
     }
 }
