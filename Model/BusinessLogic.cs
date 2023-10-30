@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace CS341GroupProject.Model
 {
@@ -39,7 +34,7 @@ namespace CS341GroupProject.Model
                 return UserCreationError.EmailInUse;
             }
 
-            return Database.InsertUser(new User(username, password, email, false)); //added 'false' to end because it was giving error
+            return Database.InsertUser(new User(username, password, email));
         }
     }
 }

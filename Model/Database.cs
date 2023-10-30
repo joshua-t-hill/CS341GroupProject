@@ -132,15 +132,15 @@ public class Database : IDatabase
 
         using var cmd = new NpgsqlCommand(Constants.SQL_GET_MAP_PIN_DATA_STRING, conn);
         using var reader = cmd.ExecuteReader();
-        while (reader.Read())
+        while (reader.Read()) //returning nothing
         {
-            string uuid = reader.GetString(0);
+            long id = reader.GetInt64(0);
             double latitude = reader.GetDouble(1);
             double longitude = reader.GetDouble(2);
             string genus = reader.GetString(3);
             string epithet = reader.GetString(4);
 
-            pinsData.Add(new(uuid, latitude, longitude, genus, epithet));
+            pinsData.Add(new(id, latitude, longitude, genus, epithet));
         }
 
         return pinsData;
