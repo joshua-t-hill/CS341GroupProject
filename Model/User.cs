@@ -44,5 +44,12 @@ namespace CS341GroupProject.Model
             Email = email;
             IsBanned = isBanned;
         }
+        public User (String username, String password, String email)
+        {
+            Username = username;
+            Password = password;
+            Email = email;
+            IsBanned = false;
+        }
     }
 }
