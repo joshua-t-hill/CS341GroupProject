@@ -11,7 +11,7 @@ Resource Attribution:
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
 Sprint2 Changes:
-	Added users name, with fields name and password
+	Added 'users' table, with columns 'name' and 'password'
 	Added some functionality to LoginPage
 
 	Moved all pages besides App and AppShell into Pages folder for organization purposes
