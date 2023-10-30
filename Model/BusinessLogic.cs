@@ -38,7 +38,7 @@ namespace CS341GroupProject.Model
                 return UserCreationError.EmailInUse;
             }
 
-            return Database.InsertUser(new User(username, password, email));
+            return Database.InsertUser(new User(username, password, email, false)); //added 'false' to end because it was giving error
         }
     }
 }
