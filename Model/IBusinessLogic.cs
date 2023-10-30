@@ -10,6 +10,7 @@ namespace CS341GroupProject.Model
     public interface IBusinessLogic
     {
         public ObservableCollection<User> Users { get; }
+        public ObservableCollection<PinData> PinsData { get; }
         public Boolean ConfirmLogin(String username, String password);
         public UserCreationError CreateUser(String username, String password, String email);
     }

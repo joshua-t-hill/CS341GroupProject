@@ -1,5 +1,7 @@
+using CS341GroupProject.Model;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+using System.Collections.ObjectModel;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 /**
  * Author: Joshua T. Hill
@@ -8,40 +10,35 @@ using Map = Microsoft.Maui.Controls.Maps.Map;
 namespace CS341GroupProject;
 public partial class MapPage : ContentPage
 {
-
+    //private ObservableCollection<PinData> pinsData;
     public MapPage()
     {
-        Location location = new(44.0263, -88.5507);
+        Location location = new(Constants.MAP_STARTING_LATITUDE, Constants.MAP_STARTING_LONGITUDE);
         MapSpan mapSpan = new(location, 0.01, 0.01);
         Map map = new(mapSpan);
 
-        Pin pin1 = new()
-        {
-            Label = "Pin1",
-            Address = "",
-            Type = PinType.Generic,
-            Location = new Location(44.023388, -88.553091)
-        };
-        Pin pin2 = new()
-        {
-            Label = "Pin2",
-            Address = "",
-            Type = PinType.Generic,
-            Location = new Location(44.027935, -88.550843)
-        };
-        Pin pin3 = new()
-        {
-            Label = "Pin3",
-            Address = "",
-            Type = PinType.Generic,
-            Location = new Location(44.026822, -88.557188)
-        };
-
-        map.Pins.Add(pin1);
-        map.Pins.Add(pin2);
-        map.Pins.Add(pin3);
+        //PopulateMapWithPins(map);
 
         Content = map;
     }
+
+    //private void PopulateMapWithPins(Map map)
+    //{
+    //    pinsData = MauiProgram.BusinessLogic.PinsData;
+
+    //    foreach (var pd in pinsData)
+    //    {
+    //        map.Pins.Add
+    //        (
+    //            new()
+    //            {
+    //                Label = pd.Uuid,
+    //                Address = "",
+    //                Type = PinType.SavedPin,
+    //                Location = new(pd.Latitude, pd.Longitude)
+    //            }
+    //        );
+    //    }
+    //}
 
 }

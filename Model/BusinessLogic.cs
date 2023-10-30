@@ -17,6 +17,7 @@ namespace CS341GroupProject.Model
         }
 
         public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
+        public ObservableCollection<PinData> PinsData { get { return Database.SelectAllMapPins(); } }
 
         public Boolean ConfirmLogin(String username, String password)
         {
