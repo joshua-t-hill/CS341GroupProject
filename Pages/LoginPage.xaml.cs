@@ -7,19 +7,29 @@ public partial class LoginPage : ContentPage
 		InitializeComponent();
 
 		BindingContext = MauiProgram.BusinessLogic;
-	}
 
-	void OnLoginBtnClicked(object sender, EventArgs e)
+		// Hide the navigation bar
+		NavigationPage.SetHasNavigationBar(this, false);
+
+        // Hide the back button
+        NavigationPage.SetHasBackButton(this, false);
+    }
+
+	async void OnLoginBtnClicked(object sender, EventArgs e)
 	{
 		Boolean success = MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text);
 
 		if (!success)
 		{
-			DisplayAlert("Oops!", "Username or Password was incorrect.", "OK");
+            await DisplayAlert("Oops!", "Username or Password was incorrect.", "OK");
 			return;
 		}
 
-		// Navigate to main page (AppShell?)
+		// Navigate to AppShell
+		await Navigation.PushAsync(new AppShell());
+
+		// Remove the LoginPage from the Navigation stack
+		Navigation.RemovePage(this);
 	}
 
 	void NewUserTapped(object sender, TappedEventArgs args)
