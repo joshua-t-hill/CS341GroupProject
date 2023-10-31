@@ -114,6 +114,38 @@ public class Database : IDatabase
         return UserCreationError.NoError;
     }
 
+    /// <summary>
+    /// Updates a user by using their email as a key for the sql query
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="newInfo"></param>
+    /// <returns></returns>
+    public UserUpdateError UpdateUser(User user, User newInfo)
+    {
+        try
+        {
+
+            using var conn = new NpgsqlConnection(connString); // conn, short for connection, is a connection to the database
+            conn.Open(); // open the connection ... now we are connected!
+            var cmd = new NpgsqlCommand(); // create the sql commaned
+            cmd.Connection = conn; // commands need a connection, an actual command to execute
+            cmd.CommandText = "UPDATE users SET username = @username, password = @password, is_banned = @is_banned WHERE email = @email;";
+            cmd.Parameters.AddWithValue("username", user.Username);
+            cmd.Parameters.AddWithValue("password", user.Password);
+            cmd.Parameters.AddWithValue("is_banned", user.IsBanned);
+            cmd.Parameters.AddWithValue("email", user.Email);
+            var numAffected = cmd.ExecuteNonQuery();
+
+            SelectAllUsers();
+            return UserUpdateError.NoError;
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Update failed, {0}", pe);
+            return UserUpdateError.DBUpdateError;
+        }
+    }
+
     public User SelectUser(string username) //TEMP
     {
         throw new NotImplementedException();

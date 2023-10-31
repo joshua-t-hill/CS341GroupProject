@@ -7,3 +7,10 @@ public enum UserCreationError
     DBInsertionError,
     NoError
 }
+
+public enum UserUpdateError
+{
+    DBUpdateError,
+    NoError,
+    UserNotFound
+}

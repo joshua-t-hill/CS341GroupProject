@@ -15,6 +15,7 @@ namespace CS341GroupProject.Model
         public User SelectUserWithUsername(String username);
         public User SelectUserWithEmail(String email);
         public UserCreationError InsertUser(User user);
+        public UserUpdateError UpdateUser(User user, User newInfo);
 
         public User SelectUser(String username);
 

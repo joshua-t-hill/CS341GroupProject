@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using CS341GroupProject.Model;
 using Microsoft.Maui.Controls;
 /**
  * Author: Alex Ceithamer
@@ -8,7 +9,7 @@ namespace CS341GroupProject
 {
     public partial class UserSearchPage : ContentPage
     {
-        public ObservableCollection<User> AllUsers { get; private set; }
+        private ObservableCollection<User> AllUsers;
         public ObservableCollection<User> FilteredUsers { get; private set; }
 
         public UserSearchPage()
@@ -17,15 +18,10 @@ namespace CS341GroupProject
             /*
              * TODO: Implement a way to get the list of users from the database. Refer to BannedUsersPage.xaml.cs for additional information/thoughts.
              */
+            AllUsers = MauiProgram.BusinessLogic.Users;
 
-            // Sample data
-            AllUsers = new ObservableCollection<User>
-            {
-                new User { Name = "Alice" },
-                new User { Name = "Bob" },
-                new User { Name = "Charlie" },
-                // ... other users
-            };
+
+
 
             FilteredUsers = new ObservableCollection<User>(AllUsers);
             UsersListView.ItemsSource = FilteredUsers;
@@ -36,7 +32,7 @@ namespace CS341GroupProject
             var searchTerm = e.NewTextValue;
 
             FilteredUsers.Clear();
-            foreach (var user in AllUsers.Where(u => u.Name.ToLower().Contains(searchTerm.ToLower())))
+            foreach (var user in AllUsers.Where(u => u.Username.ToLower().Contains(searchTerm.ToLower())))
             {
                 FilteredUsers.Add(user);
             }
@@ -52,7 +48,7 @@ namespace CS341GroupProject
             var selectedUser = UsersListView.SelectedItem as User;
             if (selectedUser != null)
             {
-                bool confirm = await DisplayAlert("Confirmation", $"Are you sure you want to ban {selectedUser.Name}?", "Yes", "No");
+                bool confirm = await DisplayAlert("Confirmation", $"Are you sure you want to ban {selectedUser.Username}?", "Yes", "No");
                 if (confirm)
                 {
                     // TODO: Add code to ban the user, such as updating your database
@@ -64,11 +60,4 @@ namespace CS341GroupProject
         }
     }
 
-    /*
-     * Refer to BannedUsersPage.xaml.cs for additional information/thoughts on user object class
-     */
-    public class User
-    {
-        public string Name { get; set; }
-    }
 }
