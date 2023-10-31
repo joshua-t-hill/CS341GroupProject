@@ -28,16 +28,25 @@ public partial class MapPage : ContentPage
 
         foreach (var pd in pinsData)
         {
-            map.Pins.Add
-            (
-                new()
-                {
-                    Label = pd.Id.ToString(),
-                    Address = "",
-                    Type = PinType.SavedPin,
-                    Location = new(pd.Latitude, pd.Longitude)
-                }
-            );
+            Pin pin = new Pin
+            {
+                Label = pd.Id.ToString(),
+                Address = $"{pd.Genus} {pd.Epithet}",
+                Type = PinType.SavedPin,
+                Location = new(pd.Latitude, pd.Longitude),
+                MarkerId = pd
+            };
+
+            //***Trying to access the PinData object saved under MarkerId doesn't seem to work when used with the MarkerClicked event.
+            //***Not sure why; keeping for reference but implementing a work-around for now.
+            //pin.MarkerClicked += async (s, args) =>
+            //{
+            //    PinData plantData = ((Pin)s).MarkerId as PinData;
+            //    string plantName = $"Name: {plantData.Genus} {plantData.Epithet}";
+            //    await DisplayAlert("Pin Clicked", plantName, "Ok");
+            //};
+
+            map.Pins.Add(pin);
         }
     }
 

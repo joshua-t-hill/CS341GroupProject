@@ -15,4 +15,9 @@ public class PinData
         Genus = genus; 
         Epithet = epithet;
     }
+
+    public override string ToString()
+    {
+        return $"Id:{Id} | Latitude:{Latitude} | Longitude:{Longitude} | Genus:{Genus} | Epithet:{Epithet}";
+    }
 }
