@@ -98,7 +98,7 @@ public class Database : IDatabase
             conn.Open();
             var cmd = new NpgsqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned) VALUES (@username, @password, @email)";
+            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned) VALUES (@username, @password, @email, @is_banned)";
             cmd.Parameters.AddWithValue("username", user.Username);
             cmd.Parameters.AddWithValue("password", user.Password);
             cmd.Parameters.AddWithValue("email", user.Email);
@@ -130,9 +130,9 @@ public class Database : IDatabase
             var cmd = new NpgsqlCommand(); // create the sql commaned
             cmd.Connection = conn; // commands need a connection, an actual command to execute
             cmd.CommandText = "UPDATE users SET username = @username, password = @password, is_banned = @is_banned WHERE email = @email;";
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("password", user.Password);
-            cmd.Parameters.AddWithValue("is_banned", user.IsBanned);
+            cmd.Parameters.AddWithValue("username", newInfo.Username);
+            cmd.Parameters.AddWithValue("password", newInfo.Password);
+            cmd.Parameters.AddWithValue("is_banned", newInfo.IsBanned);
             cmd.Parameters.AddWithValue("email", user.Email);
             var numAffected = cmd.ExecuteNonQuery();
 

@@ -37,6 +37,10 @@ namespace CS341GroupProject
                 // Implement unbanning logic here
                 // For example, removing the user from the list:
                 bannedUsers.Remove(selectedUser);
+                User oldUserInfo = selectedUser;
+                User newUserInfo = new User(oldUserInfo.Username, oldUserInfo.Password, oldUserInfo.Email, false);
+                MauiProgram.BusinessLogic.UpdateUser(oldUserInfo, newUserInfo);
+
 
                 // If there is any backend or database, we'd also remove the ban there.
             }

@@ -37,7 +37,7 @@ namespace CS341GroupProject.Model
             return Database.InsertUser(new User(username, password, email));
         }
 
-        public UserUpdateError UpdateUserBanStatus(User user, User newInfo)
+        public UserUpdateError UpdateUser(User user, User newInfo)
         {
             return Database.UpdateUser(user, newInfo);
         }
