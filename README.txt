@@ -16,4 +16,9 @@ Sprint2 Changes:
 	Added some fucntionality to CreateAccountPage
 
 	Moved all pages besides App and AppShell into Pages folder for organization purposes
-	Added icons to Map, Camera, and Feed tabs; reduced amount of tabs
+	Added icons and made tab names more compact for Map, Camera, and Feed tabs; reduced amount of tabs :) :)
+	Set up project database and put access information in Constants.cs
+	Designed and implemented a table for MapPage to store Pin information with consideration for future feature implementation :) :) :)
+	Researched Pin event handlers to customize on-tap actions; wasn't able to get working as planned so commented out for later reference
+	Leverage generic information window for on-tap event on Pins to show plant names and unique ID numbers fetched dynamically from SQL database; not final design :)
+
