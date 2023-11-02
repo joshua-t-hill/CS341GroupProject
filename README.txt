@@ -11,14 +11,17 @@ Resource Attribution:
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
 Sprint2 Changes:
-	Added 'users' table, with columns 'name','password', and 'email'
-	Added some functionality to LoginPage
-	Added some fucntionality to CreateAccountPage
-
+	Constructed a 'users' table, with columns 'name','password', 'email', and 'is_banned'
+	Created the User object class and added methods to the BusinessLogic and Database to select, insert, and update users :) :)
+	Added some functionality to LoginPage allowing users existing in the users table to access the functions of the app :)
+	Added functionality to CreateAccountPage allowing users to create a new account, thus adding their user to the table for future login :)
+	Created navigation from LoginPage to AppShell
 	Moved all pages besides App and AppShell into Pages folder for organization purposes
 	Added icons and made tab names more compact for Map, Camera, and Feed tabs; reduced amount of tabs :) :)
 	Set up project database and put access information in Constants.cs
 	Designed and implemented a table for MapPage to store Pin information with consideration for future feature implementation :) :) :)
 	Researched Pin event handlers to customize on-tap actions; wasn't able to get working as planned so commented out for later reference
 	Leverage generic information window for on-tap event on Pins to show plant names and unique ID numbers fetched dynamically from SQL database; not final design :)
+	Modified the BannedUserPage and UserSearchPage to work with the database and user.cs object instead of sample data
+	Updated the User object class and database methods to work with the IsBanned boolean
 
