@@ -12,6 +12,8 @@ namespace CS341GroupProject.Model
         public ObservableCollection<User> Users { get; }
         public ObservableCollection<PinData> PinsData { get; }
         public Boolean ConfirmLogin(String username, String password);
+        public String HashPassword(String password, String salt);
+        public String GenerateSalt();
         public UserCreationError CreateUser(String username, String password, String email);
 
         public UserUpdateError UpdateUser(User user, User newInfo);

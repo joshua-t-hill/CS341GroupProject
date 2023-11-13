@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Microsoft.Maui.ApplicationModel.Communication;
 using Npgsql;
 
 namespace CS341GroupProject.Model;
@@ -77,7 +78,7 @@ public class Database : IDatabase
         using var cmd = new NpgsqlCommand();
         cmd.Connection = conn;
         cmd.CommandText = ("SELECT username, password, is_banned FROM users WHERE email = @email");
-        cmd.Parameters.AddWithValue("email", email); // gets a user from the database given the username
+        cmd.Parameters.AddWithValue("email", email); // gets a user from the database given the email
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
@@ -90,6 +91,28 @@ public class Database : IDatabase
         return null;
     }
 
+    /// <summary>
+    /// Selects a user's salt from the database. Used to confirm information at login.
+    /// </summary>
+    /// <param name="username"> user's username </param>
+    /// <returns> String representation of a user's salt value </returns>
+    public String SelectSalt(String username)
+    {
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = ("SELECT salt FROM users WHERE username = @username");
+        cmd.Parameters.AddWithValue("username", username); // gets a user's salt from the database given their username
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            String salt = reader.GetString(0);
+            return salt;
+        }
+        return null;
+    }
+
     public UserCreationError InsertUser(User user)
     {
         try
@@ -98,11 +121,12 @@ public class Database : IDatabase
             conn.Open();
             var cmd = new NpgsqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned) VALUES (@username, @password, @email, @is_banned)";
+            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned, salt) VALUES (@username, @password, @email, @is_banned, @salt)";
             cmd.Parameters.AddWithValue("username", user.Username);
             cmd.Parameters.AddWithValue("password", user.Password);
             cmd.Parameters.AddWithValue("email", user.Email);
             cmd.Parameters.AddWithValue("is_banned", user.IsBanned);
+            cmd.Parameters.AddWithValue("salt", user.Salt);
             cmd.ExecuteNonQuery();
             SelectAllUsers();
         }
