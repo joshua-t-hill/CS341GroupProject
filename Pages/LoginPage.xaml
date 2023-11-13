@@ -18,10 +18,12 @@
 
         <Entry
         x:Name="UsernameENT"
+        Text="test"
         Placeholder="Username" />
 
         <Entry
         x:Name="PasswordENT"
+        Text="test"
         Placeholder="Password" />
 
         <Button
