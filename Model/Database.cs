@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data;
 using Microsoft.Maui.ApplicationModel.Communication;
 using Npgsql;
 
@@ -9,6 +10,7 @@ public class Database : IDatabase
 
     ObservableCollection<User> users = new();
     ObservableCollection<PinData> pinsData = new();
+    ObservableCollection<Photo> photos = new();
 
     public Database() { }
 
@@ -200,6 +202,51 @@ public class Database : IDatabase
         }
 
         return pinsData;
+    }
+
+    /// <summary>
+    /// Updates the ObservableCollection photos with data from the datebase
+    /// </summary>
+    /// <returns></returns>
+    public ObservableCollection<Photo> SelectAllPhotos()
+    {
+        photos.Clear();
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand("SELECT id, image_data FROM photos", conn);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            Guid id = reader.GetGuid(0);
+            long byteaLength = reader.GetBytes(1, 0, null, 0, 0);
+            byte[] imageData = new byte[byteaLength];
+            reader.GetBytes(1, 0, imageData, 0, (int)byteaLength);
+            Photo photoToAdd = new(id, imageData); // creates a new photo
+            photos.Add(photoToAdd);
+            Console.WriteLine(photoToAdd);
+        }
+        return photos;
+    }
+
+    public Boolean InsertPhoto(byte[] imageData)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = "INSERT INTO photos (image_data) VALUES (@image_data)";
+            cmd.Parameters.AddWithValue("image_data", imageData);
+            cmd.ExecuteNonQuery();
+            SelectAllPhotos();
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Insert failed, {0}", pe);
+            return false;
+        }
+        return true;
     }
 
 }

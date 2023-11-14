@@ -17,5 +17,6 @@ namespace CS341GroupProject.Model
         public UserCreationError CreateUser(String username, String password, String email);
 
         public UserUpdateError UpdateUser(User user, User newInfo);
+        public Boolean InsertPhoto(byte[] imageData);
     }
 }

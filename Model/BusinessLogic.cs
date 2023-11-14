@@ -15,6 +15,7 @@ namespace CS341GroupProject.Model
 
         public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
         public ObservableCollection<PinData> PinsData { get { return Database.SelectAllMapPins(); } }
+        public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
 
         /// <summary>
         /// Checks entered username and password on login to saved data in database
@@ -80,6 +81,11 @@ namespace CS341GroupProject.Model
         public UserUpdateError UpdateUser(User user, User newInfo)
         {
             return Database.UpdateUser(user, newInfo);
+        }
+
+        public Boolean InsertPhoto(byte[] imageData)
+        {
+            return Database.InsertPhoto(imageData);
         }
     }
 }

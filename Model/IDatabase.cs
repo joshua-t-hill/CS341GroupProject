@@ -11,6 +11,7 @@ namespace CS341GroupProject.Model
     {
         public ObservableCollection<User> SelectAllUsers();
         public ObservableCollection<PinData> SelectAllMapPins();
+        public ObservableCollection<Photo> SelectAllPhotos();
 
         public User SelectUserWithUsername(String username);
         public User SelectUserWithEmail(String email);
@@ -19,6 +20,7 @@ namespace CS341GroupProject.Model
         public UserUpdateError UpdateUser(User user, User newInfo);
 
         public User SelectUser(String username);
+        public Boolean InsertPhoto(byte[] imageData);
 
     }
 }

@@ -14,6 +14,8 @@ Sprint3 Changes:
 	~ Researched sending emails; found that we would need to give bank info to another company.. changing idea for now
 	+ Added column 'salt' to table 'users'
 	+ Encrypted passwords :) :)
+	+ Created table 'photos' with columns 'id' and 'image_data'
+	+ Connected the camera output to the 'photos' table :)
 
 Sprint2 Changes:
 	+ Constructed a 'users' table, with columns 'name','password', 'email', and 'is_banned'

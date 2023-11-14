@@ -4,7 +4,7 @@
  */
 public partial class AddPlantPage : ContentPage
 {
-	public AddPlantPage()
+	public AddPlantPage(byte[] imageData)
 	{
         InitializeComponent();
 	}
