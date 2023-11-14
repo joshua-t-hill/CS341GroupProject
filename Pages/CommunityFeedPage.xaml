@@ -10,17 +10,10 @@
         Padding="30,0"
         VerticalOptions="Start">
 
-            <CollectionView>
+            <CollectionView ItemsSource="{Binding Posts}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"/>
                 </CollectionView.ItemsLayout>
-                <CollectionView.ItemsSource>
-                    <x:Array Type="{x:Type local:Post}">
-                        <local:Post Photo="plant.jpg" Username="username" Plant="Plant Name"/>
-                        <local:Post Photo="plant.jpg" Username="username" Plant="Plant Name"/>
-                        <local:Post Photo="plant.jpg" Username="username" Plant="Plant Name"/>
-                    </x:Array>
-                </CollectionView.ItemsSource>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border Stroke="#000000"
