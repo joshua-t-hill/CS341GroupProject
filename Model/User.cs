@@ -13,6 +13,7 @@ namespace CS341GroupProject.Model
         String email;
         Boolean isBanned;
         String salt;
+        Boolean isAdmin;
 
         public String Username 
         { 
@@ -44,12 +45,19 @@ namespace CS341GroupProject.Model
             set { salt = value; }
         }
 
+        public Boolean IsAdmin
+        {
+            get { return isAdmin; }
+            set { isAdmin = value; }
+        }
+
         public User(String username, String password, String email, Boolean isBanned) 
         {
             Username = username;
             Password = password;
             Email = email;
             IsBanned = isBanned;
+            IsAdmin = false;
         }
         public User(String username, String password, String email, String salt)
         {
@@ -57,6 +65,7 @@ namespace CS341GroupProject.Model
             Password = password;
             Email = email;
             IsBanned = false;
+            IsAdmin = false;
             Salt = salt;
         }
     }

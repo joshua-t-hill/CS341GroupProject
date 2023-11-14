@@ -17,6 +17,9 @@ public partial class CommunityFeedPage : ContentPage
 		//example adding items to the collection
 		Posts.Add(new Post { Username = "User1", Photo = "plant.jpg", Plant = "plant1", Notes = "This is a note about plant1" });
 		Posts.Add(new Post { Username = "User2", Photo = "flower.png", Plant = "plant2", Notes = "This is a note about plant2" });
+		Posts.Add(new Post { Username = "User3", Photo = "plant.jpg", Plant = "plant3", Notes = "This is a note about plant3" });
+		Posts.Add(new Post { Username = "User4", Photo = "flower.jpg", Plant = "plant4", Notes = "This is a note about plant4" });
+		Posts.Add(new Post { Username = "User5", Photo = "plant.png", Plant = "plant5", Notes = "This is a note about plant5" });
 
 		this.BindingContext = this;
 	}
