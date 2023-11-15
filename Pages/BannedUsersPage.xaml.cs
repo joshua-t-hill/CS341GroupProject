@@ -47,7 +47,7 @@ namespace CS341GroupProject
 
                 //update the backend to reflect the change.
                 User oldUserInfo = selectedUser;
-                User newUserInfo = new User(oldUserInfo.Username, oldUserInfo.Password, oldUserInfo.Email, false);
+                User newUserInfo = new User(oldUserInfo.Username, oldUserInfo.Password, oldUserInfo.Email, false, false);
                 MauiProgram.BusinessLogic.UpdateUser(oldUserInfo, newUserInfo);
             }
         }

@@ -21,7 +21,7 @@
 		<ListView x:Name="UsersListView" Grid.Row="1" Grid.ColumnSpan="2" SelectionMode="Single" ItemSelected="OnUserSelected">
 			<ListView.ItemTemplate>
 				<DataTemplate>
-					<TextCell Text="{Binding Name}" />
+					<TextCell Text="{Binding Username}" />
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>

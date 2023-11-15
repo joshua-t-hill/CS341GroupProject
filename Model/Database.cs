@@ -38,7 +38,7 @@ public class Database : IDatabase
         users.Clear();
         var conn = new NpgsqlConnection(connString);
         conn.Open(); // opens connection to the database
-        using var cmd = new NpgsqlCommand("SELECT username, password, email, is_banned FROM users", conn);
+        using var cmd = new NpgsqlCommand("SELECT username, password, email, is_banned, is_admin FROM users", conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read()) // reads one line from the database at a time
         {
@@ -46,7 +46,8 @@ public class Database : IDatabase
             String password = reader.GetString(1);
             String email = reader.GetString(2);
             Boolean isBanned = reader.GetBoolean(3);
-            User userToAdd = new(username, password, email, isBanned); // creates a new user
+            Boolean isAdmin = reader.GetBoolean(4);
+            User userToAdd = new(username, password, email, isBanned, isAdmin); // creates a new user
             users.Add(userToAdd);
             Console.WriteLine(userToAdd);
         }
@@ -59,7 +60,7 @@ public class Database : IDatabase
         conn.Open();
         using var cmd = new NpgsqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = ("SELECT password, email, is_banned FROM users WHERE username = @username");
+        cmd.CommandText = ("SELECT password, email, is_banned, is_admin FROM users WHERE username = @username");
         cmd.Parameters.AddWithValue("username", username); // gets a user from the database given the username
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
@@ -67,7 +68,8 @@ public class Database : IDatabase
             String password = reader.GetString(0);
             String email = reader.GetString(1);
             Boolean isBanned = reader.GetBoolean(2);
-            User user = new(username, password, email, isBanned);
+            Boolean isAdmin = reader.GetBoolean(3);
+            User user = new(username, password, email, isBanned, isAdmin);
             return user;
         }
         return null;
@@ -79,7 +81,7 @@ public class Database : IDatabase
         conn.Open();
         using var cmd = new NpgsqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = ("SELECT username, password, is_banned FROM users WHERE email = @email");
+        cmd.CommandText = ("SELECT username, password, is_banned, is_admin FROM users WHERE email = @email");
         cmd.Parameters.AddWithValue("email", email); // gets a user from the database given the email
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
@@ -87,7 +89,8 @@ public class Database : IDatabase
             String username = reader.GetString(0);
             String password = reader.GetString(1);
             Boolean isBanned = reader.GetBoolean(2);
-            User user = new(username, password, email, isBanned);
+            Boolean isAdmin = reader.GetBoolean(3);
+            User user = new(username, password, email, isBanned, isAdmin);
             return user;
         }
         return null;
@@ -123,12 +126,13 @@ public class Database : IDatabase
             conn.Open();
             var cmd = new NpgsqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned, salt) VALUES (@username, @password, @email, @is_banned, @salt)";
+            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned, salt, is_admin) VALUES (@username, @password, @email, @is_banned, @salt, @is_admin)";
             cmd.Parameters.AddWithValue("username", user.Username);
             cmd.Parameters.AddWithValue("password", user.Password);
             cmd.Parameters.AddWithValue("email", user.Email);
             cmd.Parameters.AddWithValue("is_banned", user.IsBanned);
             cmd.Parameters.AddWithValue("salt", user.Salt);
+            cmd.Parameters.AddWithValue("is_admin", user.IsAdmin);
             cmd.ExecuteNonQuery();
             SelectAllUsers();
         }
@@ -155,11 +159,12 @@ public class Database : IDatabase
             conn.Open(); // open the connection ... now we are connected!
             var cmd = new NpgsqlCommand(); // create the sql commaned
             cmd.Connection = conn; // commands need a connection, an actual command to execute
-            cmd.CommandText = "UPDATE users SET username = @username, password = @password, is_banned = @is_banned WHERE email = @email;";
+            cmd.CommandText = "UPDATE users SET username = @username, password = @password, is_banned = @is_banned, is_admin = @is_admin WHERE email = @email;";
             cmd.Parameters.AddWithValue("username", newInfo.Username);
             cmd.Parameters.AddWithValue("password", newInfo.Password);
             cmd.Parameters.AddWithValue("is_banned", newInfo.IsBanned);
             cmd.Parameters.AddWithValue("email", user.Email);
+            cmd.Parameters.AddWithValue("is_admin", newInfo.IsAdmin);
             var numAffected = cmd.ExecuteNonQuery();
 
             SelectAllUsers();

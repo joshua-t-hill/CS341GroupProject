@@ -14,7 +14,7 @@
 				<DataTemplate>
 					<ViewCell>
 						<Frame Padding="10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-							<Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+							<Label Text="{Binding Username}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
 						</Frame>
 					</ViewCell>
 				</DataTemplate>

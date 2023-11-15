@@ -1,6 +1,4 @@
-﻿/**
- * Author: Alex Ceithamer
- */
+﻿
 namespace CS341GroupProject
 {
     public partial class AdminPage : ContentPage
@@ -11,15 +9,15 @@ namespace CS341GroupProject
             InitializeComponent();
         }
 
-        private void OnBanListClicked(object sender, EventArgs e)
+        private async void OnBanListClickedAsync(object sender, EventArgs e)
         {
-            // Navigate to the BannedUsersPage
+            await Navigation.PushAsync(new BannedUsersPage());
 
         }
 
-        private void OnSearchClicked(object sender, EventArgs e)
+        private async void OnSearchClickedAsync(object sender, EventArgs e)
         {
-            // Navigate to the UserSearchPage
+            await Navigation.PushAsync(new UserSearchPage());
         }
 
     }

@@ -21,7 +21,11 @@ namespace CS341GroupProject
             //get ObservableCollection of all users
             AllUsers = MauiProgram.BusinessLogic.Users;
             //populate filtered users ObservableCollection with all users
-            FilteredUsers = new ObservableCollection<User>(AllUsers);
+            FilteredUsers = new ObservableCollection<User>();
+            foreach (var user in AllUsers.Where(u => u.IsBanned != true))
+            {
+                FilteredUsers.Add(user);
+            }
             //bind filtered users ObservableCollection to UsersListView item source
             UsersListView.ItemsSource = FilteredUsers;
         }
@@ -36,6 +40,7 @@ namespace CS341GroupProject
         {
             var searchTerm = e.NewTextValue;
 
+            //clear the list of users, and repopulate with the new searchTerm
             FilteredUsers.Clear();
             foreach (var user in AllUsers.Where(u => u.Username.ToLower().Contains(searchTerm.ToLower())))
             {
@@ -71,7 +76,7 @@ namespace CS341GroupProject
                 if (confirm)
                 {
                     //update IsBanned in the backend
-                    User newUserInfo = new User(selectedUser.Username, selectedUser.Password, selectedUser.Email, true);
+                    User newUserInfo = new User(selectedUser.Username, selectedUser.Password, selectedUser.Email, true, false);
                     MauiProgram.BusinessLogic.UpdateUser(selectedUser, newUserInfo);
                     //remove user from our list
                     AllUsers.Remove(selectedUser);

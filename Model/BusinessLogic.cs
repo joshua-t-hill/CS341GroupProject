@@ -13,7 +13,10 @@ namespace CS341GroupProject.Model
             Database = new Database();
         }
 
+        //Remember if the current user is an admin so we can display the admin tab
         public bool IsAdmin { get; set; }
+
+        //Collections of all users, pins, and photos
         public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
         public ObservableCollection<PinData> PinsData { get { return Database.SelectAllMapPins(); } }
         public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
@@ -33,7 +36,7 @@ namespace CS341GroupProject.Model
             String hashedEnteredPassword = HashPassword(password, salt);
             if (!String.Equals(user.Password, hashedEnteredPassword)) { return false; }
 
-            //Remember if the user is an admin so we can display the admin tab
+            //Remember if the current user is an admin so we can display the admin tab
             this.IsAdmin = user.IsAdmin;
 
             return true;
