@@ -57,7 +57,7 @@ namespace CS341GroupProject.Model
             Password = password;
             Email = email;
             IsBanned = isBanned;
-            IsAdmin = false;
+            IsAdmin = true;
         }
         public User(String username, String password, String email, String salt)
         {
@@ -65,7 +65,7 @@ namespace CS341GroupProject.Model
             Password = password;
             Email = email;
             IsBanned = false;
-            IsAdmin = false;
+            IsAdmin = true;
             Salt = salt;
         }
     }

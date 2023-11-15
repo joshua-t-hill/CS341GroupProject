@@ -11,6 +11,8 @@ namespace CS341GroupProject.Model
     {
         public ObservableCollection<User> Users { get; }
         public ObservableCollection<PinData> PinsData { get; }
+        public bool IsAdmin { get; set; }
+
         public Boolean ConfirmLogin(String username, String password);
         public String HashPassword(String password, String salt);
         public String GenerateSalt();

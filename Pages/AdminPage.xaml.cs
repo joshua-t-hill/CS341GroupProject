@@ -21,5 +21,6 @@ namespace CS341GroupProject
         {
             // Navigate to the UserSearchPage
         }
+
     }
 }

@@ -20,15 +20,18 @@
              Icon="feedtabicon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"/>
         </Tab>
+        <Tab Title="AdminPage"
+             Icon="admin_icon.png"
+             IsVisible="{Binding IsAdminVisible}">
+            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"/>
+        </Tab>
         <!--<Tab Title="PostDetails-AMW">
             <ShellContent ContentTemplate="{DataTemplate pages:PostDetailsPage}"/>
         </Tab>
         <Tab Title="FilterData-JTH">
             <ShellContent ContentTemplate="{DataTemplate pages:FilterDataPage}"/>
         </Tab>
-        <Tab Title="AdminPage-ARC">
-            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"/>
-        </Tab>
+        
         <Tab Title="UserSearchPage-ARC">
             <ShellContent ContentTemplate="{DataTemplate pages:UserSearchPage}"/>
         </Tab>
