@@ -28,18 +28,19 @@ namespace CS341GroupProject.Model
         /// <param name="username"> user's username </param>
         /// <param name="password"> password user entered to login </param>
         /// <returns> true if password and username matched data, false otherwise </returns>
-        public Boolean ConfirmLogin(String username, String password)
+        public LoginError ConfirmLogin(String username, String password)
         {
             User user = Database.SelectUserWithUsername(username);
-            if (user == null) { return false; }
+            if (user == null) { return LoginError.IncorrectInput; }
             String salt = Database.SelectSalt(username);
             String hashedEnteredPassword = HashPassword(password, salt);
-            if (!String.Equals(user.Password, hashedEnteredPassword)) { return false; }
+            if (!String.Equals(user.Password, hashedEnteredPassword)) { return LoginError.IncorrectInput; }
+            if (user.IsBanned) { return LoginError.UserBanned; }
 
             //Remember if the current user is an admin so we can display the admin tab
             this.IsAdmin = user.IsAdmin;
 
-            return true;
+            return LoginError.NoError;
         }
 
         /// <summary>

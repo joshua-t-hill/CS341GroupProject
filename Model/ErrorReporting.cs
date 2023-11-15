@@ -14,3 +14,10 @@ public enum UserUpdateError
     NoError,
     UserNotFound
 }
+
+public enum LoginError
+{
+    IncorrectInput,
+    UserBanned,
+    NoError
+}

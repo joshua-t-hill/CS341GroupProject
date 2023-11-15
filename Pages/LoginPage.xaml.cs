@@ -18,13 +18,18 @@ public partial class LoginPage : ContentPage
 
 	async void OnLoginBtnClicked(object sender, EventArgs e)
 	{
-		Boolean success = MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text);
+		Model.LoginError result = MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text);
 
-		if (!success)
+		if (result == Model.LoginError.IncorrectInput)
 		{
             await DisplayAlert("Oops!", "Username or Password was incorrect.", "OK");
 			return;
 		}
+		else if (result == Model.LoginError.UserBanned)
+		{
+            await DisplayAlert("Oops!", "This account has been banned.", "OK");
+            return;
+        }
 
 		// Navigate to AppShell
 		await Navigation.PushAsync(new AppShell());

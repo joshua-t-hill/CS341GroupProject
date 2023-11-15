@@ -13,7 +13,7 @@ namespace CS341GroupProject.Model
         public ObservableCollection<PinData> PinsData { get; }
         public bool IsAdmin { get; set; }
 
-        public Boolean ConfirmLogin(String username, String password);
+        public LoginError ConfirmLogin(String username, String password);
         public String HashPassword(String password, String salt);
         public String GenerateSalt();
         public UserCreationError CreateUser(String username, String password, String email);
