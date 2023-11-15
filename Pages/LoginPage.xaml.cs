@@ -32,10 +32,7 @@ public partial class LoginPage : ContentPage
         }
 
 		// Navigate to AppShell
-		await Navigation.PushAsync(new AppShell());
-
-		// Remove the LoginPage from the Navigation stack
-		Navigation.RemovePage(this);
+		Application.Current.MainPage = new AppShell();
 	}
 
 	async void NewUserTapped(object sender, TappedEventArgs args)
@@ -45,7 +42,7 @@ public partial class LoginPage : ContentPage
 
 	void ForgotPasswordTapped(object sender, TappedEventArgs args)
 	{
-		// await Navigation.PushAsync(new ForgotPasswordPage());
+		// await Shell.Current.GoToAsync("ResetPasswordPage");
 		throw new NotImplementedException();
 	}
 }
