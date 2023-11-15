@@ -6,6 +6,7 @@
              x:DataType="model:BusinessLogic"
              Title="MapPage"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps">
+    
     <maps:Map x:Name="map"/>
     
 </ContentPage>

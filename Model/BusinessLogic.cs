@@ -2,100 +2,99 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CS341GroupProject.Model
+namespace CS341GroupProject.Model;
+public class BusinessLogic : IBusinessLogic
 {
-    public class BusinessLogic : IBusinessLogic
-    {
-        private IDatabase Database { get; set; }
+    private IDatabase Database { get; set; }
 
-        public BusinessLogic() 
-        {
-            Database = new Database();
-        }
+    public BusinessLogic() 
+    {
+        Database = new Database();
+    }
+
+    //Remember if the current user is an admin so we can display the admin tab
+    public bool IsAdmin { get; set; }
+
+    //Collections of all users, pins, and photos
+    public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
+    public ObservableCollection<PinData> CustomPins { get { return Database.SelectAllMapPins(); } }
+    public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
+
+
+    /// <summary>
+    /// Checks entered username and password on login to saved data in database
+    /// Also sets IsAdmin property
+    /// </summary>
+    /// <param name="username"> user's username </param>
+    /// <param name="password"> password user entered to login </param>
+    /// <returns> true if password and username matched data, false otherwise </returns>
+    public LoginError ConfirmLogin(String username, String password)
+    {
+        User user = Database.SelectUserWithUsername(username);
+        if (user == null) { return LoginError.IncorrectInput; }
+        String salt = Database.SelectSalt(username);
+        String hashedEnteredPassword = HashPassword(password, salt);
+        if (!String.Equals(user.Password, hashedEnteredPassword)) { return LoginError.IncorrectInput; }
+        if (user.IsBanned) { return LoginError.UserBanned; }
 
         //Remember if the current user is an admin so we can display the admin tab
-        public bool IsAdmin { get; set; }
+        this.IsAdmin = user.IsAdmin;
 
-        //Collections of all users, pins, and photos
-        public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
-        public ObservableCollection<PinData> PinsData { get { return Database.SelectAllMapPins(); } }
-        public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
+        return LoginError.NoError;
+    }
 
-        /// <summary>
-        /// Checks entered username and password on login to saved data in database
-        /// Also sets IsAdmin property
-        /// </summary>
-        /// <param name="username"> user's username </param>
-        /// <param name="password"> password user entered to login </param>
-        /// <returns> true if password and username matched data, false otherwise </returns>
-        public LoginError ConfirmLogin(String username, String password)
+    /// <summary>
+    /// Hashes password using SHA256
+    /// </summary>
+    /// <param name="password"> password to hash </param>
+    /// <param name="salt"> salt to hash with </param>
+    /// <returns> Hashed password as a String </returns>
+    public String HashPassword(String password, String salt)
+    {
+        using Rfc2898DeriveBytes deriveBytes = new Rfc2898DeriveBytes(password, Encoding.UTF8.GetBytes(salt), 10000, HashAlgorithmName.SHA256);
+        byte[] key = deriveBytes.GetBytes(32); // 256 bits for AES encryption
+        return Convert.ToBase64String(key);
+    }
+
+    /// <summary>
+    /// Generates a random number to be used as a salt
+    /// </summary>
+    /// <returns> String representation of random number </returns>
+    public String GenerateSalt()
+    {
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
         {
-            User user = Database.SelectUserWithUsername(username);
-            if (user == null) { return LoginError.IncorrectInput; }
-            String salt = Database.SelectSalt(username);
-            String hashedEnteredPassword = HashPassword(password, salt);
-            if (!String.Equals(user.Password, hashedEnteredPassword)) { return LoginError.IncorrectInput; }
-            if (user.IsBanned) { return LoginError.UserBanned; }
-
-            //Remember if the current user is an admin so we can display the admin tab
-            this.IsAdmin = user.IsAdmin;
-
-            return LoginError.NoError;
+            byte[] saltBytes = new byte[16];
+            rng.GetBytes(saltBytes);
+            return Convert.ToBase64String(saltBytes);
+        }
+    }
+    
+    public UserCreationError CreateUser(string username, string password, string email)
+    {
+        if (Database.SelectUserWithUsername(username) != null)
+        {
+            return UserCreationError.UsernameAlreadyExists;
         }
 
-        /// <summary>
-        /// Hashes password using SHA256
-        /// </summary>
-        /// <param name="password"> password to hash </param>
-        /// <param name="salt"> salt to hash with </param>
-        /// <returns> Hashed password as a String </returns>
-        public String HashPassword(String password, String salt)
+        if (Database.SelectUserWithEmail(email) != null) 
         {
-            using Rfc2898DeriveBytes deriveBytes = new Rfc2898DeriveBytes(password, Encoding.UTF8.GetBytes(salt), 10000, HashAlgorithmName.SHA256);
-            byte[] key = deriveBytes.GetBytes(32); // 256 bits for AES encryption
-            return Convert.ToBase64String(key);
+            return UserCreationError.EmailInUse;
         }
 
-        /// <summary>
-        /// Generates a random number to be used as a salt
-        /// </summary>
-        /// <returns> String representation of random number </returns>
-        public String GenerateSalt()
-        {
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                byte[] saltBytes = new byte[16];
-                rng.GetBytes(saltBytes);
-                return Convert.ToBase64String(saltBytes);
-            }
-        }
-        
-        public UserCreationError CreateUser(string username, string password, string email)
-        {
-            if (Database.SelectUserWithUsername(username) != null)
-            {
-                return UserCreationError.UsernameAlreadyExists;
-            }
+        String salt = GenerateSalt();
+        String hashedPassword = HashPassword(password, salt);
 
-            if (Database.SelectUserWithEmail(email) != null) 
-            {
-                return UserCreationError.EmailInUse;
-            }
+        return Database.InsertUser(new User(username, hashedPassword, email, salt));
+    }
 
-            String salt = GenerateSalt();
-            String hashedPassword = HashPassword(password, salt);
+    public UserUpdateError UpdateUser(User user, User newInfo)
+    {
+        return Database.UpdateUser(user, newInfo);
+    }
 
-            return Database.InsertUser(new User(username, hashedPassword, email, salt));
-        }
-
-        public UserUpdateError UpdateUser(User user, User newInfo)
-        {
-            return Database.UpdateUser(user, newInfo);
-        }
-
-        public Boolean InsertPhoto(byte[] imageData)
-        {
-            return Database.InsertPhoto(imageData);
-        }
+    public Boolean InsertPhoto(byte[] imageData)
+    {
+        return Database.InsertPhoto(imageData);
     }
 }

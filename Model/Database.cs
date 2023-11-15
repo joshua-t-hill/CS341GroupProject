@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data;
-using Microsoft.Maui.ApplicationModel.Communication;
+using Microsoft.Maui.Controls.Maps;
 using Npgsql;
 
 namespace CS341GroupProject.Model;
@@ -9,7 +8,7 @@ public class Database : IDatabase
     private String connString = GetConnectionString();
 
     ObservableCollection<User> users = new();
-    ObservableCollection<PinData> pinsData = new();
+    ObservableCollection<PinData> customPins = new();
     ObservableCollection<Photo> photos = new();
 
     public Database() { }
@@ -188,14 +187,14 @@ public class Database : IDatabase
     /// <returns> the observable collection resulting from the SQL call </returns>
     public ObservableCollection<PinData> SelectAllMapPins()
     {
-        pinsData.Clear();
+        customPins.Clear();
 
         using var conn = new NpgsqlConnection(connString);
         conn.Open();
 
         using var cmd = new NpgsqlCommand(Constants.SQL_GET_MAP_PIN_DATA_STRING, conn);
         using var reader = cmd.ExecuteReader();
-        while (reader.Read()) //returning nothing
+        while (reader.Read())
         {
             long id = reader.GetInt64(0);
             double latitude = reader.GetDouble(1);
@@ -203,10 +202,18 @@ public class Database : IDatabase
             string genus = reader.GetString(3);
             string epithet = reader.GetString(4);
 
-            pinsData.Add(new(id, latitude, longitude, genus, epithet));
+            PinData pin = new(id, latitude, longitude, genus, epithet)
+            {
+                Label=id.ToString(),
+                Address= $"{genus} {epithet}",
+                Type = PinType.SavedPin,
+                Location = new(latitude, longitude)
+            };
+
+            customPins.Add(pin);
         }
 
-        return pinsData;
+        return customPins;
     }
 
     /// <summary>
