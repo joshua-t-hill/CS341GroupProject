@@ -24,6 +24,14 @@ Sprint3 Changes:
 	+ Created custom Pin objects that allow us to manipulate and track data accross all map interactions :) :) :)
 	+ Created a Popup page that responds to the default info window on a Pin being tapped. Displays a picture and the name of the plant currently. Will be expanded upon. :) :)
 
+	~ Switched Navigation to use Routes to fix the double header bug
+	+ Added login error reporting so we can block banned users from logging in
+	~ Updated methods to account for is_admin column on database
+	~ Squashed some bugs with the UserSearchPage and BannedUserPage
+	+ Admin page now shows up for admin users
+	+ CommunityFeedPage is now functional in terms of displaying to the XML. Just need to grab the data from the database for displayin rather than hard-coded posts
+
+
 Sprint2 Changes:
 	+ Constructed a 'users' table, with columns 'name','password', 'email', and 'is_banned'
 	+ Created the User object class and added methods to the BusinessLogic and Database to select, insert, and update users :) :)
