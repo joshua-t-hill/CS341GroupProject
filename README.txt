@@ -14,8 +14,13 @@ Sprint3 Changes:
 	~ Researched sending emails; found that we would need to give bank info to another company.. changing idea for now
 	+ Added column 'salt' to table 'users'
 	+ Encrypted passwords :) :)
-	+ Created table 'photos' with columns 'id' and 'image_data'
+	+ Created table 'photos' with columns 'photo_id' and 'image_data'
 	+ Connected the camera output to the 'photos' table :)
+
+	~ Researched storing photos on the cloud, will implement in a future sprint as we wanted to get the basic methods created first
+	+ Created table 'posts' with columns 'username', 'plant_genus', 'plant_species', 'notes', and 'photo_id'
+	+ Added functionality to AddPlantPage and connected it to the 'posts' table (not connected to Feed just yet) :)
+	+ Added username on login to Secure Storage so we can access it on different pages throughout the app
 	+ Created custom Pin objects that allow us to manipulate and track data accross all map interactions :) :) :)
 	+ Created a Popup page that responds to the default info window on a Pin being tapped. Displays a picture and the name of the plant currently. Will be expanded upon. :) :)
 
