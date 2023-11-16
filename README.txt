@@ -16,6 +16,8 @@ Sprint3 Changes:
 	+ Encrypted passwords :) :)
 	+ Created table 'photos' with columns 'id' and 'image_data'
 	+ Connected the camera output to the 'photos' table :)
+	+ Created custom Pin objects that allow us to manipulate and track data accross all map interactions :) :) :)
+	+ Created a Popup page that responds to the default info window on a Pin being tapped. Displays a picture and the name of the plant currently. Will be expanded upon. :) :)
 
 Sprint2 Changes:
 	+ Constructed a 'users' table, with columns 'name','password', 'email', and 'is_banned'
