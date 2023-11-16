@@ -18,10 +18,4 @@ public class PinData : Pin
         Epithet = epithet;
     }
 
-    //For testing purposes.
-    public override string ToString()
-    {
-        return $"Id:{Id} | Latitude:{Latitude} | Longitude:{Longitude} | Genus:{Genus} | Epithet:{Epithet}";
-    }
-
 }
