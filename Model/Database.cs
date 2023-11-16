@@ -10,6 +10,7 @@ public class Database : IDatabase
     ObservableCollection<User> users = new();
     ObservableCollection<PinData> customPins = new();
     ObservableCollection<Photo> photos = new();
+    ObservableCollection<Post> posts = new();
 
     public Database() { }
 
@@ -225,7 +226,7 @@ public class Database : IDatabase
         photos.Clear();
         var conn = new NpgsqlConnection(connString);
         conn.Open();
-        using var cmd = new NpgsqlCommand("SELECT id, image_data FROM photos", conn);
+        using var cmd = new NpgsqlCommand("SELECT photo_id, image_data FROM photos", conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
@@ -252,6 +253,70 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("image_data", imageData);
             cmd.ExecuteNonQuery();
             SelectAllPhotos();
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Insert failed, {0}", pe);
+            return false;
+        }
+        return true;
+    }
+
+    public Photo SelectPhoto(byte[] imageData)
+    {
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = ("SELECT photo_id FROM photos WHERE image_data = @imageData");
+        cmd.Parameters.AddWithValue("imageData", imageData); // gets a photo's id from the database given it's imageData
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            Guid photoId = reader.GetGuid(0);
+            return new Photo(photoId, imageData);
+        }
+        return null;
+    }
+
+    public ObservableCollection<Post> SelectAllPosts()
+    {
+        posts.Clear();
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand("SELECT username, plant_genus, plant_species, notes, photo_id FROM posts", conn);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            String username = reader.GetString(0);
+            String genus = reader.GetString(1);
+            String species = reader.GetString(2);
+            String notes = reader.GetString(3);
+            Guid photoId = reader.GetGuid(4);
+            Post post = new(username, genus, species, notes, photoId); // creates a new photo
+            posts.Add(post);
+            Console.WriteLine(post);
+        }
+        return posts;
+    }
+
+    public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = "INSERT INTO posts (username, plant_genus, plant_species, notes, photo_id) VALUES (@username, @plant_genus, @plant_species, @notes, @photo_id)";
+            cmd.Parameters.AddWithValue("username", username);
+            cmd.Parameters.AddWithValue("plant_genus", genus);
+            cmd.Parameters.AddWithValue("plant_species", species);
+            cmd.Parameters.AddWithValue("notes", notes);
+            cmd.Parameters.AddWithValue("photo_id", photoId);
+            //cmd.Parameters.Add("photo_id", NpgsqlTypes.NpgsqlDbType.Uuid).Value = photoId;
+            cmd.ExecuteNonQuery();
+            SelectAllPosts();
         }
         catch (Npgsql.PostgresException pe)
         {

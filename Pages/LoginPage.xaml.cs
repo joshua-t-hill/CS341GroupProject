@@ -29,7 +29,10 @@ public partial class LoginPage : ContentPage
 		{
             await DisplayAlert("Oops!", "This account has been banned.", "OK");
             return;
-        }
+		}
+
+		await SecureStorage.SetAsync("username", UsernameENT.Text);
+
 
 		// Navigate to AppShell
 		Application.Current.MainPage = new AppShell();

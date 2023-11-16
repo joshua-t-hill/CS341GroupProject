@@ -97,4 +97,13 @@ public class BusinessLogic : IBusinessLogic
     {
         return Database.InsertPhoto(imageData);
     }
+
+    public Photo SelectPhoto(byte[] imageData)
+    {
+        return Database.SelectPhoto(imageData);
+    }
+    public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId)
+    {
+        return Database.InsertPost(username, genus, species, notes, photoId);
+    }
 }

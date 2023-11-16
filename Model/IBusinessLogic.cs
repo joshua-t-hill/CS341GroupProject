@@ -14,4 +14,6 @@ public interface IBusinessLogic
 
     public UserUpdateError UpdateUser(User user, User newInfo);
     public Boolean InsertPhoto(byte[] imageData);
+    public Photo SelectPhoto(byte[] imageData);
+    public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId);
 }
