@@ -1,5 +1,4 @@
 using CS341GroupProject.Model;
-using System.IO;
 
 namespace CS341GroupProject;
 /**
@@ -13,9 +12,15 @@ public partial class CameraPage : ContentPage
 		InitializeComponent();
 
         BindingContext = MauiProgram.BusinessLogic;
-
-        TakePhoto();
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        // Call TakePhoto every time the page is loaded
+        TakePhoto();
+    }
 
     public async void TakePhoto()
     {
@@ -23,17 +28,40 @@ public partial class CameraPage : ContentPage
         {
             FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
 
+            if (photo == null)
+            {
+                // BUG!!!! This doesn't go to the correct map?? Adds a new map within the camera tab??
+                //await Shell.Current.GoToAsync("MapPage");
+                Shell.Current.CurrentItem = mapPage;
+                return;
+            }
+
             // Convert the photo stream to byte array
             byte[] imageData = await ReadStream(photo.OpenReadAsync());
 
-            MauiProgram.BusinessLogic.InsertPhoto(imageData);
+            // Add photo to the database
+            Boolean success = MauiProgram.BusinessLogic.InsertPhoto(imageData);
+
+            if (!success)
+            {
+                await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
+                TakePhoto();
+            }
+
+            // Get the newly added photo from the database (to use the id)
+            Photo newPhoto = MauiProgram.BusinessLogic.SelectPhoto(imageData);
+
+            if (newPhoto == null)
+            {
+                await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
+                TakePhoto();
+            }
             
-            // For now, AddPlantPage does nothing; this just shows some navigation
-            // AddPlantPage should probably take in the photo id instead
-            await Navigation.PushAsync(new AddPlantPage(imageData));
+            await Navigation.PushAsync(new AddPlantPage(newPhoto));
         }
     }
 
+    // Reads in the photo data and converts it to a byte[]
     private async Task<byte[]> ReadStream(Task<Stream> task)
     {
         using (MemoryStream ms = new MemoryStream())

@@ -2,22 +2,32 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CS341GroupProject.AddPlantPage"
-             Title="AddPlantPage">
+             xmlns:model="clr-namespace:CS341GroupProject.Model"
+             x:DataType="model:BusinessLogic"
+             Title="Add New Plant">
     <VerticalStackLayout>
-        <Label Padding="0,140,0,0"/>
 
-        <Image Source="Resources/Images/flower.png" />
+        <Image x:Name="photoImage" WidthRequest="300" HeightRequest="300"/>
 
-        <Entry x:Name="PlantName"
-               Placeholder="Plant Name"/>
-        <Label Padding="0,70,0,0"/>
+        <Grid ColumnDefinitions="*, *">
+            <Entry x:Name="GenusENT"
+                Placeholder="Genus"
+                Grid.Column="0"/>
 
-        <Entry x:Name="PlantSpecies"
-               Placeholder="Plant Species"/>
-        <Label Padding="0,70,0,0"/>
+            <Entry x:Name="SpeciesENT"
+                Placeholder="Species"
+                Grid.Column="1"/>
+        </Grid>
 
-        <Entry x:Name="Comments"
-               Placeholder="Comments"/>
+        <Editor x:Name="NotesENT"
+            Placeholder="Notes"
+            HeightRequest="100"
+            MaxLength="255"/>
+
+        <Button 
+            Text="Add Plant"
+            Clicked="OnAddPlantBtnClicked"
+            HorizontalOptions="Center" />
     </VerticalStackLayout>
 
    

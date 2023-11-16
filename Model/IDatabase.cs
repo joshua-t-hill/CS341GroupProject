@@ -6,6 +6,7 @@ public interface IDatabase
     public ObservableCollection<User> SelectAllUsers();
     public ObservableCollection<PinData> SelectAllMapPins();
     public ObservableCollection<Photo> SelectAllPhotos();
+    public ObservableCollection<Post> SelectAllPosts();
 
     public User SelectUserWithUsername(String username);
     public User SelectUserWithEmail(String email);
@@ -15,5 +16,7 @@ public interface IDatabase
 
     public User SelectUser(String username);
     public Boolean InsertPhoto(byte[] imageData);
+    public Photo SelectPhoto(byte[] imageData);
+    public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId);
 
 }
