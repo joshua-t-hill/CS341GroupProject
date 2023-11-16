@@ -220,7 +220,7 @@ public class Database : IDatabase
     /// <summary>
     /// Updates the ObservableCollection photos with data from the datebase
     /// </summary>
-    /// <returns></returns>
+    /// <returns> collection of all photos in the database </returns>
     public ObservableCollection<Photo> SelectAllPhotos()
     {
         photos.Clear();
@@ -241,6 +241,11 @@ public class Database : IDatabase
         return photos;
     }
 
+    /// <summary>
+    /// Inserts a photo into the database
+    /// </summary>
+    /// <param name="imageData"> byte[] of image data to insert </param>
+    /// <returns> true if it was inserted, false otherwise </returns>
     public Boolean InsertPhoto(byte[] imageData)
     {
         try
@@ -262,6 +267,11 @@ public class Database : IDatabase
         return true;
     }
 
+    /// <summary>
+    /// Selects a photo from the database to get the photo_id
+    /// </summary>
+    /// <param name="imageData"> photo data to select from database with </param>
+    /// <returns> Photo with photoId and imageData fields </returns>
     public Photo SelectPhoto(byte[] imageData)
     {
         var conn = new NpgsqlConnection(connString);
@@ -279,6 +289,10 @@ public class Database : IDatabase
         return null;
     }
 
+    /// <summary>
+    /// Updates the ObservableCollection posts with data from the datebase
+    /// </summary>
+    /// <returns> Collection of all posts in the database </returns>
     public ObservableCollection<Post> SelectAllPosts()
     {
         posts.Clear();
@@ -300,6 +314,15 @@ public class Database : IDatabase
         return posts;
     }
 
+    /// <summary>
+    /// Inserts a post into the database
+    /// </summary>
+    /// <param name="username"> User's username </param>
+    /// <param name="genus"> Plant's genus </param>
+    /// <param name="species"> Plant's species </param>
+    /// <param name="notes"> Post's notes </param>
+    /// <param name="photoId"> Plant's photo id </param>
+    /// <returns> true if post was inserted, false otherwise </returns>
     public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId)
     {
         try
@@ -314,7 +337,6 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("plant_species", species);
             cmd.Parameters.AddWithValue("notes", notes);
             cmd.Parameters.AddWithValue("photo_id", photoId);
-            //cmd.Parameters.Add("photo_id", NpgsqlTypes.NpgsqlDbType.Uuid).Value = photoId;
             cmd.ExecuteNonQuery();
             SelectAllPosts();
         }

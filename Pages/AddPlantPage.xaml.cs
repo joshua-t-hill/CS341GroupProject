@@ -41,9 +41,8 @@ public partial class AddPlantPage : ContentPage
         }
 
         await DisplayAlert("", "Plant added!", "OK");
-        // Takes the AddPlantPage off of the Navigation Stack
-        await Navigation.PopToRootAsync();
-        // BUG!!!! Opens Feed Page in Camera tab
+
+        // Navigation bug.. goes to feed page within camera tab, doesn't update when tab is clicked on again
         await Shell.Current.GoToAsync("CommunityFeedPage");
     }
 }

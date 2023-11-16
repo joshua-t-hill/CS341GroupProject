@@ -30,9 +30,9 @@ public partial class CameraPage : ContentPage
 
             if (photo == null)
             {
-                // BUG!!!! This doesn't go to the correct map?? Adds a new map within the camera tab??
-                //await Shell.Current.GoToAsync("MapPage");
-                Shell.Current.CurrentItem = mapPage;
+                // Goes back to map page when camera X is clicked
+                AppShell appShell = new AppShell();
+                Application.Current.MainPage = appShell;
                 return;
             }
 
