@@ -1,4 +1,5 @@
-﻿namespace CS341GroupProject
+﻿
+namespace CS341GroupProject
 {
     public partial class AppShell : Shell
     {
@@ -7,23 +8,15 @@
         {
             InitializeComponent();
 
-            /*
-             * Registering Routes to use for navigation from tabbed pages to other pages and back
-             */
-            Routing.RegisterRoute("AdminPage", typeof(AdminPage));
-            Routing.RegisterRoute("BannedUsersPage", typeof(BannedUsersPage));
-            Routing.RegisterRoute("UserSearchPage", typeof(UserSearchPage));
-            Routing.RegisterRoute("MapPage", typeof(MapPage));
-            Routing.RegisterRoute("CommunityFeedPage", typeof(CommunityFeedPage));
-            Routing.RegisterRoute("CameraPage", typeof(CameraPage));
-            Routing.RegisterRoute("PostDetailsPage", typeof(PostDetailsPage));
-            Routing.RegisterRoute("ResetPasswordPage", typeof(ResetPasswordPage));
-            //Routing.RegisterRoute("CreateAccountPage", typeof(CreateAccountPage));
-            Routing.RegisterRoute("EmailAddressConfirmationPage", typeof(EmailAddressConfirmationPage));
-            Routing.RegisterRoute("AddPlantPage", typeof(AddPlantPage));
-
-            
             IsAdminVisible = MauiProgram.BusinessLogic.IsAdmin;
+
+            //Declaring routing for non-tabbed pages here properly sets up the navigation stack
+            Routing.RegisterRoute("PostDetails", typeof(PostDetailsPage));
+            Routing.RegisterRoute("Camera/AddPlant", typeof(AddPlantPage));
+            Routing.RegisterRoute("EmailAddressConfirmation", typeof(EmailAddressConfirmationPage));
+            Routing.RegisterRoute("FilterData", typeof(FilterDataPage));
+            Routing.RegisterRoute("Admin/BannedUsers", typeof(BannedUsersPage));
+            Routing.RegisterRoute("Admin/UserSearch", typeof(UserSearchPage));
 
             BindingContext = this;
         }

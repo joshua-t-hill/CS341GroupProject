@@ -9,40 +9,25 @@
     <TabBar>
         <Tab Title="Map"
              Icon="maptabicon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"
+                          Route="Map"/>
         </Tab>
         <Tab Title="Camera"
              Icon="cameratabicon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"
+                          Route="Camera"/>
         </Tab>
         <Tab Title="Feed"
              Icon="feedtabicon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"
+                          Route="CommunityFeed"/>
         </Tab>
         <Tab Title="AdminPage"
              Icon="admin_icon.png"
              IsVisible="{Binding IsAdminVisible}">
-            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"
+                          Route="Admin"/>
         </Tab>
-        <!--<Tab Title="PostDetails-AMW">
-            <ShellContent ContentTemplate="{DataTemplate pages:PostDetailsPage}"/>
-        </Tab>
-        <Tab Title="FilterData-JTH">
-            <ShellContent ContentTemplate="{DataTemplate pages:FilterDataPage}"/>
-        </Tab>
-        
-        <Tab Title="UserSearchPage-ARC">
-            <ShellContent ContentTemplate="{DataTemplate pages:UserSearchPage}"/>
-        </Tab>
-        <Tab Title="BannedUsers-ARC">
-            <ShellContent ContentTemplate="{DataTemplate pages:BannedUsersPage}"/>
-        </Tab>
-        <Tab Title="EmailConf-SA">
-            <ShellContent ContentTemplate="{DataTemplate pages:EmailAddressConfirmationPage}"/>
-        </Tab>
-        <Tab Title="AddPlant-SA">
-            <ShellContent ContentTemplate="{DataTemplate pages:AddPlantPage}"/>
-        </Tab>-->
     </TabBar>
-    
+
 </Shell>

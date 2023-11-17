@@ -1,18 +1,16 @@
 ﻿using CS341GroupProject.Model;
+using static Microsoft.Maui.ApplicationModel.Permissions;
+
 namespace CS341GroupProject;
-/**
- * Author: Samuel Ayoade
- */
 public partial class AddPlantPage : ContentPage
 {
-    Photo newPhoto;
-	public AddPlantPage(Photo photo)
+    private Photo NewPhoto = MauiProgram.BusinessLogic.Photo;
+    public AddPlantPage()
 	{
         InitializeComponent();
-        newPhoto = photo;
 
         // Convert the byte array to an ImageSource
-        ImageSource imageSource = ImageSource.FromStream(() => new System.IO.MemoryStream(photo.ImageData));
+        ImageSource imageSource = ImageSource.FromStream(() => new System.IO.MemoryStream(NewPhoto.ImageData));
 
         // Set the Image control source
         photoImage.Source = imageSource;
@@ -32,7 +30,7 @@ public partial class AddPlantPage : ContentPage
             return;
         }
         String username = SecureStorage.GetAsync("username").Result;
-        Boolean success = MauiProgram.BusinessLogic.InsertPost(username, GenusENT.Text, SpeciesENT.Text, NotesENT.Text, newPhoto.Id);
+        Boolean success = MauiProgram.BusinessLogic.InsertPost(username, GenusENT.Text, SpeciesENT.Text, NotesENT.Text, NewPhoto.Id);
 
         if (!success)
         {
@@ -43,6 +41,6 @@ public partial class AddPlantPage : ContentPage
         await DisplayAlert("", "Plant added!", "OK");
 
         // Navigation bug.. goes to feed page within camera tab, doesn't update when tab is clicked on again
-        await Shell.Current.GoToAsync("CommunityFeedPage");
+        await Shell.Current.GoToAsync("///CommunityFeed");
     }
 }

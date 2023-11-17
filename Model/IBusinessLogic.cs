@@ -6,6 +6,7 @@ public interface IBusinessLogic
     public ObservableCollection<User> Users { get; }
     public ObservableCollection<PinData> CustomPins { get; }
     public bool IsAdmin { get; set; }
+    public Photo Photo { get; set; }
 
     public LoginError ConfirmLogin(String username, String password);
     public String HashPassword(String password, String salt);

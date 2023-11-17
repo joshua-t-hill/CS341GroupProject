@@ -31,8 +31,7 @@ public partial class CameraPage : ContentPage
             if (photo == null)
             {
                 // Goes back to map page when camera X is clicked
-                AppShell appShell = new AppShell();
-                Application.Current.MainPage = appShell;
+                await Shell.Current.GoToAsync("///Map");
                 return;
             }
 
@@ -56,8 +55,9 @@ public partial class CameraPage : ContentPage
                 await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
                 TakePhoto();
             }
-            
-            await Navigation.PushAsync(new AddPlantPage(newPhoto));
+
+            MauiProgram.BusinessLogic.Photo = newPhoto;
+            await Shell.Current.GoToAsync("AddPlant");
         }
     }
 

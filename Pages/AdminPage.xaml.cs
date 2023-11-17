@@ -11,13 +11,13 @@ namespace CS341GroupProject
 
         private async void OnBanListClickedAsync(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync("BannedUsersPage");
+            await Shell.Current.GoToAsync("BannedUsers");
 
         }
 
         private async void OnSearchClickedAsync(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync("UserSearchPage");
+            await Shell.Current.GoToAsync("UserSearch");
         }
 
     }
