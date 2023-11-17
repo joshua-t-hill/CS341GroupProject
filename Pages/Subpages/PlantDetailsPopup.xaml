@@ -7,7 +7,8 @@
                x:Class="CS341GroupProject.Pages.Subpages.PlantDetailsPopup">
 
     <VerticalStackLayout Padding="20">
-        
+        <!-- Try setting the max width on all items to the same value to keep the popup thinner than the entire screen. Can get screen size at runtime in .cs file and bind to controls. -->
+        <!-- May want to consider a scrollview in case the information gets too big for screen, especially with comments. -->
         <Image Source="amelanchier_arborea.webp"/>
         <Label Text="Scientific Name:" HorizontalTextAlignment="Start" TextDecorations="Underline" Padding="2"/>
         <Label HorizontalTextAlignment="Start" Padding="2">
