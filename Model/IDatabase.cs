@@ -17,6 +17,7 @@ public interface IDatabase
     public User SelectUser(String username);
     public Boolean InsertPhoto(byte[] imageData);
     public Photo SelectPhoto(byte[] imageData);
+    public Photo SelectPhoto(Guid photoId);
     public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId);
 
 }

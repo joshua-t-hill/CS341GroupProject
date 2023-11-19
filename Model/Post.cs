@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
+﻿using CS341GroupProject.Model;
 
 namespace CS341GroupProject
 {
@@ -14,6 +9,7 @@ namespace CS341GroupProject
         String plantSpecies;
         String notes;
         Guid photoId;
+        String plant;
         public String Username 
         { 
             get { return username; } 
@@ -22,8 +18,16 @@ namespace CS341GroupProject
 
         // keeping these two for now because they are used in the CommunityFeedPage
         // can edit the get and sets later if we want to keep these
-        public String Photo { get; set; }
-        public String Plant { get; set; }
+        public ImageSource Photo 
+        {
+            get 
+            {
+                Photo photo = MauiProgram.BusinessLogic.SelectPhoto(photoId);
+                ImageSource imageSource = ImageSource.FromStream(() => new System.IO.MemoryStream(photo.ImageData));
+                return imageSource;
+            }
+        }
+        public String Plant { get { return plantGenus + " " + plantSpecies; } set { plant = value; } }
 
         public String PlantGenus
         {

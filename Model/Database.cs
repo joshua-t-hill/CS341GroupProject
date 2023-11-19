@@ -290,6 +290,30 @@ public class Database : IDatabase
     }
 
     /// <summary>
+    /// Selects a photo from the database with a given photoId
+    /// </summary>
+    /// <param name="photoId"> photo id to select from database with </param>
+    /// <returns> Photo with photoId and imageData fields </returns>
+    public Photo SelectPhoto(Guid photoId)
+    {
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = ("SELECT image_data FROM photos WHERE photo_id = @photoId");
+        cmd.Parameters.AddWithValue("photoId", photoId); // gets a photo's image data from the database given it's id
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            long byteaLength = reader.GetBytes(0, 0, null, 0, 0);
+            byte[] imageData = new byte[byteaLength];
+            reader.GetBytes(0, 0, imageData, 0, (int)byteaLength);
+            return new Photo(photoId, imageData);
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Updates the ObservableCollection posts with data from the datebase
     /// </summary>
     /// <returns> Collection of all posts in the database </returns>

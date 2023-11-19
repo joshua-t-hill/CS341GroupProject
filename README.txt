@@ -10,6 +10,10 @@ Resource Attribution:
 	feedtabicon.png		--> <a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Smartline - Flaticon</a>
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
+Sprint4 Changes:
+	~ Fixed Navigation bugs from Sprint3 :) :)
+	~ Feed page now displays data from the database (user photos!) :) :)
+
 Sprint3 Changes:
 	~ Researched sending emails; found that we would need to give bank info to another company.. changing idea for now
 	+ Added column 'salt' to table 'users'

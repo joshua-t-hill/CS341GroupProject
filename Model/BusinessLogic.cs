@@ -22,6 +22,7 @@ public class BusinessLogic : IBusinessLogic
     public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
     public ObservableCollection<PinData> CustomPins { get { return Database.SelectAllMapPins(); } }
     public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
+    public ObservableCollection<Post> Posts { get { return Database.SelectAllPosts(); } }
 
 
     /// <summary>
@@ -104,6 +105,10 @@ public class BusinessLogic : IBusinessLogic
     public Photo SelectPhoto(byte[] imageData)
     {
         return Database.SelectPhoto(imageData);
+    }
+    public Photo SelectPhoto(Guid photoId)
+    {
+        return Database.SelectPhoto(photoId);
     }
     public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId)
     {

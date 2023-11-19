@@ -13,7 +13,7 @@
             <CollectionView>
                 <CollectionView.ItemsSource>
                     <x:Array Type="{x:Type local:Post}">
-                        <local:Post Photo="plant.jpg" Username="username" Plant="Plant Name" Notes="Plant Notes"/>
+                        <local:Post Username="username" Plant="Plant Name" Notes="Plant Notes"/>
                     </x:Array>
                 </CollectionView.ItemsSource>
                 <CollectionView.ItemTemplate>
@@ -25,7 +25,7 @@
                                 HorizontalOptions="Fill">
                             <Grid Padding="10" RowDefinitions="5*,60*,5*,5*">
                                 <Label Grid.Row="0" Text="{Binding Username}" VerticalTextAlignment="Start"/>
-                                <Image Grid.Row="1" Source="{Binding Photo}"/>
+                                <Image Grid.Row="1" Source="plant.jpg"/>
                                 <Label Grid.Row="2" Text="{Binding Plant}" VerticalTextAlignment="Start"/>
                                 <Label Grid.Row="3" Text="{Binding Notes}" VerticalTextAlignment="Start" />
                             </Grid>
