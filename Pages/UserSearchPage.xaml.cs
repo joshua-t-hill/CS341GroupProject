@@ -66,7 +66,9 @@ namespace CS341GroupProject
             
             // selectedUser is already set to previousUser, so we just set selecteduser to null and reset CanBan for previousUser
             selectedUser = null;
-            previousUser.CanBan = false;
+            if (previousUser != null) { 
+                previousUser.CanBan = false;
+            }
         }
 
         /// <summary>
