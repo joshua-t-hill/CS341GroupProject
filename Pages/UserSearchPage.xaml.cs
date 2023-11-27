@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using CS341GroupProject.Model;
-using Microsoft.Maui.Controls;
 /**
  * Author: Alex Ceithamer
  */
@@ -11,6 +9,9 @@ namespace CS341GroupProject
     {
         private ObservableCollection<User> AllUsers;
         public ObservableCollection<User> FilteredUsers { get; private set; }
+
+        private User selectedUser;
+        private User previousUser;
 
         /// <summary>
         /// Default constructor, populates the filtered users list and binds it to the UsersListView item source. Also populates the all users list.
@@ -27,7 +28,9 @@ namespace CS341GroupProject
                 FilteredUsers.Add(user);
             }
             //bind filtered users ObservableCollection to UsersListView item source
-            UsersListView.ItemsSource = FilteredUsers;
+            UsersCollectionView.ItemsSource = FilteredUsers;
+
+            BindingContext = this;
         }
 
         /// <summary>
@@ -52,14 +55,48 @@ namespace CS341GroupProject
         }
 
         /// <summary>
-        /// When a user is selected, enable the ban button.
+        /// Unselect the current item when the user clicks on the search bar. 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnUserSelected(object sender, SelectedItemChangedEventArgs e)
+        private void OnSearchBarFocused(object sender, FocusEventArgs e)
         {
-            BanButton.IsEnabled = e.SelectedItem != null;
+            // Unselect the current item
+            UsersCollectionView.SelectedItem = null;
+            
+            // selectedUser is already set to previousUser, so we just set selecteduser to null and reset CanBan for previousUser
+            selectedUser = null;
+            previousUser.CanBan = false;
         }
+
+        /// <summary>
+        /// This method enables the ban button for the selectedUser, disables 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnUserSelected(object sender, SelectionChangedEventArgs e)
+        {
+            // Unfocus the search bar
+            UserSearchBar.Unfocus();
+
+            // Get the currently selected user
+            selectedUser = e.CurrentSelection.FirstOrDefault() as User;
+            if (selectedUser != null)
+            {
+                // Reset the CanBan property for the previously selected user
+                if (previousUser != null)
+                {
+                    previousUser.CanBan = false;
+                }
+
+                // Enable ban for the selected user
+                selectedUser.CanBan = true;
+
+                // Save the selected user as the previous user for when a different user is selected, we can set disable the ban button on this one
+                previousUser = selectedUser;
+            }
+        }
+
 
         /// <summary>
         /// Ban functionality, When the ban button is clicked, We send a confirmation pop-up. If the user confirms, we remove the user from
@@ -69,7 +106,9 @@ namespace CS341GroupProject
         /// <param name="e"></param>
         private async void OnBanButtonClicked(object sender, EventArgs e)
         {
-            var selectedUser = UsersListView.SelectedItem as User;
+            var button = sender as Button;
+            //var userToBan = button.CommandParameter as User;
+            var selectedUser = UsersCollectionView.SelectedItem as User;
             if (selectedUser != null)
             {
                 bool confirm = await DisplayAlert("Confirmation", $"Are you sure you want to ban {selectedUser.Username}?", "Yes", "No");
@@ -78,13 +117,18 @@ namespace CS341GroupProject
                     //update IsBanned in the backend
                     User newUserInfo = new User(selectedUser.Username, selectedUser.Password, selectedUser.Email, true, false);
                     MauiProgram.BusinessLogic.UpdateUser(selectedUser, newUserInfo);
+
                     //remove user from our list
-                    AllUsers.Remove(selectedUser);
                     FilteredUsers.Remove(selectedUser);
-                    UsersListView.SelectedItem = null;
+                    AllUsers.Remove(selectedUser);
+
+                    //reset variables to restore default state
+                    UsersCollectionView.SelectedItem = null;
+                    selectedUser.CanBan = false;
                 }
             }
-        }
+        } 
+
     }
 
 }

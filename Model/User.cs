@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CS341GroupProject.Model
 {
-    public class User
+    public class User : INotifyPropertyChanged
     {
         String username;
         String password;
@@ -14,6 +15,7 @@ namespace CS341GroupProject.Model
         Boolean isBanned;
         String salt;
         Boolean isAdmin;
+        Boolean canBan;
 
         public String Username 
         { 
@@ -36,7 +38,14 @@ namespace CS341GroupProject.Model
         public Boolean IsBanned
         {
             get { return isBanned; }
-            set { isBanned = value; }
+            set
+            {
+                if (isBanned != value)
+                {
+                    isBanned = value;
+                    OnPropertyChanged(nameof(isBanned));
+                }
+            }
         }
 
         public String Salt
@@ -48,7 +57,27 @@ namespace CS341GroupProject.Model
         public Boolean IsAdmin
         {
             get { return isAdmin; }
-            set { isAdmin = value; }
+            set
+            {
+                if (isAdmin != value)
+                {
+                    isAdmin = value;
+                    OnPropertyChanged(nameof(isAdmin));
+                }
+            }
+        }
+
+        public bool CanBan
+        {
+            get { return canBan; }
+            set
+            {
+                if (canBan != value)
+                {
+                    canBan = value;
+                    OnPropertyChanged(nameof(CanBan));
+                }
+            }
         }
 
         public User(String username, String password, String email, Boolean isBanned, Boolean isAdmin) 
@@ -67,6 +96,13 @@ namespace CS341GroupProject.Model
             IsBanned = false;
             IsAdmin = false;
             Salt = salt;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
