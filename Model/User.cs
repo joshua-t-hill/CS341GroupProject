@@ -16,6 +16,7 @@ namespace CS341GroupProject.Model
         String salt;
         Boolean isAdmin;
         Boolean canBan;
+        Boolean canUnban;
 
         public String Username 
         { 
@@ -67,6 +68,9 @@ namespace CS341GroupProject.Model
             }
         }
 
+        /// <summary>
+        /// Used for UserSearchPage to enable ban button for admin when user is selected
+        /// </summary>
         public bool CanBan
         {
             get { return canBan; }
@@ -76,6 +80,22 @@ namespace CS341GroupProject.Model
                 {
                     canBan = value;
                     OnPropertyChanged(nameof(CanBan));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used for BannedUsersPage to enable ban button for admin when user is selected
+        /// </summary>
+        public bool CanUnban
+        {
+            get { return canUnban; }
+            set
+            {
+                if (canUnban != value)
+                {
+                    canUnban = value;
+                    OnPropertyChanged(nameof(CanUnban));
                 }
             }
         }
@@ -96,6 +116,8 @@ namespace CS341GroupProject.Model
             IsBanned = false;
             IsAdmin = false;
             Salt = salt;
+            CanBan = false;
+            CanUnban = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

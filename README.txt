@@ -13,6 +13,7 @@ Resource Attribution:
 Sprint4 Changes:
 	~ Fixed Navigation bugs from Sprint3 :) :)
 	~ Feed page now displays data from the database (user photos!) :) :)
+	~ Refactored UserSearchPage for better performance
 
 Sprint3 Changes:
 	~ Researched sending emails; found that we would need to give bank info to another company.. changing idea for now

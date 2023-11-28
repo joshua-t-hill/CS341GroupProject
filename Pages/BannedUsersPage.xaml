@@ -5,24 +5,34 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-		<ListView x:Name="BannedUsersListView" SelectionMode="Single">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<Frame Padding="10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-							<Label Text="{Binding Username}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-						</Frame>
-					</ViewCell>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <SearchBar x:Name="UserSearchBar" 
+           Grid.Column="0" 
+           Placeholder="Search for a user..." 
+           TextChanged="OnSearchTextChanged"
+           Focused="OnSearchBarFocused"/>
 
-		<Button Grid.Row="1" Text="Unban User" Clicked="OnUnbanClicked" />
-
+        <CollectionView x:Name="BannedUsersCollectionView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding bannedUsers}" SelectionChanged="OnUserSelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="{Binding Username}" VerticalOptions="Center" />
+                        <Button Grid.Column="1" Text="Unban" IsEnabled="{Binding CanUnban}" CommandParameter="{Binding .}" Clicked="OnUnbanClicked"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
     </Grid>
 </ContentPage>
