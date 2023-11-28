@@ -16,7 +16,7 @@ public class BusinessLogic : IBusinessLogic
     public bool IsAdmin { get; set; }
 
     //used to pass photo from camera page to add plant page
-    public Photo Photo { get; set; }
+    public byte[] TempImageData { get; set; }
 
     //Collections of all users, pins, and photos
     public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }

@@ -38,25 +38,8 @@ public partial class CameraPage : ContentPage
             // Convert the photo stream to byte array
             byte[] imageData = await ReadStream(photo.OpenReadAsync());
 
-            // Add photo to the database
-            Boolean success = MauiProgram.BusinessLogic.InsertPhoto(imageData);
-
-            if (!success)
-            {
-                await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
-                TakePhoto();
-            }
-
-            // Get the newly added photo from the database (to use the id)
-            Photo newPhoto = MauiProgram.BusinessLogic.SelectPhoto(imageData);
-
-            if (newPhoto == null)
-            {
-                await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
-                TakePhoto();
-            }
-
-            MauiProgram.BusinessLogic.Photo = newPhoto;
+            // Save the imageData in BusinessLogic to be displayed on the AddPlantPage
+            MauiProgram.BusinessLogic.TempImageData = imageData;
             await Shell.Current.GoToAsync("AddPlant");
         }
     }

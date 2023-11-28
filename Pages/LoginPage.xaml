@@ -24,7 +24,8 @@
         <Entry
         x:Name="PasswordENT"
         Text="testAdmin"
-        Placeholder="Password" />
+        Placeholder="Password"
+        IsPassword="True"/>
 
         <Button
         Text="Login"

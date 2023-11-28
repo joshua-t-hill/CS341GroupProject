@@ -7,7 +7,7 @@ public interface IBusinessLogic
     public ObservableCollection<PinData> CustomPins { get; }
     public ObservableCollection<Post> Posts { get; }
     public bool IsAdmin { get; set; }
-    public Photo Photo { get; set; }
+    public byte[] TempImageData { get; set; }
 
     public LoginError ConfirmLogin(String username, String password);
     public String HashPassword(String password, String salt);

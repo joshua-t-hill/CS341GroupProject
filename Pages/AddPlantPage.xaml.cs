@@ -4,14 +4,14 @@ using static Microsoft.Maui.ApplicationModel.Permissions;
 namespace CS341GroupProject;
 public partial class AddPlantPage : ContentPage
 {
-    private Photo NewPhoto = MauiProgram.BusinessLogic.Photo;
+    private byte[] imageData = MauiProgram.BusinessLogic.TempImageData;
     private Boolean ResetNavigationStack;
     public AddPlantPage()
 	{
         InitializeComponent();
 
         // Convert the byte array to an ImageSource
-        ImageSource imageSource = ImageSource.FromStream(() => new System.IO.MemoryStream(NewPhoto.ImageData));
+        ImageSource imageSource = ImageSource.FromStream(() => new System.IO.MemoryStream(imageData));
 
         // Set the Image control source
         photoImage.Source = imageSource;
@@ -51,8 +51,28 @@ public partial class AddPlantPage : ContentPage
             await DisplayAlert("", "Please enter a Species.", "OK");
             return;
         }
+
+        // Add photo to the database using image data passed from the CameraPage
+        Boolean insertPhotoSuccess = MauiProgram.BusinessLogic.InsertPhoto(imageData);
+
+        if (!insertPhotoSuccess)
+        {
+            await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
+            await Shell.Current.GoToAsync("//Camera");
+        }
+
+        // Get the newly added photo from the database (to use the id)
+        Photo newPhoto = MauiProgram.BusinessLogic.SelectPhoto(imageData);
+
+        if (newPhoto == null)
+        {
+            await DisplayAlert("Something went wrong.", "Please try to take another photo.", "OK");
+            await Shell.Current.GoToAsync("//Camera");
+        }
+
+        // Add the post to the database
         String username = SecureStorage.GetAsync("username").Result;
-        Boolean success = MauiProgram.BusinessLogic.InsertPost(username, GenusENT.Text, SpeciesENT.Text, NotesENT.Text, NewPhoto.Id);
+        Boolean success = MauiProgram.BusinessLogic.InsertPost(username, GenusENT.Text, SpeciesENT.Text, NotesENT.Text, newPhoto.Id);
 
         if (!success)
         {
