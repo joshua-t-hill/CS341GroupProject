@@ -29,7 +29,13 @@ public partial class CommunityFeedPage : ContentPage
 
         var posts = MauiProgram.BusinessLogic.Posts;
         // load posts in reverse order (newest first)
+        /*
         foreach (var post in posts.Reverse())
+        {
+            Posts.Add(post);
+        }*/
+        //FIXME: placeholder for now to only load 10 posts
+        foreach(var post in posts.Reverse().Take(10))
         {
             Posts.Add(post);
         }

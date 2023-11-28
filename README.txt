@@ -14,6 +14,9 @@ Sprint4 Changes:
 	~ Fixed Navigation bugs from Sprint3 :) :)
 	~ Feed page now displays data from the database (user photos!) :) :)
 	~ Refactored UserSearchPage for better performance
+	+ Added searchbar, live filtering, and ban buttons for each object for the BannedUserPage
+	~ Fixed another navigation "bug" where returning to the Camera tab after posting a plant would return the user to the same AddPlantPage as before. It now opens to the CameraPage.
+
 
 Sprint3 Changes:
 	~ Researched sending emails; found that we would need to give bank info to another company.. changing idea for now
