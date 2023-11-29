@@ -21,11 +21,10 @@ public class BusinessLogic : IBusinessLogic
     //Collections of all users, pins, and photos
     public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
     public ObservableCollection<PinData> CustomPins { get { return Database.SelectAllMapPins(); } }
-    public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
-    //public ObservableCollection<Post> Posts { get { return Database.SelectAllPosts(); } }
 
     //used to return the currently loaded specific page of posts (mainly for preloading the first page)
     public ObservableCollection<Post> DynamicPosts { get { return Database.DynamicPosts; } }
+    public int NumPosts { get { return Database.GetTotalPostsCount(); } }
     
     
     /// <summary>

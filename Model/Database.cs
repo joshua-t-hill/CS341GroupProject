@@ -10,7 +10,6 @@ public class Database : IDatabase
     ObservableCollection<User> users = new();
     ObservableCollection<PinData> customPins = new();
     ObservableCollection<Photo> photos = new();
-    ObservableCollection<Post> posts = new();
 
     // used for pagination of feed page (need property to grab from FeedPage)
     ObservableCollection<Post> dynamicPosts = new();
@@ -351,31 +350,6 @@ public class Database : IDatabase
     }
 
     /// <summary>
-    /// Updates the ObservableCollection posts with data from the datebase
-    /// </summary>
-    /// <returns> Collection of all posts in the database </returns>
-    public ObservableCollection<Post> SelectAllPosts()
-    {
-        posts.Clear();
-        var conn = new NpgsqlConnection(connString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("SELECT username, plant_genus, plant_species, notes, photo_id FROM posts", conn);
-        using var reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            String username = reader.GetString(0);
-            String genus = reader.GetString(1);
-            String species = reader.GetString(2);
-            String notes = reader.GetString(3);
-            Guid photoId = reader.GetGuid(4);
-            Post post = new(username, genus, species, notes, photoId); // creates a new photo
-            posts.Add(post);
-            Console.WriteLine(post);
-        }
-        return posts;
-    }
-
-    /// <summary>
     /// used to select a certain number of posts from the database for pagination
     /// </summary>
     /// <param name="pageNumber"></param>
@@ -385,7 +359,14 @@ public class Database : IDatabase
     {
         int pageSize = Constants.POSTS_PER_PAGE;
         dynamicPosts.Clear();
-        var offset = (pageNumber - 1) * pageSize;
+        // offset takes the total posts, n, and subtracts original offset (pg 1 = 10, pg 2 = 20, etc) and subtracts the page size
+        var offset = GetTotalPostsCount() - ((pageNumber - 1) * pageSize) - pageSize;
+        //code for when the offset is negative (last page)
+        if (offset < 0)
+        {
+            pageSize += offset;
+            offset = 0;
+        }
         var conn = new NpgsqlConnection(connString);
 
         conn.Open();
@@ -431,7 +412,6 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("notes", notes);
             cmd.Parameters.AddWithValue("photo_id", photoId);
             cmd.ExecuteNonQuery();
-            SelectAllPosts();
         }
         catch (Npgsql.PostgresException pe)
         {
@@ -439,6 +419,21 @@ public class Database : IDatabase
             return false;
         }
         return true;
+    }
+
+    public int GetTotalPostsCount()
+    {
+        int totalPostsCount = 0;
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM posts", conn);
+        using var reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            totalPostsCount = reader.GetInt32(0);
+        }
+        conn.Close();
+        return totalPostsCount;
     }
 
 }
