@@ -22,8 +22,8 @@
             <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"
                           Route="CommunityFeed"/>
         </Tab>
-        <Tab Title="AdminPage"
-             Icon="admin_icon.png"
+        <Tab Title="Admin"
+             Icon="admintabicon.png"
              IsVisible="{Binding IsAdminVisible}">
             <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"
                           Route="Admin"/>

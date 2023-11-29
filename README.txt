@@ -8,6 +8,7 @@ Resource Attribution:
 	maptabicon.png		--> <a href="https://www.flaticon.com/free-icons/pin" title="pin icons">Pin icons created by Freepik - Flaticon</a>
 	camertabicon.png	--> <a href="https://www.flaticon.com/free-icons/camera" title="camera icons">Camera icons created by Good Ware - Flaticon</a>
 	feedtabicon.png		--> <a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Smartline - Flaticon</a>
+	admintabicon.png	--> <a href="https://www.flaticon.com/free-icons/gear-cog" title="gear cog icons">Gear cog icons created by tuktukdesign - Flaticon</a>
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
 Sprint4 Changes:
@@ -16,6 +17,8 @@ Sprint4 Changes:
 	~ Refactored UserSearchPage for better performance
 	+ Added searchbar, live filtering, and ban buttons for each object for the BannedUserPage
 	~ Fixed another navigation "bug" where returning to the Camera tab after posting a plant would return the user to the same AddPlantPage as before. It now opens to the CameraPage.
+	+ Added column 'has_temp_password' to table 'users'
+	+ Added methods to allow users to reset their passwords with the help of an admin.
 
 
 Sprint3 Changes:

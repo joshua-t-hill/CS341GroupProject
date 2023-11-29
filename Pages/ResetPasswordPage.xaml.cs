@@ -1,16 +1,30 @@
 namespace CS341GroupProject;
-/*
- * Alexsa Walczak
- */
 public partial class ResetPasswordPage : ContentPage
 {
 	public ResetPasswordPage()
 	{
 		InitializeComponent();
-	}
 
-	void OnResetPasswordClicked(System.Object sender, System.EventArgs e)
+        BindingContext = MauiProgram.BusinessLogic;
+    }
+
+	/// <summary>
+	/// ***NOT YET TESTED***
+	/// Opens a user's default email app with a pre-loaded email
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
+	async void OnResetPasswordClicked(System.Object sender, System.EventArgs e)
 	{
-		throw new NotImplementedException();
-	}
+		if (UsernameENT.Text == null)
+		{
+			await DisplayAlert("", "Please enter your username.", "OK");
+			return;
+		}
+
+        await MauiProgram.BusinessLogic.CreateResetPasswordEmail(UsernameENT.Text);
+
+		// Pop back to the login page
+        await Navigation.PopToRootAsync();
+    }
 }

@@ -42,7 +42,7 @@ public class Database : IDatabase
         users.Clear();
         var conn = new NpgsqlConnection(connString);
         conn.Open(); // opens connection to the database
-        using var cmd = new NpgsqlCommand("SELECT username, password, email, is_banned, is_admin FROM users", conn);
+        using var cmd = new NpgsqlCommand("SELECT username, password, email, is_banned, is_admin, has_temp_password FROM users", conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read()) // reads one line from the database at a time
         {
@@ -51,7 +51,8 @@ public class Database : IDatabase
             String email = reader.GetString(2);
             Boolean isBanned = reader.GetBoolean(3);
             Boolean isAdmin = reader.GetBoolean(4);
-            User userToAdd = new(username, password, email, isBanned, isAdmin); // creates a new user
+            Boolean hasTempPassword = reader.GetBoolean(5);
+            User userToAdd = new(username, password, email, isBanned, isAdmin, hasTempPassword); // creates a new user
             users.Add(userToAdd);
             Console.WriteLine(userToAdd);
         }
@@ -64,7 +65,7 @@ public class Database : IDatabase
         conn.Open();
         using var cmd = new NpgsqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = ("SELECT password, email, is_banned, is_admin FROM users WHERE username = @username");
+        cmd.CommandText = ("SELECT password, email, is_banned, is_admin, has_temp_password FROM users WHERE username = @username");
         cmd.Parameters.AddWithValue("username", username); // gets a user from the database given the username
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
@@ -73,7 +74,8 @@ public class Database : IDatabase
             String email = reader.GetString(1);
             Boolean isBanned = reader.GetBoolean(2);
             Boolean isAdmin = reader.GetBoolean(3);
-            User user = new(username, password, email, isBanned, isAdmin);
+            Boolean hasTempPassword = reader.GetBoolean(4);
+            User user = new(username, password, email, isBanned, isAdmin, hasTempPassword);
             return user;
         }
         return null;
@@ -178,6 +180,37 @@ public class Database : IDatabase
         {
             Console.WriteLine("Update failed, {0}", pe);
             return UserUpdateError.DBUpdateError;
+        }
+    }
+
+    /// <summary>
+    /// Updates a users password in the database
+    /// </summary>
+    /// <param name="user"> User to update </param>
+    /// <param name="hashedPassword"> new hashed password </param>
+    /// <param name="tempPassword"> true if the new password is temporary, false otherwise </param>
+    /// <returns> true if the update succeeded, false otherwise </returns>
+    public Boolean UpdateUserPassword(User user, String hashedPassword, Boolean tempPassword)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(connString); // conn, short for connection, is a connection to the database
+            conn.Open(); // open the connection ... now we are connected!
+            var cmd = new NpgsqlCommand(); // create the sql commaned
+            cmd.Connection = conn; // commands need a connection, an actual command to execute
+            cmd.CommandText = "UPDATE users SET password = @password, has_temp_password = @has_temp_password WHERE username = @username;";
+            cmd.Parameters.AddWithValue("password", hashedPassword);
+            cmd.Parameters.AddWithValue("has_temp_password", tempPassword);
+            cmd.Parameters.AddWithValue("username", user.Username);
+            var numAffected = cmd.ExecuteNonQuery();
+
+            SelectAllUsers();
+            return true;
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Update failed, {0}", pe);
+            return false;
         }
     }
 

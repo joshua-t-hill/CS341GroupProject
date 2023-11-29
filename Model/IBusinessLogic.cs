@@ -15,6 +15,9 @@ public interface IBusinessLogic
     public String HashPassword(String password, String salt);
     public String GenerateSalt();
     public UserCreationError CreateUser(String username, String password, String email);
+    public Task CreateResetPasswordEmail(String username);
+    public String GenerateRandomOTP();
+    public Boolean ChangeUserPassword(String username, String newPassword, Boolean tempPassword);
 
     public UserUpdateError UpdateUser(User user, User newInfo);
     public Boolean InsertPhoto(byte[] imageData);

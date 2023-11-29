@@ -30,8 +30,14 @@ public partial class LoginPage : ContentPage
             await DisplayAlert("Oops!", "This account has been banned.", "OK");
             return;
 		}
+        else if (result == Model.LoginError.TempPasswordEntered)
+        {
+            await SecureStorage.SetAsync("username", UsernameENT.Text);
+            await Navigation.PushAsync(new SetNewPasswordPage());
+            return;
+        }
 
-		await SecureStorage.SetAsync("username", UsernameENT.Text);
+        await SecureStorage.SetAsync("username", UsernameENT.Text);
 
         
         // Navigate to AppShell
@@ -43,9 +49,8 @@ public partial class LoginPage : ContentPage
 		await Navigation.PushAsync(new CreateAccountPage());
 	}
 
-	void ForgotPasswordTapped(object sender, TappedEventArgs args)
+	async void ForgotPasswordTapped(object sender, TappedEventArgs args)
 	{
-		// await Shell.Current.GoToAsync("ResetPasswordPage");
-		throw new NotImplementedException();
-	}
+        await Navigation.PushAsync(new ResetPasswordPage());
+    }
 }
