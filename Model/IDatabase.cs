@@ -13,6 +13,7 @@ public interface IDatabase
     public String SelectSalt(String username);
     public UserCreationError InsertUser(User user);
     public UserUpdateError UpdateUser(User user, User newInfo);
+    public Boolean UpdateUserPassword(User user, String hashedPassword, Boolean tempPassword);
 
     public User SelectUser(String username);
     public Boolean InsertPhoto(byte[] imageData);

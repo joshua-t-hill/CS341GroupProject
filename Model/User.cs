@@ -17,6 +17,7 @@ namespace CS341GroupProject.Model
         Boolean isAdmin;
         Boolean canBan;
         Boolean canUnban;
+        Boolean hasTempPassword;
 
         public String Username 
         { 
@@ -100,6 +101,24 @@ namespace CS341GroupProject.Model
             }
         }
 
+        public Boolean HasTempPassword
+        {
+            get { return hasTempPassword; }
+            set
+            {
+                if (hasTempPassword != value)
+                {
+                    hasTempPassword = value;
+                    OnPropertyChanged(nameof(hasTempPassword));
+                }
+            }
+        }
+
+        public User(String username, String password, String email, Boolean isBanned, Boolean isAdmin, Boolean hasTempPassword) 
+            : this(username, password, email, isBanned, isAdmin)
+        {
+            HasTempPassword = hasTempPassword;
+        }
         public User(String username, String password, String email, Boolean isBanned, Boolean isAdmin) 
         {
             Username = username;
@@ -118,6 +137,7 @@ namespace CS341GroupProject.Model
             Salt = salt;
             CanBan = false;
             CanUnban = false;
+            HasTempPassword = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

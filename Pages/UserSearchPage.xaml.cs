@@ -131,6 +131,37 @@ namespace CS341GroupProject
             }
         } 
 
+        /// <summary>
+        /// Generates a temporary code to be set for a user's password if they sent an email requesting a password reset.
+        /// If the admin selects to change the users password, their password is changed to the temporary code in the database
+        /// and their account gets flagged with a boolean showing that their password is temporary.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OnResetPasswordButtonClicked(object sender, EventArgs e)
+        {
+            var selectedUser = UsersCollectionView.SelectedItem as User;
+            if (selectedUser != null)
+            {
+                String newPassword = MauiProgram.BusinessLogic.GenerateRandomOTP();
+                bool confirm = await DisplayAlert($"Do you want to reset {selectedUser.Username}'s password?", "If so, send them this password: " + newPassword, "Yes", "No");
+                if (confirm)
+                {
+                    //update user password and has_temp_password bool in the backend
+                    bool success = MauiProgram.BusinessLogic.ChangeUserPassword(selectedUser.Username, newPassword, true);
+
+                    if (!success) 
+                    {
+                        await DisplayAlert("Something went wrong.", "Try to reset the password again.", "OK");
+                    }
+
+                    //reset variables to restore default state
+                    UsersCollectionView.SelectedItem = null;
+                    selectedUser.CanBan = false;
+                }
+            }
+        }
+
     }
 
 }

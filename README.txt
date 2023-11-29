@@ -16,6 +16,8 @@ Sprint4 Changes:
 	~ Refactored UserSearchPage for better performance
 	+ Added searchbar, live filtering, and ban buttons for each object for the BannedUserPage
 	~ Fixed another navigation "bug" where returning to the Camera tab after posting a plant would return the user to the same AddPlantPage as before. It now opens to the CameraPage.
+	+ Added column 'has_temp_password' to table 'users'
+	+ Added methods to allow users to reset their passwords with the help of an admin.
 
 
 Sprint3 Changes:

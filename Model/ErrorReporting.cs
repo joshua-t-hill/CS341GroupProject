@@ -19,5 +19,6 @@ public enum LoginError
 {
     IncorrectInput,
     UserBanned,
+    TempPasswordEntered,
     NoError
 }

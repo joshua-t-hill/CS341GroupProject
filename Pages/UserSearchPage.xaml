@@ -26,9 +26,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Text="{Binding Username}" VerticalOptions="Center" />
                         <Button Grid.Column="1" Text="Ban" IsEnabled="{Binding CanBan}" CommandParameter="{Binding .}" Clicked="OnBanButtonClicked"/>
+                        <Button Grid.Column="2" Text="Reset Password" Clicked="OnResetPasswordButtonClicked"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
