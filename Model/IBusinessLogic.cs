@@ -5,10 +5,12 @@ public interface IBusinessLogic
 {
     public ObservableCollection<User> Users { get; }
     public ObservableCollection<PinData> CustomPins { get; }
-    public ObservableCollection<Post> Posts { get; }
+    //public ObservableCollection<Post> Posts { get; }
+    public ObservableCollection<Post> DynamicPosts { get; }
     public bool IsAdmin { get; set; }
     public byte[] TempImageData { get; set; }
 
+    public ObservableCollection<Post> DynamicSelectPosts(int pageNumber);
     public LoginError ConfirmLogin(String username, String password);
     public String HashPassword(String password, String salt);
     public String GenerateSalt();

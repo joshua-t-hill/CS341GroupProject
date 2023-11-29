@@ -3,6 +3,7 @@
 namespace CS341GroupProject.Model;
 public interface IDatabase
 {
+    public ObservableCollection<Post> DynamicPosts { get; set; }
     public ObservableCollection<User> SelectAllUsers();
     public ObservableCollection<PinData> SelectAllMapPins();
     public ObservableCollection<Photo> SelectAllPhotos();
@@ -19,5 +20,5 @@ public interface IDatabase
     public Photo SelectPhoto(byte[] imageData);
     public Photo SelectPhoto(Guid photoId);
     public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId);
-
+    public ObservableCollection<Post> SelectPostsAsync(int pageNumber);
 }

@@ -22,8 +22,22 @@ public class BusinessLogic : IBusinessLogic
     public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
     public ObservableCollection<PinData> CustomPins { get { return Database.SelectAllMapPins(); } }
     public ObservableCollection<Photo> Photos { get { return Database.SelectAllPhotos(); } }
-    public ObservableCollection<Post> Posts { get { return Database.SelectAllPosts(); } }
+    //public ObservableCollection<Post> Posts { get { return Database.SelectAllPosts(); } }
 
+    //used to return the currently loaded specific page of posts (mainly for preloading the first page)
+    public ObservableCollection<Post> DynamicPosts { get { return Database.DynamicPosts; } }
+    
+    
+    /// <summary>
+    /// used by feed page to get a page of posts as needed instead of loading all posts at once (helps performance)
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public ObservableCollection<Post> DynamicSelectPosts(int pageNumber)
+    {
+        return Database.SelectPostsAsync(pageNumber);
+    }
 
     /// <summary>
     /// Checks entered username and password on login to saved data in database

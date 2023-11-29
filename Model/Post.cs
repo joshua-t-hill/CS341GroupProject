@@ -1,8 +1,9 @@
 ﻿using CS341GroupProject.Model;
+using System.ComponentModel;
 
 namespace CS341GroupProject
 {
-    public class Post
+    public class Post : INotifyPropertyChanged
     {
         String username;
         String plantGenus;
@@ -10,44 +11,112 @@ namespace CS341GroupProject
         String notes;
         Guid photoId;
         String plant;
-        public String Username 
-        { 
-            get { return username; } 
-            set { username = value; }
+        ImageSource photo;
+        public string Username
+        {
+            get => username;
+            set
+            {
+                if (username != value)
+                {
+                    username = value;
+                    OnPropertyChanged(nameof(Username));
+                }
+            }
         }
 
         // keeping these two for now because they are used in the CommunityFeedPage
         // can edit the get and sets later if we want to keep these
-        public ImageSource Photo 
+        public ImageSource Photo
         {
-            get 
+            get => photo;
+            private set
             {
-                Photo photo = MauiProgram.BusinessLogic.SelectPhoto(photoId);
-                ImageSource imageSource = ImageSource.FromStream(() => new System.IO.MemoryStream(photo.ImageData));
-                return imageSource;
+                if (photo != value)
+                {
+                    photo = value;
+                    OnPropertyChanged(nameof(Photo));
+                }
             }
         }
-        public String Plant { get { return plantGenus + " " + plantSpecies; } set { plant = value; } }
-
-        public String PlantGenus
+        public string Plant
         {
-            get { return plantGenus; }
-            set { plantGenus = value; }
+            get => plantGenus + " " + plantSpecies;
+            set
+            {
+                if (plant != value)
+                {
+                    plant = value;
+                    OnPropertyChanged(nameof(Plant));
+                }
+            }
         }
-        public String PlantSpecies
+        public string PlantGenus
         {
-            get { return plantSpecies; }
-            set { plantSpecies = value; }
+            get => plantGenus;
+            set
+            {
+                if (plantGenus != value)
+                {
+                    plantGenus = value;
+                    OnPropertyChanged(nameof(PlantGenus));
+                }
+            }
         }
-        public String Notes 
-        { 
-            get { return notes; }
-            set { notes = value; }
+        public string PlantSpecies
+        {
+            get => plantSpecies;
+            set
+            {
+                if (plantSpecies != value)
+                {
+                    plantSpecies = value;
+                    OnPropertyChanged(nameof(PlantSpecies));
+                }
+            }
+        }
+        public string Notes
+        {
+            get => notes;
+            set
+            {
+                if (notes != value)
+                {
+                    notes = value;
+                    OnPropertyChanged(nameof(Notes));
+                }
+            }
         }
         public Guid PhotoId
         {
-            get { return photoId; }
-            set { photoId = value; }
+            get => photoId;
+            set
+            {
+                if (photoId != value)
+                {
+                    photoId = value;
+                    OnPropertyChanged(nameof(PhotoId));
+
+                    // Load and set the image on a separate thread
+                    // Technically best practice would be to run the task on an async method containing this code
+                    Task.Run(() =>
+                    {
+                        Photo photo = MauiProgram.BusinessLogic.SelectPhoto(photoId);
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            this.photo = ImageSource.FromStream(() => new MemoryStream(photo.ImageData));
+                            OnPropertyChanged(nameof(Photo));
+                        });
+                    });
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public Post()

@@ -12,6 +12,10 @@ public class Database : IDatabase
     ObservableCollection<Photo> photos = new();
     ObservableCollection<Post> posts = new();
 
+    // used for pagination of feed page (need property to grab from FeedPage)
+    ObservableCollection<Post> dynamicPosts = new();
+    public ObservableCollection<Post> DynamicPosts { get { return dynamicPosts; } set { } }
+
     public Database() { }
 
     static String GetConnectionString()
@@ -336,6 +340,38 @@ public class Database : IDatabase
             Console.WriteLine(post);
         }
         return posts;
+    }
+
+    /// <summary>
+    /// used to select a certain number of posts from the database for pagination
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public ObservableCollection<Post> SelectPostsAsync(int pageNumber)
+    {
+        int pageSize = Constants.POSTS_PER_PAGE;
+        dynamicPosts.Clear();
+        var offset = (pageNumber - 1) * pageSize;
+        var conn = new NpgsqlConnection(connString);
+
+        conn.Open();
+        using var cmd = new NpgsqlCommand($"SELECT username, plant_genus, plant_species, notes, photo_id FROM posts LIMIT @pageSize OFFSET @offset", conn);
+        cmd.Parameters.AddWithValue("@pageSize", pageSize);
+        cmd.Parameters.AddWithValue("@offset", offset);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            String username = reader.GetString(0);
+            String genus = reader.GetString(1);
+            String species = reader.GetString(2);
+            String notes = reader.GetString(3);
+            Guid photoId = reader.GetGuid(4);
+            Post post = new(username, genus, species, notes, photoId); // creates a new photo
+            dynamicPosts.Add(post);
+            Console.WriteLine(post);
+        }
+        return dynamicPosts;
     }
 
     /// <summary>

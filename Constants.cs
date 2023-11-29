@@ -20,5 +20,6 @@ public static class Constants
     public const string SQL_INSERT_MAP_TABLE_STRING = "INSERT INTO map (latitude, longitude, plant_genus, plant_specific_epithet) VALUES (@latitude, @longitude, @genus, @epithet);";
     public const string SQL_GET_MAP_PIN_DATA_STRING = "SELECT id, latitude, longitude, plant_genus, plant_specific_epithet FROM map;";
 
-    //
+    //CommunityFeedPage Specifications
+    public const int POSTS_PER_PAGE = 10;
 }

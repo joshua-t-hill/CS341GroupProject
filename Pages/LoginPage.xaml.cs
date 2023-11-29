@@ -33,12 +33,12 @@ public partial class LoginPage : ContentPage
 
 		await SecureStorage.SetAsync("username", UsernameENT.Text);
 
-
-		// Navigate to AppShell
-		Application.Current.MainPage = new AppShell();
+        
+        // Navigate to AppShell
+        Application.Current.MainPage = new AppShell();
 	}
 
-	async void NewUserTapped(object sender, TappedEventArgs args)
+    async void NewUserTapped(object sender, TappedEventArgs args)
 	{
 		await Navigation.PushAsync(new CreateAccountPage());
 	}

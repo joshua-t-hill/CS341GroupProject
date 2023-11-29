@@ -12,7 +12,7 @@
         Padding="30,0"
         VerticalOptions="Start">
 
-            <CollectionView x:Name="CV" ItemsSource="{Binding Posts}">
+            <CollectionView x:Name="CV" ItemsSource="{Binding CurrentPage}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"/>
                 </CollectionView.ItemsLayout>
