@@ -8,6 +8,7 @@ Resource Attribution:
 	maptabicon.png		--> <a href="https://www.flaticon.com/free-icons/pin" title="pin icons">Pin icons created by Freepik - Flaticon</a>
 	camertabicon.png	--> <a href="https://www.flaticon.com/free-icons/camera" title="camera icons">Camera icons created by Good Ware - Flaticon</a>
 	feedtabicon.png		--> <a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Smartline - Flaticon</a>
+	admintabicon.png	--> <a href="https://www.flaticon.com/free-icons/gear-cog" title="gear cog icons">Gear cog icons created by tuktukdesign - Flaticon</a>
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
 Sprint4 Changes:
