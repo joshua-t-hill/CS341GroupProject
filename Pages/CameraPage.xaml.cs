@@ -1,5 +1,4 @@
 using CS341GroupProject.Model;
-using System.IO;
 
 namespace CS341GroupProject;
 /**
@@ -13,9 +12,15 @@ public partial class CameraPage : ContentPage
 		InitializeComponent();
 
         BindingContext = MauiProgram.BusinessLogic;
-
-        TakePhoto();
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        // Call TakePhoto every time the page is loaded
+        TakePhoto();
+    }
 
     public async void TakePhoto()
     {
@@ -23,17 +28,23 @@ public partial class CameraPage : ContentPage
         {
             FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
 
+            if (photo == null)
+            {
+                // Goes back to map page when camera X is clicked
+                await Shell.Current.GoToAsync("///Map");
+                return;
+            }
+
             // Convert the photo stream to byte array
             byte[] imageData = await ReadStream(photo.OpenReadAsync());
 
-            MauiProgram.BusinessLogic.InsertPhoto(imageData);
-            
-            // For now, AddPlantPage does nothing; this just shows some navigation
-            // AddPlantPage should probably take in the photo id instead
-            await Navigation.PushAsync(new AddPlantPage(imageData));
+            // Save the imageData in BusinessLogic to be displayed on the AddPlantPage
+            MauiProgram.BusinessLogic.TempImageData = imageData;
+            await Shell.Current.GoToAsync("AddPlant");
         }
     }
 
+    // Reads in the photo data and converts it to a byte[]
     private async Task<byte[]> ReadStream(Task<Stream> task)
     {
         using (MemoryStream ms = new MemoryStream())

@@ -3,27 +3,38 @@
              x:Class="CS341GroupProject.UserSearchPage"
              Title="User Search">
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="Auto"/>
-		</Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-		<SearchBar x:Name="UserSearchBar" Grid.Column="0" Placeholder="Search for a user..." TextChanged="OnSearchTextChanged" />
+        <SearchBar x:Name="UserSearchBar" 
+           Grid.Column="0" 
+           Placeholder="Search for a user..." 
+           TextChanged="OnSearchTextChanged"
+           Focused="OnSearchBarFocused"/>
 
-		<Button x:Name="BanButton" Grid.Column="1" Text="Ban" IsEnabled="False" Clicked="OnBanButtonClicked"/>
-
-		<ListView x:Name="UsersListView" Grid.Row="1" Grid.ColumnSpan="2" SelectionMode="Single" ItemSelected="OnUserSelected">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<TextCell Text="{Binding Name}" />
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-	</Grid>
+        <CollectionView x:Name="UsersCollectionView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding FilteredUsers}" SelectionChanged="OnUserSelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="{Binding Username}" VerticalOptions="Center" />
+                        <Button Grid.Column="1" Text="Ban" IsEnabled="{Binding CanBan}" CommandParameter="{Binding .}" Clicked="OnBanButtonClicked"/>
+                        <Button Grid.Column="2" Text="Reset Password" Clicked="OnResetPasswordButtonClicked"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+    </Grid>
 </ContentPage>

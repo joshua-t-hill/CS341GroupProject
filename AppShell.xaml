@@ -4,43 +4,30 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:CS341GroupProject"
-    xmlns:local="clr-namespace:CS341GroupProject"
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
         <Tab Title="Map"
              Icon="maptabicon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:MapPage}"
+                          Route="Map"/>
         </Tab>
         <Tab Title="Camera"
              Icon="cameratabicon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:CameraPage}"
+                          Route="Camera"/>
         </Tab>
         <Tab Title="Feed"
              Icon="feedtabicon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:CommunityFeedPage}"
+                          Route="CommunityFeed"/>
         </Tab>
-        <!--<Tab Title="PostDetails-AMW">
-            <ShellContent ContentTemplate="{DataTemplate pages:PostDetailsPage}"/>
+        <Tab Title="Admin"
+             Icon="admintabicon.png"
+             IsVisible="{Binding IsAdminVisible}">
+            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"
+                          Route="Admin"/>
         </Tab>
-        <Tab Title="FilterData-JTH">
-            <ShellContent ContentTemplate="{DataTemplate pages:FilterDataPage}"/>
-        </Tab>
-        <Tab Title="AdminPage-ARC">
-            <ShellContent ContentTemplate="{DataTemplate pages:AdminPage}"/>
-        </Tab>
-        <Tab Title="UserSearchPage-ARC">
-            <ShellContent ContentTemplate="{DataTemplate pages:UserSearchPage}"/>
-        </Tab>
-        <Tab Title="BannedUsers-ARC">
-            <ShellContent ContentTemplate="{DataTemplate pages:BannedUsersPage}"/>
-        </Tab>
-        <Tab Title="EmailConf-SA">
-            <ShellContent ContentTemplate="{DataTemplate pages:EmailAddressConfirmationPage}"/>
-        </Tab>
-        <Tab Title="AddPlant-SA">
-            <ShellContent ContentTemplate="{DataTemplate pages:AddPlantPage}"/>
-        </Tab>-->
     </TabBar>
-    
+
 </Shell>

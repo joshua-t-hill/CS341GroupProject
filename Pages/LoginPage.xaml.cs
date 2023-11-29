@@ -18,29 +18,39 @@ public partial class LoginPage : ContentPage
 
 	async void OnLoginBtnClicked(object sender, EventArgs e)
 	{
-		Boolean success = MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text);
+		Model.LoginError result = MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text);
 
-		if (!success)
+		if (result == Model.LoginError.IncorrectInput)
 		{
             await DisplayAlert("Oops!", "Username or Password was incorrect.", "OK");
 			return;
 		}
+		else if (result == Model.LoginError.UserBanned)
+		{
+            await DisplayAlert("Oops!", "This account has been banned.", "OK");
+            return;
+		}
+        else if (result == Model.LoginError.TempPasswordEntered)
+        {
+            await SecureStorage.SetAsync("username", UsernameENT.Text);
+            await Navigation.PushAsync(new SetNewPasswordPage());
+            return;
+        }
 
-		// Navigate to AppShell
-		await Navigation.PushAsync(new AppShell());
+        await SecureStorage.SetAsync("username", UsernameENT.Text);
 
-		// Remove the LoginPage from the Navigation stack
-		Navigation.RemovePage(this);
+        
+        // Navigate to AppShell
+        Application.Current.MainPage = new AppShell();
 	}
 
-	async void NewUserTapped(object sender, TappedEventArgs args)
+    async void NewUserTapped(object sender, TappedEventArgs args)
 	{
 		await Navigation.PushAsync(new CreateAccountPage());
 	}
 
-	void ForgotPasswordTapped(object sender, TappedEventArgs args)
+	async void ForgotPasswordTapped(object sender, TappedEventArgs args)
 	{
-		// await Navigation.PushAsync(new ForgotPasswordPage());
-		throw new NotImplementedException();
-	}
+        await Navigation.PushAsync(new ResetPasswordPage());
+    }
 }

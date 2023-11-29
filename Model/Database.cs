@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data;
-using Microsoft.Maui.ApplicationModel.Communication;
+using Microsoft.Maui.Controls.Maps;
 using Npgsql;
 
 namespace CS341GroupProject.Model;
@@ -9,8 +8,13 @@ public class Database : IDatabase
     private String connString = GetConnectionString();
 
     ObservableCollection<User> users = new();
-    ObservableCollection<PinData> pinsData = new();
+    ObservableCollection<PinData> customPins = new();
     ObservableCollection<Photo> photos = new();
+    ObservableCollection<Post> posts = new();
+
+    // used for pagination of feed page (need property to grab from FeedPage)
+    ObservableCollection<Post> dynamicPosts = new();
+    public ObservableCollection<Post> DynamicPosts { get { return dynamicPosts; } set { } }
 
     public Database() { }
 
@@ -38,7 +42,7 @@ public class Database : IDatabase
         users.Clear();
         var conn = new NpgsqlConnection(connString);
         conn.Open(); // opens connection to the database
-        using var cmd = new NpgsqlCommand("SELECT username, password, email, is_banned FROM users", conn);
+        using var cmd = new NpgsqlCommand("SELECT username, password, email, is_banned, is_admin, has_temp_password FROM users", conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read()) // reads one line from the database at a time
         {
@@ -46,7 +50,9 @@ public class Database : IDatabase
             String password = reader.GetString(1);
             String email = reader.GetString(2);
             Boolean isBanned = reader.GetBoolean(3);
-            User userToAdd = new(username, password, email, isBanned); // creates a new user
+            Boolean isAdmin = reader.GetBoolean(4);
+            Boolean hasTempPassword = reader.GetBoolean(5);
+            User userToAdd = new(username, password, email, isBanned, isAdmin, hasTempPassword); // creates a new user
             users.Add(userToAdd);
             Console.WriteLine(userToAdd);
         }
@@ -59,7 +65,7 @@ public class Database : IDatabase
         conn.Open();
         using var cmd = new NpgsqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = ("SELECT password, email, is_banned FROM users WHERE username = @username");
+        cmd.CommandText = ("SELECT password, email, is_banned, is_admin, has_temp_password FROM users WHERE username = @username");
         cmd.Parameters.AddWithValue("username", username); // gets a user from the database given the username
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
@@ -67,7 +73,9 @@ public class Database : IDatabase
             String password = reader.GetString(0);
             String email = reader.GetString(1);
             Boolean isBanned = reader.GetBoolean(2);
-            User user = new(username, password, email, isBanned);
+            Boolean isAdmin = reader.GetBoolean(3);
+            Boolean hasTempPassword = reader.GetBoolean(4);
+            User user = new(username, password, email, isBanned, isAdmin, hasTempPassword);
             return user;
         }
         return null;
@@ -79,7 +87,7 @@ public class Database : IDatabase
         conn.Open();
         using var cmd = new NpgsqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = ("SELECT username, password, is_banned FROM users WHERE email = @email");
+        cmd.CommandText = ("SELECT username, password, is_banned, is_admin FROM users WHERE email = @email");
         cmd.Parameters.AddWithValue("email", email); // gets a user from the database given the email
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
@@ -87,7 +95,8 @@ public class Database : IDatabase
             String username = reader.GetString(0);
             String password = reader.GetString(1);
             Boolean isBanned = reader.GetBoolean(2);
-            User user = new(username, password, email, isBanned);
+            Boolean isAdmin = reader.GetBoolean(3);
+            User user = new(username, password, email, isBanned, isAdmin);
             return user;
         }
         return null;
@@ -123,12 +132,13 @@ public class Database : IDatabase
             conn.Open();
             var cmd = new NpgsqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned, salt) VALUES (@username, @password, @email, @is_banned, @salt)";
+            cmd.CommandText = "INSERT INTO users (username, password, email, is_banned, salt, is_admin) VALUES (@username, @password, @email, @is_banned, @salt, @is_admin)";
             cmd.Parameters.AddWithValue("username", user.Username);
             cmd.Parameters.AddWithValue("password", user.Password);
             cmd.Parameters.AddWithValue("email", user.Email);
             cmd.Parameters.AddWithValue("is_banned", user.IsBanned);
             cmd.Parameters.AddWithValue("salt", user.Salt);
+            cmd.Parameters.AddWithValue("is_admin", user.IsAdmin);
             cmd.ExecuteNonQuery();
             SelectAllUsers();
         }
@@ -155,11 +165,12 @@ public class Database : IDatabase
             conn.Open(); // open the connection ... now we are connected!
             var cmd = new NpgsqlCommand(); // create the sql commaned
             cmd.Connection = conn; // commands need a connection, an actual command to execute
-            cmd.CommandText = "UPDATE users SET username = @username, password = @password, is_banned = @is_banned WHERE email = @email;";
+            cmd.CommandText = "UPDATE users SET username = @username, password = @password, is_banned = @is_banned, is_admin = @is_admin WHERE email = @email;";
             cmd.Parameters.AddWithValue("username", newInfo.Username);
             cmd.Parameters.AddWithValue("password", newInfo.Password);
             cmd.Parameters.AddWithValue("is_banned", newInfo.IsBanned);
             cmd.Parameters.AddWithValue("email", user.Email);
+            cmd.Parameters.AddWithValue("is_admin", newInfo.IsAdmin);
             var numAffected = cmd.ExecuteNonQuery();
 
             SelectAllUsers();
@@ -169,6 +180,37 @@ public class Database : IDatabase
         {
             Console.WriteLine("Update failed, {0}", pe);
             return UserUpdateError.DBUpdateError;
+        }
+    }
+
+    /// <summary>
+    /// Updates a users password in the database
+    /// </summary>
+    /// <param name="user"> User to update </param>
+    /// <param name="hashedPassword"> new hashed password </param>
+    /// <param name="tempPassword"> true if the new password is temporary, false otherwise </param>
+    /// <returns> true if the update succeeded, false otherwise </returns>
+    public Boolean UpdateUserPassword(User user, String hashedPassword, Boolean tempPassword)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(connString); // conn, short for connection, is a connection to the database
+            conn.Open(); // open the connection ... now we are connected!
+            var cmd = new NpgsqlCommand(); // create the sql commaned
+            cmd.Connection = conn; // commands need a connection, an actual command to execute
+            cmd.CommandText = "UPDATE users SET password = @password, has_temp_password = @has_temp_password WHERE username = @username;";
+            cmd.Parameters.AddWithValue("password", hashedPassword);
+            cmd.Parameters.AddWithValue("has_temp_password", tempPassword);
+            cmd.Parameters.AddWithValue("username", user.Username);
+            var numAffected = cmd.ExecuteNonQuery();
+
+            SelectAllUsers();
+            return true;
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Update failed, {0}", pe);
+            return false;
         }
     }
 
@@ -183,14 +225,14 @@ public class Database : IDatabase
     /// <returns> the observable collection resulting from the SQL call </returns>
     public ObservableCollection<PinData> SelectAllMapPins()
     {
-        pinsData.Clear();
+        customPins.Clear();
 
         using var conn = new NpgsqlConnection(connString);
         conn.Open();
 
         using var cmd = new NpgsqlCommand(Constants.SQL_GET_MAP_PIN_DATA_STRING, conn);
         using var reader = cmd.ExecuteReader();
-        while (reader.Read()) //returning nothing
+        while (reader.Read())
         {
             long id = reader.GetInt64(0);
             double latitude = reader.GetDouble(1);
@@ -198,22 +240,30 @@ public class Database : IDatabase
             string genus = reader.GetString(3);
             string epithet = reader.GetString(4);
 
-            pinsData.Add(new(id, latitude, longitude, genus, epithet));
+            PinData pin = new(id, latitude, longitude, genus, epithet)
+            {
+                Label=id.ToString(),
+                Address= $"{genus} {epithet}",
+                Type = PinType.SavedPin,
+                Location = new(latitude, longitude)
+            };
+
+            customPins.Add(pin);
         }
 
-        return pinsData;
+        return customPins;
     }
 
     /// <summary>
     /// Updates the ObservableCollection photos with data from the datebase
     /// </summary>
-    /// <returns></returns>
+    /// <returns> collection of all photos in the database </returns>
     public ObservableCollection<Photo> SelectAllPhotos()
     {
         photos.Clear();
         var conn = new NpgsqlConnection(connString);
         conn.Open();
-        using var cmd = new NpgsqlCommand("SELECT id, image_data FROM photos", conn);
+        using var cmd = new NpgsqlCommand("SELECT photo_id, image_data FROM photos", conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
@@ -228,6 +278,11 @@ public class Database : IDatabase
         return photos;
     }
 
+    /// <summary>
+    /// Inserts a photo into the database
+    /// </summary>
+    /// <param name="imageData"> byte[] of image data to insert </param>
+    /// <returns> true if it was inserted, false otherwise </returns>
     public Boolean InsertPhoto(byte[] imageData)
     {
         try
@@ -240,6 +295,143 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("image_data", imageData);
             cmd.ExecuteNonQuery();
             SelectAllPhotos();
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Insert failed, {0}", pe);
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Selects a photo from the database to get the photo_id
+    /// </summary>
+    /// <param name="imageData"> photo data to select from database with </param>
+    /// <returns> Photo with photoId and imageData fields </returns>
+    public Photo SelectPhoto(byte[] imageData)
+    {
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = ("SELECT photo_id FROM photos WHERE image_data = @imageData");
+        cmd.Parameters.AddWithValue("imageData", imageData); // gets a photo's id from the database given it's imageData
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            Guid photoId = reader.GetGuid(0);
+            return new Photo(photoId, imageData);
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Selects a photo from the database with a given photoId
+    /// </summary>
+    /// <param name="photoId"> photo id to select from database with </param>
+    /// <returns> Photo with photoId and imageData fields </returns>
+    public Photo SelectPhoto(Guid photoId)
+    {
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = ("SELECT image_data FROM photos WHERE photo_id = @photoId");
+        cmd.Parameters.AddWithValue("photoId", photoId); // gets a photo's image data from the database given it's id
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            long byteaLength = reader.GetBytes(0, 0, null, 0, 0);
+            byte[] imageData = new byte[byteaLength];
+            reader.GetBytes(0, 0, imageData, 0, (int)byteaLength);
+            return new Photo(photoId, imageData);
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Updates the ObservableCollection posts with data from the datebase
+    /// </summary>
+    /// <returns> Collection of all posts in the database </returns>
+    public ObservableCollection<Post> SelectAllPosts()
+    {
+        posts.Clear();
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand("SELECT username, plant_genus, plant_species, notes, photo_id FROM posts", conn);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            String username = reader.GetString(0);
+            String genus = reader.GetString(1);
+            String species = reader.GetString(2);
+            String notes = reader.GetString(3);
+            Guid photoId = reader.GetGuid(4);
+            Post post = new(username, genus, species, notes, photoId); // creates a new photo
+            posts.Add(post);
+            Console.WriteLine(post);
+        }
+        return posts;
+    }
+
+    /// <summary>
+    /// used to select a certain number of posts from the database for pagination
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public ObservableCollection<Post> SelectPostsAsync(int pageNumber)
+    {
+        int pageSize = Constants.POSTS_PER_PAGE;
+        dynamicPosts.Clear();
+        var offset = (pageNumber - 1) * pageSize;
+        var conn = new NpgsqlConnection(connString);
+
+        conn.Open();
+        using var cmd = new NpgsqlCommand($"SELECT username, plant_genus, plant_species, notes, photo_id FROM posts LIMIT @pageSize OFFSET @offset", conn);
+        cmd.Parameters.AddWithValue("@pageSize", pageSize);
+        cmd.Parameters.AddWithValue("@offset", offset);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            String username = reader.GetString(0);
+            String genus = reader.GetString(1);
+            String species = reader.GetString(2);
+            String notes = reader.GetString(3);
+            Guid photoId = reader.GetGuid(4);
+            Post post = new(username, genus, species, notes, photoId); // creates a new photo
+            dynamicPosts.Add(post);
+            Console.WriteLine(post);
+        }
+        return dynamicPosts;
+    }
+
+    /// <summary>
+    /// Inserts a post into the database
+    /// </summary>
+    /// <param name="username"> User's username </param>
+    /// <param name="genus"> Plant's genus </param>
+    /// <param name="species"> Plant's species </param>
+    /// <param name="notes"> Post's notes </param>
+    /// <param name="photoId"> Plant's photo id </param>
+    /// <returns> true if post was inserted, false otherwise </returns>
+    public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = "INSERT INTO posts (username, plant_genus, plant_species, notes, photo_id) VALUES (@username, @plant_genus, @plant_species, @notes, @photo_id)";
+            cmd.Parameters.AddWithValue("username", username);
+            cmd.Parameters.AddWithValue("plant_genus", genus);
+            cmd.Parameters.AddWithValue("plant_species", species);
+            cmd.Parameters.AddWithValue("notes", notes);
+            cmd.Parameters.AddWithValue("photo_id", photoId);
+            cmd.ExecuteNonQuery();
+            SelectAllPosts();
         }
         catch (Npgsql.PostgresException pe)
         {

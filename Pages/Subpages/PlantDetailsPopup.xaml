@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:model="clr-namespace:CS341GroupProject.Model"
+               x:DataType="model:PinData"
+               x:Class="CS341GroupProject.Pages.Subpages.PlantDetailsPopup">
+
+    <VerticalStackLayout Padding="20">
+        <!-- Try setting the max width on all items to the same value to keep the popup thinner than the entire screen. Can get screen size at runtime in .cs file and bind to controls. -->
+        <!-- May want to consider a scrollview in case the information gets too big for screen, especially with comments. -->
+        <Image Source="amelanchier_arborea.webp"/>
+        <Label Text="Scientific Name:" HorizontalTextAlignment="Start" TextDecorations="Underline" Padding="2"/>
+        <Label HorizontalTextAlignment="Start" Padding="2">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{Binding Genus}" FontAttributes="Italic"/>
+                    <Span Text=" "/>
+                    <Span Text="{Binding Epithet}" FontAttributes="Italic"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        
+    </VerticalStackLayout>
+    
+</toolkit:Popup>

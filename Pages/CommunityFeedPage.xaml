@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:CS341GroupProject"
+             xmlns:model="clr-namespace:CS341GroupProject"
+             xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
              x:Class="CS341GroupProject.CommunityFeedPage"
+             x:DataType="model:CommunityFeedPage" 
              Title="CommunityFeedPage">
     <ScrollView>
         <VerticalStackLayout
@@ -10,20 +12,19 @@
         Padding="30,0"
         VerticalOptions="Start">
 
-            <CollectionView ItemsSource="{Binding Posts}">
+            <CollectionView x:Name="CV" ItemsSource="{Binding CurrentPage}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="model:Post">
                         <Border Stroke="#000000"
                             StrokeThickness="3"
                             Background="#E6E6E6"
                             Padding="16,8"
                             HorizontalOptions="Fill">
-                            <Grid Padding="20" RowDefinitions="10*,*,*" ColumnDefinitions="20*,2*,2*">
-
-                                <Image Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding Photo}"/>
+                            <Grid Padding="10" RowDefinitions="10*,*,*" ColumnDefinitions="20*,2*,2*" VerticalOptions="Center">
+                                <Image Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding Photo}" Aspect="Fill"/>
                                 <Label Grid.Row="1" Text="{Binding Username}" VerticalTextAlignment="Start"/>
                                 <Label Grid.Row="2" Text="{Binding Plant}" VerticalTextAlignment="Start"/>
                                 <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Source="pin.png" HeightRequest="25" WidthRequest="25"/>

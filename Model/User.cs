@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CS341GroupProject.Model
 {
-    public class User
+    public class User : INotifyPropertyChanged
     {
         String username;
         String password;
         String email;
         Boolean isBanned;
         String salt;
+        Boolean isAdmin;
+        Boolean canBan;
+        Boolean canUnban;
+        Boolean hasTempPassword;
 
         public String Username 
         { 
@@ -35,7 +40,14 @@ namespace CS341GroupProject.Model
         public Boolean IsBanned
         {
             get { return isBanned; }
-            set { isBanned = value; }
+            set
+            {
+                if (isBanned != value)
+                {
+                    isBanned = value;
+                    OnPropertyChanged(nameof(isBanned));
+                }
+            }
         }
 
         public String Salt
@@ -44,12 +56,76 @@ namespace CS341GroupProject.Model
             set { salt = value; }
         }
 
-        public User(String username, String password, String email, Boolean isBanned) 
+        public Boolean IsAdmin
+        {
+            get { return isAdmin; }
+            set
+            {
+                if (isAdmin != value)
+                {
+                    isAdmin = value;
+                    OnPropertyChanged(nameof(isAdmin));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used for UserSearchPage to enable ban button for admin when user is selected
+        /// </summary>
+        public bool CanBan
+        {
+            get { return canBan; }
+            set
+            {
+                if (canBan != value)
+                {
+                    canBan = value;
+                    OnPropertyChanged(nameof(CanBan));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used for BannedUsersPage to enable ban button for admin when user is selected
+        /// </summary>
+        public bool CanUnban
+        {
+            get { return canUnban; }
+            set
+            {
+                if (canUnban != value)
+                {
+                    canUnban = value;
+                    OnPropertyChanged(nameof(CanUnban));
+                }
+            }
+        }
+
+        public Boolean HasTempPassword
+        {
+            get { return hasTempPassword; }
+            set
+            {
+                if (hasTempPassword != value)
+                {
+                    hasTempPassword = value;
+                    OnPropertyChanged(nameof(hasTempPassword));
+                }
+            }
+        }
+
+        public User(String username, String password, String email, Boolean isBanned, Boolean isAdmin, Boolean hasTempPassword) 
+            : this(username, password, email, isBanned, isAdmin)
+        {
+            HasTempPassword = hasTempPassword;
+        }
+        public User(String username, String password, String email, Boolean isBanned, Boolean isAdmin) 
         {
             Username = username;
             Password = password;
             Email = email;
             IsBanned = isBanned;
+            IsAdmin = isAdmin;
         }
         public User(String username, String password, String email, String salt)
         {
@@ -57,7 +133,18 @@ namespace CS341GroupProject.Model
             Password = password;
             Email = email;
             IsBanned = false;
+            IsAdmin = false;
             Salt = salt;
+            CanBan = false;
+            CanUnban = false;
+            HasTempPassword = false;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
