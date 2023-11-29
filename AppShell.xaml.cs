@@ -29,9 +29,6 @@ namespace CS341GroupProject
                 MauiProgram.BusinessLogic.DynamicSelectPosts(1);
                 //signal the ManualResetEvent that the posts have been loaded
                 PostsLoaded.Set();
-                Console.WriteLine("\n");
-                Console.WriteLine("Posts loaded");
-                Console.WriteLine("\n");
             });
 
 
