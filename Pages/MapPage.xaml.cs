@@ -14,11 +14,15 @@ public partial class MapPage : ContentPage
 
     public MapPage()
     {
-        Location location = new(Constants.MAP_STARTING_LATITUDE, Constants.MAP_STARTING_LONGITUDE); //NEED FIX -- have to change to get user location on startup instead of a default location
-        //Location location = GetCurrentLocation().Result;  //not working at all, crashes program after giving permission to use location services.
-        //Location location = Geolocation.GetLocationAsync().Result;
+        GenerateMapAsync();
+    }
+
+    private async void GenerateMapAsync()
+    {
+        Location location = await GetCurrentLocation();
 
         MapSpan mapSpan = new(location, 0.01, 0.01);
+
         Map map = new(mapSpan);
 
         PopulateMapWithPins(map);
@@ -26,47 +30,17 @@ public partial class MapPage : ContentPage
         Content = map;
     }
 
-    /// <summary>
-    /// Get the pins from DB and add to Map's internal collection of pins to display.
-    /// Sets the event behaviors for each pin on load.
-    /// </summary>
-    /// <param name="map"></param>
-    private void PopulateMapWithPins(Map map)
-    {
-        customPins = MauiProgram.BusinessLogic.CustomPins;
-
-        foreach (var pin in customPins)
-        {
-            //Sets the behavior for the event when a pin is tapped on the map
-            //pd.MarkerClicked += async (s, args) =>
-            //{
-            //    string plantName = $"Name: {pd.Genus} {pd.Epithet}";
-            //    await DisplayAlert("Pin Clicked", plantName, "Ok");
-            //};
-
-            //sets the behavior for the event when a pin's info window is tapped on the map
-            //Has to be set in the CS file for the page as ShowPopupAsync is from Page.
-            pin.InfoWindowClicked += async (s, args) =>
-            {
-                PlantDetailsPopup popup = new(pin);
-                await this.ShowPopupAsync(popup);
-            };
-
-            map.Pins.Add(pin);
-        }
-    }
-
-    public async Task<Location> GetCurrentLocation()
+    private async Task<Location> GetCurrentLocation()
     {
         try
         {
             _isCheckingLocation = true;
 
-            GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+            GeolocationRequest request = new(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
             _cancelTokenSource = new CancellationTokenSource();
 
-            Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token); //crashes here
+            Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
             if (location != null)
                 return location;
@@ -89,7 +63,31 @@ public partial class MapPage : ContentPage
         }
     }
 
-    public void CancelRequest()
+    /// <summary>
+    /// Get the pins from DB and add to Map's internal collection of pins to display.
+    /// Sets the event behaviors for each pin on load.
+    /// </summary>
+    /// <param name="map"></param>
+    private void PopulateMapWithPins(Map map)
+    {
+        customPins = MauiProgram.BusinessLogic.CustomPins;
+
+        foreach (var pin in customPins)
+        {
+            //sets the behavior for the event when a pin's info window is tapped on the map
+            //Has to be set in the CS file for the page as ShowPopupAsync is from Page.
+            pin.InfoWindowClicked += async (s, args) =>
+            {
+                PlantDetailsPopup popup = new(pin);
+                await this.ShowPopupAsync(popup);
+            };
+
+            map.Pins.Add(pin);
+        }
+    }
+
+    //Need to look into functionality further down the line to make sure Cancellation works properly.
+    private void CancelRequest()
     {
         if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
             _cancelTokenSource.Cancel();
