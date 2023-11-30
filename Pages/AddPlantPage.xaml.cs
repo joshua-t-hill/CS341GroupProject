@@ -6,6 +6,10 @@ public partial class AddPlantPage : ContentPage
 {
     private byte[] imageData = MauiProgram.BusinessLogic.TempImageData;
     private Boolean ResetNavigationStack;
+
+    //used for thread synchronization. (False indicates that we aren't signaling the event on creation)
+    public static ManualResetEvent FirstPageLoaded = new ManualResetEvent(false);
+
     public AddPlantPage()
 	{
         InitializeComponent();
@@ -95,6 +99,13 @@ public partial class AddPlantPage : ContentPage
             return;
         }
 
+        //Load first page of posts in background thread
+        _ = Task.Run(() =>
+        {
+            MauiProgram.BusinessLogic.DynamicSelectPosts(1);
+            //signal the ManualResetEvent that the posts have been loaded
+            FirstPageLoaded.Set();
+        });
         await DisplayAlert("", "Plant added!", "OK");
 
         

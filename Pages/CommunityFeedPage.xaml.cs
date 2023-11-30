@@ -4,7 +4,8 @@ using System.ComponentModel;
 namespace CS341GroupProject;
 public partial class CommunityFeedPage : ContentPage
 {
-    private ObservableCollection<Post> savePage;
+    private int numPosts;
+    private ObservableCollection<Post> _savePage;
     private ObservableCollection<Post> _currentPage;
     private ObservableCollection<Post> _previousPage;
     private ObservableCollection<Post> _nextPage;
@@ -50,6 +51,11 @@ public partial class CommunityFeedPage : ContentPage
         get { return _prevButtonEnabled; }
         set { _prevButtonEnabled = value; OnPropertyChanged(nameof(PrevButtonEnabled)); }
     }
+    public ObservableCollection<Post> SavePage
+    {
+        get { return _savePage; }
+        set { _savePage = value; OnPropertyChanged(nameof(SavePage)); }
+    }
     
     
 
@@ -62,11 +68,11 @@ public partial class CommunityFeedPage : ContentPage
         PreviousPage = new ObservableCollection<Post>();
         CurrentPage = new ObservableCollection<Post>();
         NextPage = new ObservableCollection<Post>();
-        savePage = new ObservableCollection<Post>();
+        SavePage = new ObservableCollection<Post>();
         PageNumber = 1;
         PrevButtonEnabled = false;
         NextButtonEnabled = true;
-        this.BindingContext = this;
+        
 
         //Wait for signal from the background thread that loads the first page of posts
         AppShell.PostsLoaded.WaitOne();
@@ -81,39 +87,50 @@ public partial class CommunityFeedPage : ContentPage
         //Start loading the next page 
         LoadNextPage(PageNumber);
 
-        
+        this.BindingContext = this;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 
-        //load saved page if it exists
-        if (savePage != null && savePage.Count > 0)
+        // Calculate the total number of pages
+        int currentNumPosts = MauiProgram.BusinessLogic.NumPosts;
+        TotalPages = (int)Math.Ceiling((double)currentNumPosts / Constants.POSTS_PER_PAGE);
+
+        if (numPosts != currentNumPosts && SavePage.Count > 0)
         {
-            //CurrentPage.Clear();
-            foreach (var post in savePage)
+            //wait for signal from the background thread that loads the first page of posts
+            AddPlantPage.FirstPageLoaded.WaitOne();
+
+            //Load first page of posts into the CurrentPage collection
+            var firstPage = MauiProgram.BusinessLogic.DynamicPosts;
+            foreach (var post in firstPage.Reverse())
             {
                 CurrentPage.Add(post);
             }
-            savePage.Clear();
-            
+            PrevButtonEnabled = false;
+            NextButtonEnabled = true;
+            numPosts = currentNumPosts;
+            PageNumber = 1;
+            PreviousPage.Clear();
+
+            //Start loading the next page 
+            LoadNextPage(PageNumber);
+
+        }
+        //load saved page if it exists
+        else if (SavePage != null && SavePage.Count > 0)
+        {
+            //CurrentPage.Clear();
+            foreach (var post in SavePage)
+            {
+                CurrentPage.Add(post);
+            }
+            SavePage.Clear();
+
         }
 
-        //update total number of pages
-        Task.Run(() =>
-        {
-            // Calculate the total number of pages
-            int totalPostsCount = MauiProgram.BusinessLogic.NumPosts;
-            totalPostsCount = (int)Math.Ceiling((double)totalPostsCount / Constants.POSTS_PER_PAGE);
-
-            // Update the UI on the main thread
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                TotalPages = totalPostsCount;
-                OnPropertyChanged(nameof(PageDisplay));
-            });
-        });
 
     }
 
@@ -123,7 +140,7 @@ public partial class CommunityFeedPage : ContentPage
 
         foreach (var post in CurrentPage)
         {
-            savePage.Add(post);
+            SavePage.Add(post);
         }
         CurrentPage.Clear();
         
