@@ -30,12 +30,12 @@ Sprint4 Changes:
 	~ Fixed another navigation "bug" where returning to the Camera tab after posting a plant would return the user to the same AddPlantPage as before. It now opens to the CameraPage.
 	+ Added column 'has_temp_password' to table 'users'
 	+ Added methods to allow users to reset their passwords with the help of an admin.
-	+ Added multithreading to load posts for better performance in CommunityFeedPage and Post.cs(From 10+ seconds for 10 posts to almost instant)
-	~ Refactored Post.cs for binding properties and to hold the actual image (major bottleneck FIXED)
+	+ Added multithreading to load posts for better performance in CommunityFeedPage and Post.cs(From 10+ seconds for 10 posts to almost instant) :) :) :)
+	~ Refactored Post.cs for binding properties and to hold the actual image (major bottleneck FIXED) :) :) :)
 	~ Refactored CommunityFeedPage to load page-by-page instead of all at once
 	+ Added ability to use location services on MapPage startup to open map on user's current location. :) :)
 	~ Made some layout changes to the PlantDetailPopup subpage to look closer to its final intended form. :)
-
+	+ Added some starter methods that add some post/plant data as pins on the map
 
 
 Sprint3 Changes:

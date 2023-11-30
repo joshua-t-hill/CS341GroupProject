@@ -255,6 +255,65 @@ public class Database : IDatabase
     }
 
     /// <summary>
+    /// Adds a pin to the map table in the database
+    /// </summary>
+    /// <param name="latitude"> Latitude of post </param>
+    /// <param name="longitude"> Longitude of post </param>
+    /// <param name="genus"> Plant genus of plant in post </param>
+    /// <param name="epithet"> Plant epithet / species of plant in post </param>
+    /// <returns> true if insertion succeeded, false otherwise </returns>
+    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = "INSERT INTO map (latitude, longitude, plant_genus, plant_specific_epithet) VALUES (@latitude, @longitude, @plant_genus, @plant_specific_epithet)";
+            cmd.Parameters.AddWithValue("latitude", latitude);
+            cmd.Parameters.AddWithValue("longitude", longitude);
+            cmd.Parameters.AddWithValue("plant_genus", genus);
+            cmd.Parameters.AddWithValue("plant_specific_epithet", epithet);
+            cmd.ExecuteNonQuery();
+            SelectAllMapPins();
+        }
+        catch (Npgsql.PostgresException pe)
+        {
+            Console.WriteLine("Insert failed, {0}", pe);
+            return false;
+        }
+        return true;
+    }
+    /// <summary>
+    /// Gets the pin id for a specific post at given latitude and longitude
+    /// </summary>
+    /// <param name="latitude"> Latitude of post </param>
+    /// <param name="longitude"> Longitude of post </param>
+    /// <param name="genus"> Plant genus of plant in post </param>
+    /// <param name="epithet"> Plant epithet/species of plant in post </param>
+    /// <returns> unique id given to a map pin in the database </returns>
+    public long GetPinId(Double latitude, Double longitude, String genus, String epithet)
+    {
+        var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = ("SELECT id FROM map WHERE latitude = @latitude AND longitude = @longitude AND plant_genus = @plant_genus AND plant_specific_epithet = @plant_specific_epithet");
+        cmd.Parameters.AddWithValue("latitude", latitude);
+        cmd.Parameters.AddWithValue("longitude", longitude);
+        cmd.Parameters.AddWithValue("plant_genus", genus);
+        cmd.Parameters.AddWithValue("plant_specific_epithet", epithet);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            long id = reader.GetInt64(0);
+            return id;
+        }
+        return -1;
+    }
+
+    /// <summary>
     /// Updates the ObservableCollection photos with data from the datebase
     /// </summary>
     /// <returns> collection of all photos in the database </returns>

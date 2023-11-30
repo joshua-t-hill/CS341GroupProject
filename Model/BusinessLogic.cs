@@ -189,4 +189,55 @@ public class BusinessLogic : IBusinessLogic
     {
         return Database.InsertPost(username, genus, species, notes, photoId);
     }
+
+    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet)
+    {
+        return Database.InsertPin(latitude, longitude, genus, epithet);
+    }
+    public long GetPinId(Double latitude, Double longitude, String genus, String epithet)
+    {
+        return Database.GetPinId(latitude, longitude, genus, epithet);
+    }
+
+    private CancellationTokenSource _cancelTokenSource;
+    private bool _isCheckingLocation;
+    public async Task<Location> GetCurrentLocation()
+    {
+        try
+        {
+            _isCheckingLocation = true;
+
+            GeolocationRequest request = new(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+
+            _cancelTokenSource = new CancellationTokenSource();
+
+            Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+
+            if (location != null)
+                return location;
+            else
+                return new(Constants.MAP_STARTING_LATITUDE, Constants.MAP_STARTING_LONGITUDE); //Else return default location (UW Oshkosh near Halsey)
+        }
+        // Catch one of the following exceptions:
+        //   FeatureNotSupportedException
+        //   FeatureNotEnabledException
+        //   PermissionException
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            CancelRequest(); //An error occurred, cancel request for location
+            return new(Constants.MAP_STARTING_LATITUDE, Constants.MAP_STARTING_LONGITUDE); //return default location (UW Oshkosh near Halsey)
+        }
+        finally
+        {
+            _isCheckingLocation = false;
+        }
+    }
+
+    //Need to look into functionality further down the line to make sure Cancellation works properly.
+    private void CancelRequest()
+    {
+        if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
+            _cancelTokenSource.Cancel();
+    }
 }

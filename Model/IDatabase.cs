@@ -15,6 +15,9 @@ public interface IDatabase
     public UserUpdateError UpdateUser(User user, User newInfo);
     public Boolean UpdateUserPassword(User user, String hashedPassword, Boolean tempPassword);
 
+    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet);
+    public long GetPinId(Double latitude, Double longitude, String genus, String epithet);
+
     public User SelectUser(String username);
     public Boolean InsertPhoto(byte[] imageData);
     public Photo SelectPhoto(byte[] imageData);

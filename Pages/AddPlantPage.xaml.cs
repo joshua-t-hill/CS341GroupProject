@@ -70,6 +70,21 @@ public partial class AddPlantPage : ContentPage
             await Shell.Current.GoToAsync("//Camera");
         }
 
+        Location location = await MauiProgram.BusinessLogic.GetCurrentLocation();
+        Double latitude = location.Latitude;
+        Double longitude = location.Longitude;
+        // if the id is -1, the post does not have a valid location (handle later)
+        long pin_id = -1;
+        if (location != null)
+        {
+            Boolean pinInserted = MauiProgram.BusinessLogic.InsertPin(latitude, longitude, GenusENT.Text, SpeciesENT.Text);
+            if (pinInserted)
+            {
+                // pin id will eventually be added into Post objects (if time permits)
+                pin_id = MauiProgram.BusinessLogic.GetPinId(location.Latitude, location.Longitude, GenusENT.Text, SpeciesENT.Text);
+            }
+        }
+
         // Add the post to the database
         String username = SecureStorage.GetAsync("username").Result;
         Boolean success = MauiProgram.BusinessLogic.InsertPost(username, GenusENT.Text, SpeciesENT.Text, NotesENT.Text, newPhoto.Id);
@@ -87,4 +102,5 @@ public partial class AddPlantPage : ContentPage
         await Shell.Current.GoToAsync("///CommunityFeed");
 
     }
+
 }
