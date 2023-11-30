@@ -11,6 +11,13 @@
         Padding="30,0"
         VerticalOptions="Center">
 
+        <Label
+        Text="PlantPlottr"
+        HorizontalOptions="CenterAndExpand"
+        FontAttributes="Bold"
+        FontSize="Title"
+        Scale="2" />
+
         <Image
         Source="app_icon.png"
         HeightRequest="200"
