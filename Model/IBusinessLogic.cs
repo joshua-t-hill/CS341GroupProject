@@ -7,6 +7,7 @@ public interface IBusinessLogic
     public ObservableCollection<PinData> CustomPins { get; }
     public ObservableCollection<Post> DynamicPosts { get; }
     public int NumPosts { get; }
+    public Boolean JustAddedPost { get; set; }
     public bool IsAdmin { get; set; }
     public byte[] TempImageData { get; set; }
 

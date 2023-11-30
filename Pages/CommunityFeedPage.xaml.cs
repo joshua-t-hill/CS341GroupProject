@@ -97,9 +97,10 @@ public partial class CommunityFeedPage : ContentPage
         // Calculate the total number of pages
         int currentNumPosts = MauiProgram.BusinessLogic.NumPosts;
         TotalPages = (int)Math.Ceiling((double)currentNumPosts / Constants.POSTS_PER_PAGE);
-
-        if (numPosts != currentNumPosts && SavePage.Count > 0)
+        
+        if (MauiProgram.BusinessLogic.JustAddedPost)
         {
+            MauiProgram.BusinessLogic.JustAddedPost = false;
             //wait for signal from the background thread that loads the first page of posts
             AddPlantPage.FirstPageLoaded.WaitOne();
 
@@ -206,7 +207,7 @@ public partial class CommunityFeedPage : ContentPage
     }
 
 
-    private void LoadNextPage(int basePage)
+    private async void LoadNextPage(int basePage)
     {
         if (PageNumber == TotalPages) { NextPage.Clear();  return; }
         // User must wait for pages to load when navigating to a new page
@@ -216,14 +217,14 @@ public partial class CommunityFeedPage : ContentPage
         NextButtonEnabled = false;
 
         // Wait for any other page loading to finish, then reset the event and start loading the next page
-        Task.Run(() =>
+        await Task.Run(() =>
         {
             PageLoadingEvent.WaitOne();
             PageLoadingEvent.Reset();
             var nextPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage + 1);
             
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
+            //MainThread.BeginInvokeOnMainThread(() =>
+            //{
                 NextPage.Clear();
                 foreach (var post in nextPagePosts.Reverse())
                 {
@@ -236,13 +237,13 @@ public partial class CommunityFeedPage : ContentPage
                 //load previous button states
                 PrevButtonEnabled = savePrevButton;
                 NextButtonEnabled = saveNextButton;
-            });
+            //});
         });
 
     }
 
     
-    private void LoadPreviousPage(int basePage)
+    private async void LoadPreviousPage(int basePage)
     {
         if (PageNumber == 1) { PreviousPage.Clear();  return; }
         // User must wait for pages to load when navigating to a new page
@@ -252,14 +253,14 @@ public partial class CommunityFeedPage : ContentPage
         NextButtonEnabled = false;
 
         // Wait for any other page loading to finish, then reset the event and start loading the previous page
-        Task.Run(() =>
+        await Task.Run(() =>
         {
             PageLoadingEvent.WaitOne();
             PageLoadingEvent.Reset();
             var previousPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage - 1);
 
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
+            //MainThread.BeginInvokeOnMainThread(() =>
+            //{
                 PreviousPage.Clear();
                 foreach (var post in previousPagePosts.Reverse())
                 {
@@ -272,7 +273,7 @@ public partial class CommunityFeedPage : ContentPage
                 //load previous button states
                 PrevButtonEnabled = savePrevButton;
                 NextButtonEnabled = saveNextButton;
-            });
+            //});
         });
     }
 

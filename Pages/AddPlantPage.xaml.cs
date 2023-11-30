@@ -99,6 +99,8 @@ public partial class AddPlantPage : ContentPage
             return;
         }
 
+        //indicate that this user has just posted, so FeedPage can load properly
+        MauiProgram.BusinessLogic.JustAddedPost = true;
         //Load first page of posts in background thread
         _ = Task.Run(() =>
         {

@@ -10,6 +10,7 @@ public class BusinessLogic : IBusinessLogic
     public BusinessLogic() 
     {
         Database = new Database();
+        JustAddedPost = false;
     }
 
     //Remember if the current user is an admin so we can display the admin tab
@@ -22,9 +23,10 @@ public class BusinessLogic : IBusinessLogic
     public ObservableCollection<User> Users { get { return Database.SelectAllUsers(); } }
     public ObservableCollection<PinData> CustomPins { get { return Database.SelectAllMapPins(); } }
 
-    //used to return the currently loaded specific page of posts (mainly for preloading the first page)
+    //Deals with FeedPage Posts
     public ObservableCollection<Post> DynamicPosts { get { return Database.DynamicPosts; } }
     public int NumPosts { get { return Database.GetTotalPostsCount(); } }
+    public Boolean JustAddedPost { get; set; }
     
     
     /// <summary>
