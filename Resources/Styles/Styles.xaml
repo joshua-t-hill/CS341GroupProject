@@ -2,13 +2,14 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
     </Style>
 
-    <Style TargetType="IndicatorView">
+    <Style TargetType="IndicatorView"> <!-- not used right now -->
         <Setter Property="IndicatorColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}"/>
         <Setter Property="SelectedIndicatorColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray100}}"/>
     </Style>
@@ -25,7 +26,10 @@
 
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Primary}}" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource White}}" />
+        <!-- "{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" /> -->
+
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="CornerRadius" Value="8"/>
@@ -391,17 +395,21 @@
 
     <Style TargetType="NavigationPage">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" /> <!--Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />-->
         <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
     </Style>
 
     <Style TargetType="TabBar">
         <Setter Property="Shell.TabBarBackgroundColor"
-            Value="Purple" />
+            Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" /> <!--Value="Purple" />-->
         <Setter Property="Shell.TabBarTitleColor"
             Value="AntiqueWhite" />
         <Setter Property="Shell.TabBarUnselectedColor"
-            Value="Black" />
+            Value="{AppThemeBinding Light={StaticResource LightModeText}, Dark={StaticResource White}}" /> <!--Value="Black" />-->
+    </Style>
+
+    <Style TargetType="toolkit:Popup">
+        <!--<Setter Property="Size" Value="100,100"/>-->
     </Style>
 
 </ResourceDictionary>

@@ -9,8 +9,8 @@
 
         <!-- List of Admin Options -->
         <StackLayout Grid.Row="1" Spacing="20">
-            <Button x:Name="SearchUserButton" Text="Search Users" BackgroundColor="LightBlue" TextColor="White" HeightRequest="50" CornerRadius="10" Clicked="OnSearchClickedAsync" />
-            <Button x:Name="BannedUserButton" Text="Banned Users" BackgroundColor="LightBlue" TextColor="White" HeightRequest="50" CornerRadius="10" Clicked="OnBanListClickedAsync"/>
+            <Button x:Name="SearchUserButton" Text="Search Users" HeightRequest="50" CornerRadius="10" Clicked="OnSearchClickedAsync" />
+            <Button x:Name="BannedUserButton" Text="Banned Users" HeightRequest="50" CornerRadius="10" Clicked="OnBanListClickedAsync"/>
         </StackLayout>
 
     </Grid>

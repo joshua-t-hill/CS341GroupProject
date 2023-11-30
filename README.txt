@@ -14,7 +14,7 @@ Resource Attribution:
 Sprint 4 Promised Tasks:
 	1. FeedTab - connect page to database table									STATUS: COMPLETE	INFO:
 	2. Customize Style sheet for application; decide on primary and secondary 
-		colors for buttons, pages, popups, etc.									STATUS:				INFO: 
+		colors for buttons, pages, popups, etc.									STATUS: PARTIAL		INFO: knowing what I know now, it would have been good to decide on a color scheme earlier to hook into new pages as we went along; didn't get everything yet.
 	3. MapPage - add permissions for specific location; auto-populate map 
 		starting location w/ user location										STATUS: COMPLETE	INFO:
 	4. Fix navigation bugs with app shell										STATUS: COMPLETE	INFO:
@@ -36,6 +36,8 @@ Sprint4 Changes:
 	+ Added ability to use location services on MapPage startup to open map on user's current location. :) :)
 	~ Made some layout changes to the PlantDetailPopup subpage to look closer to its final intended form. :)
 	+ Added some starter methods that add some post/plant data as pins on the map
+	+ Added app name to Login page (PlantPlottr) :)
+	+ Added some color and style changes (not necessarily the final scheme) :)
 
 
 Sprint3 Changes:
