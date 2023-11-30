@@ -13,7 +13,7 @@
             <!-- Paging -->
             <Grid Padding="2" RowDefinitions="Auto" ColumnDefinitions="*,Auto,*">
                 <Button Text="&#8592;" Grid.Column="0" Clicked="OnPreviousClicked" IsEnabled="{Binding PrevButtonEnabled}" HorizontalOptions="End"/>
-                <Label Text="{Binding PageDisplay}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                <Label Text="{Binding PageDisplay}" FontSize="25" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
                 <Button Text="&#8594;" Grid.Column="2" Clicked="OnNextClicked" IsEnabled="{Binding NextButtonEnabled}" HorizontalOptions="Start"/>
             </Grid>
 
@@ -45,7 +45,7 @@
             <!-- Paging -->
             <Grid Padding="2" RowDefinitions="Auto" ColumnDefinitions="*,Auto,*">
                 <Button Text="&#8592;" Grid.Column="0" Clicked="OnPreviousClicked" IsEnabled="{Binding PrevButtonEnabled}" HorizontalOptions="End"/>
-                <Label Text="{Binding PageDisplay}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                <Label Text="{Binding PageDisplay}" FontSize="25" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
                 <Button Text="&#8594;" Grid.Column="2" Clicked="OnNextClicked" IsEnabled="{Binding NextButtonEnabled}" HorizontalOptions="Start"/>
             </Grid>
 

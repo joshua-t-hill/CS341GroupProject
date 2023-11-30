@@ -154,14 +154,12 @@ public partial class CommunityFeedPage : ContentPage
         PageNumber++;
         
 
-        // move CurrentPage to PreviousPage
+        // Swap pages (PreviousPage <- CurrentPage <- NextPage)
         PreviousPage.Clear();
         foreach (var post in CurrentPage)
         {
             PreviousPage.Add(post);
         }
-
-        // move NextPage to CurrentPage
         CurrentPage.Clear();
         foreach (var post in NextPage)
         {
@@ -183,14 +181,12 @@ public partial class CommunityFeedPage : ContentPage
         PageNumber--;
         
 
-        // move CurrentPage to NextPage
+        // Swap pages (PreviousPage -> CurrentPage -> NextPage)
         NextPage.Clear();
         foreach (var post in CurrentPage)
         {
             NextPage.Add(post);
         }
-
-        // move PreviousPage to CurrentPage
         CurrentPage.Clear();
         foreach (var post in PreviousPage)
         {
