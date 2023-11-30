@@ -10,13 +10,16 @@ public partial class MapPage : ContentPage
 {
     private ObservableCollection<PinData> customPins;
     private CancellationTokenSource _cancelTokenSource;
-    private bool _isCheckingLocation;
+    private bool _isCheckingLocation; //unused for now
 
     public MapPage()
     {
         GenerateMapAsync();
     }
 
+    /// <summary>
+    /// All the work that needs to be done to properly load the Google map into the MapPage.
+    /// </summary>
     private async void GenerateMapAsync()
     {
         Location location = await GetCurrentLocation();
@@ -30,11 +33,16 @@ public partial class MapPage : ContentPage
         Content = map;
     }
 
+    /// <summary>
+    /// Leverage phone GPS functionality to get user's current location as the map's initial focus area.
+    /// Largely copied from the .NET MAUI documentation; will make more app-specific adjustments later and possibly move to its own BusinessLogic file later.
+    /// </summary>
+    /// <returns> An asynchronous task of type Location; the location map will open on </returns>
     private async Task<Location> GetCurrentLocation()
     {
         try
         {
-            _isCheckingLocation = true;
+            _isCheckingLocation = true; //unused for now
 
             GeolocationRequest request = new(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
@@ -59,7 +67,7 @@ public partial class MapPage : ContentPage
         }
         finally
         {
-            _isCheckingLocation = false;
+            _isCheckingLocation = false; //unused for now
         }
     }
 
@@ -67,7 +75,7 @@ public partial class MapPage : ContentPage
     /// Get the pins from DB and add to Map's internal collection of pins to display.
     /// Sets the event behaviors for each pin on load.
     /// </summary>
-    /// <param name="map"></param>
+    /// <param name="map"> the map that will be displayed on page </param>
     private void PopulateMapWithPins(Map map)
     {
         customPins = MauiProgram.BusinessLogic.CustomPins;
@@ -75,7 +83,7 @@ public partial class MapPage : ContentPage
         foreach (var pin in customPins)
         {
             //sets the behavior for the event when a pin's info window is tapped on the map
-            //Has to be set in the CS file for the page as ShowPopupAsync is from Page.
+            //Has to be set in the CS file for the page as ShowPopupAsync is from Page class.
             pin.InfoWindowClicked += async (s, args) =>
             {
                 PlantDetailsPopup popup = new(pin);
@@ -86,7 +94,7 @@ public partial class MapPage : ContentPage
         }
     }
 
-    //Need to look into functionality further down the line to make sure Cancellation works properly.
+    //Need to look into functionality further down the line to make sure Cancellation works properly in different scenarios.
     private void CancelRequest()
     {
         if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)

@@ -22,6 +22,8 @@ Sprint4 Changes:
 	+ Added multithreading to load posts for better performance in CommunityFeedPage and Post.cs(From 10+ seconds for 10 posts to almost instant)
 	~ Refactored Post.cs for binding properties and to hold the actual image (major bottleneck FIXED)
 	~ Refactored CommunityFeedPage to load page-by-page instead of all at once
+	+ Added ability to use location services on MapPage startup to open map on user's current location. :) :)
+	~ Made some layout changes to the PlantDetailPopup subpage to look closer to its final intended form. :)
 
 
 

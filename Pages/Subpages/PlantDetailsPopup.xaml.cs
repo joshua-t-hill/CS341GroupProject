@@ -11,4 +11,8 @@ public partial class PlantDetailsPopup : Popup
         BindingContext = pin;
     }
 
+    private void OnCloseClicked(object sender, EventArgs e)
+    {
+        Close();
+    }
 }
