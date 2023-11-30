@@ -11,6 +11,17 @@ Resource Attribution:
 	admintabicon.png	--> <a href="https://www.flaticon.com/free-icons/gear-cog" title="gear cog icons">Gear cog icons created by tuktukdesign - Flaticon</a>
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
+Sprint 4 Promised Tasks:
+	1. FeedTab - connect page to database table									STATUS: COMPLETE	INFO:
+	2. Customize Style sheet for application; decide on primary and secondary 
+		colors for buttons, pages, popups, etc.									STATUS:				INFO: 
+	3. MapPage - add permissions for specific location; auto-populate map 
+		starting location w/ user location										STATUS: COMPLETE	INFO:
+	4. Fix navigation bugs with app shell										STATUS: COMPLETE	INFO:
+	5. Add functionality for password resest									STATUS: COMPLETE	INFO:
+	6. Pick a name for the app													STATUS: COMPLETE	INFO: PlantPlottr
+	7. Test all functionality and add comments to non-obvious blocks of code	STATUS: COMPLETE	INFO:
+
 Sprint4 Changes:
 	~ Fixed Navigation bugs from Sprint3 :) :)
 	~ Feed page now displays data from the database (user photos!) :) :)
