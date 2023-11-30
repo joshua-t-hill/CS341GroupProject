@@ -9,7 +9,7 @@ public partial class CommunityFeedPage : ContentPage
     private ObservableCollection<Post> _previousPage;
     private ObservableCollection<Post> _nextPage;
     private int _pageNumber;
-    private int _totalPages;
+    private int _totalPages; 
     private Boolean _nextButtonEnabled;
     private Boolean _prevButtonEnabled;
 
@@ -87,15 +87,19 @@ public partial class CommunityFeedPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+
+        //load saved page if it exists
         if (savePage != null && savePage.Count > 0)
         {
-            CurrentPage.Clear();
+            //CurrentPage.Clear();
             foreach (var post in savePage)
             {
                 CurrentPage.Add(post);
             }
             savePage.Clear();
+            
         }
+
         //update total number of pages
         Task.Run(() =>
         {
@@ -116,21 +120,22 @@ public partial class CommunityFeedPage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+
         foreach (var post in CurrentPage)
         {
             savePage.Add(post);
         }
+        CurrentPage.Clear();
+        
     }
 
     public void OnNextClicked(object sender, EventArgs e)
     {
         // Base case: if at last page, do nothing
         if (PageNumber == TotalPages) { return; }
-
-        //set prev button to enable if it was disabled then increment page number, then disable next button if at last page
-        if (PageNumber == 1) { PrevButtonEnabled = true; }
         PageNumber++;
-        if (PageNumber == TotalPages) { NextButtonEnabled = false; }
+        
+
         // move CurrentPage to PreviousPage
         PreviousPage.Clear();
         foreach (var post in CurrentPage)
@@ -145,6 +150,10 @@ public partial class CommunityFeedPage : ContentPage
             CurrentPage.Add(post);
         }
 
+        //set button states
+        if (PageNumber - 1 >= 1) { PrevButtonEnabled = true; }
+        if (PageNumber == TotalPages) { NextButtonEnabled = false; }
+
         // Load the new next page
         LoadNextPage(PageNumber);
     }
@@ -153,11 +162,8 @@ public partial class CommunityFeedPage : ContentPage
     {
         // Base case: if at first page, do nothing
         if (PageNumber == 1) { return; }
-        
-        // set next button to enable if it was disabled then decrement page number, then disable prev button if at first page
-        if (PageNumber == TotalPages) { NextButtonEnabled = true; }
         PageNumber--;
-        if (PageNumber == 1) { PrevButtonEnabled = false;}
+        
 
         // move CurrentPage to NextPage
         NextPage.Clear();
@@ -173,13 +179,19 @@ public partial class CommunityFeedPage : ContentPage
             CurrentPage.Add(post);
         }
 
+        //set button states
+        if (PageNumber + 1 == TotalPages) { NextButtonEnabled = true; }
+        if (PageNumber == 1) { PrevButtonEnabled = false; }
+
         // Load the new next page
         LoadPreviousPage(PageNumber);
+        
     }
 
 
     private void LoadNextPage(int basePage)
     {
+        if (PageNumber == TotalPages) { NextPage.Clear();  return; }
         // User must wait for pages to load when navigating to a new page
         Boolean savePrevButton = PrevButtonEnabled;
         Boolean saveNextButton = NextButtonEnabled;
@@ -212,11 +224,10 @@ public partial class CommunityFeedPage : ContentPage
 
     }
 
-    /// <summary>
-    /// Will mainly be used for backwards navigation or jumping to a specific page.
-    /// </summary>
+    
     private void LoadPreviousPage(int basePage)
     {
+        if (PageNumber == 1) { PreviousPage.Clear();  return; }
         // User must wait for pages to load when navigating to a new page
         Boolean savePrevButton = PrevButtonEnabled;
         Boolean saveNextButton = NextButtonEnabled;
