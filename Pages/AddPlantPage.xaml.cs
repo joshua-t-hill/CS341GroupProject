@@ -81,7 +81,7 @@ public partial class AddPlantPage : ContentPage
         long pin_id = -1;
         if (location != null)
         {
-            Boolean pinInserted = MauiProgram.BusinessLogic.InsertPin(latitude, longitude, GenusENT.Text, SpeciesENT.Text);
+            Boolean pinInserted = MauiProgram.BusinessLogic.InsertPin(latitude, longitude, GenusENT.Text, SpeciesENT.Text, newPhoto.Id);
             if (pinInserted)
             {
                 // pin id will eventually be added into Post objects (if time permits)

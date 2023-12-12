@@ -192,9 +192,9 @@ public class BusinessLogic : IBusinessLogic
         return Database.InsertPost(username, genus, species, notes, photoId);
     }
 
-    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet)
+    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet, Guid photoId)
     {
-        return Database.InsertPin(latitude, longitude, genus, epithet);
+        return Database.InsertPin(latitude, longitude, genus, epithet, photoId);
     }
     public long GetPinId(Double latitude, Double longitude, String genus, String epithet)
     {

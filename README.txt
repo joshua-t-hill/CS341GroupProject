@@ -11,6 +11,9 @@ Resource Attribution:
 	admintabicon.png	--> <a href="https://www.flaticon.com/free-icons/gear-cog" title="gear cog icons">Gear cog icons created by tuktukdesign - Flaticon</a>
 	app_icon.png		--> <a href="https://www.flaticon.com/free-icons/hobbies-and-free-time" title="hobbies and free time icons">Hobbies and free time icons created by Vichanon Chaimsuk - Flaticon</a>
 
+Sprint5 Changes:
+	~ Modified the PlantDetailsPopup and related methods to allow for plant photos to show in the popup window of each pin :) :)
+
 Sprint 4 Promised Tasks:
 	1. FeedTab - connect page to database table									STATUS: COMPLETE	INFO:
 	2. Customize Style sheet for application; decide on primary and secondary 

@@ -26,7 +26,7 @@ public interface IBusinessLogic
     public Photo SelectPhoto(Guid photoId);
     public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId);
 
-    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet);
+    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet, Guid photoId);
     public long GetPinId(Double latitude, Double longitude, String genus, String epithet);
 
     public Task<Location> GetCurrentLocation();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls.Maps;
 using Npgsql;
+using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace CS341GroupProject.Model;
 public class Database : IDatabase
@@ -238,8 +239,9 @@ public class Database : IDatabase
             double longitude = reader.GetDouble(2);
             string genus = reader.GetString(3);
             string epithet = reader.GetString(4);
+            Guid photoId = reader.GetGuid(5);
 
-            PinData pin = new(id, latitude, longitude, genus, epithet)
+            PinData pin = new(id, latitude, longitude, genus, epithet, photoId)
             {
                 //Label = id.ToString(),
                 Label = "Username Placeholder",
@@ -262,7 +264,7 @@ public class Database : IDatabase
     /// <param name="genus"> Plant genus of plant in post </param>
     /// <param name="epithet"> Plant epithet / species of plant in post </param>
     /// <returns> true if insertion succeeded, false otherwise </returns>
-    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet)
+    public Boolean InsertPin(Double latitude, Double longitude, String genus, String epithet, Guid photoId)
     {
         try
         {
@@ -270,11 +272,12 @@ public class Database : IDatabase
             conn.Open();
             var cmd = new NpgsqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "INSERT INTO map (latitude, longitude, plant_genus, plant_specific_epithet) VALUES (@latitude, @longitude, @plant_genus, @plant_specific_epithet)";
+            cmd.CommandText = "INSERT INTO map (latitude, longitude, plant_genus, plant_specific_epithet, photo_id) VALUES (@latitude, @longitude, @plant_genus, @plant_specific_epithet, @photo_id)";
             cmd.Parameters.AddWithValue("latitude", latitude);
             cmd.Parameters.AddWithValue("longitude", longitude);
             cmd.Parameters.AddWithValue("plant_genus", genus);
             cmd.Parameters.AddWithValue("plant_specific_epithet", epithet);
+            cmd.Parameters.AddWithValue("photo_id", photoId);
             cmd.ExecuteNonQuery();
             SelectAllMapPins();
         }

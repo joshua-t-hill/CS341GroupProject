@@ -9,7 +9,7 @@
     <VerticalStackLayout Padding="10">
         <ScrollView Orientation="Vertical" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" Padding="2">
             <VerticalStackLayout>
-                <Image Source="amelanchier_arborea.webp"/>
+                <Image Source="{Binding Photo}"/>
                 <Label Text="Scientific Name:" HorizontalTextAlignment="Start" TextDecorations="Underline" Padding="2"/>
                 <Label HorizontalTextAlignment="Start" Padding="2">
                     <Label.FormattedText>
