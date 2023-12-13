@@ -13,6 +13,7 @@ Resource Attribution:
 
 Sprint5 Changes:
 	~ Modified the PlantDetailsPopup and related methods to allow for plant photos to show in the popup window of each pin :) :)
+	~ CommunityFeed now shows notes for each post :)
 
 Sprint 4 Promised Tasks:
 	1. FeedTab - connect page to database table									STATUS: COMPLETE	INFO:

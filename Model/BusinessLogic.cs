@@ -189,6 +189,10 @@ public class BusinessLogic : IBusinessLogic
     }
     public Boolean InsertPost(String username, String genus, String species, String notes, Guid photoId)
     {
+        if (notes == null)
+        {
+            notes = "";
+        }
         return Database.InsertPost(username, genus, species, notes, photoId);
     }
 

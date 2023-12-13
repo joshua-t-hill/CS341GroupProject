@@ -30,12 +30,13 @@
                                 Background="#E6E6E6"
                                 Padding="16,8"
                                 HorizontalOptions="Fill">
-                            <Grid Padding="10" RowDefinitions="10*,*,*" ColumnDefinitions="20*,2*,2*" VerticalOptions="Center">
+                            <Grid Padding="10" RowDefinitions="10*,*,*,Auto" ColumnDefinitions="20*,2*,2*" VerticalOptions="Center">
                                 <Image Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding Photo}" Aspect="Fill"/>
-                                <Label Grid.Row="1" Text="{Binding Username}" VerticalTextAlignment="Start"/>
-                                <Label Grid.Row="2" Text="{Binding Plant}" VerticalTextAlignment="Start"/>
-                                <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Source="pin.png" HeightRequest="25" WidthRequest="25"/>
-                                <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Source="comment.png" HeightRequest="25" WidthRequest="25" />
+                                <Label Grid.Row="1" Text="{Binding Username}" VerticalTextAlignment="Start" FontAttributes="Bold"/>
+                                <Label Grid.Row="2" Text="{Binding Plant}" VerticalTextAlignment="Start" FontAttributes="Italic"/>
+                                <Label Grid.Row="3" Text="{Binding Notes, StringFormat='{0:F1000}'}" VerticalOptions="StartAndExpand"/>
+                                <!-- Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Source="comment.png" HeightRequest="25" WidthRequest="25"/-->
+                                <ImageButton Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Source="pin.png" HeightRequest="25" WidthRequest="25"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
