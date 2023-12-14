@@ -15,7 +15,7 @@ namespace CS341GroupProject.Model
         Boolean isBanned;
         String salt;
         Boolean isAdmin;
-        Boolean canBan;
+        Boolean isSelected;
         Boolean canUnban;
         Boolean hasTempPassword;
 
@@ -72,15 +72,15 @@ namespace CS341GroupProject.Model
         /// <summary>
         /// Used for UserSearchPage to enable ban button for admin when user is selected
         /// </summary>
-        public bool CanBan
+        public bool IsSelected
         {
-            get { return canBan; }
+            get { return isSelected; }
             set
             {
-                if (canBan != value)
+                if (isSelected != value)
                 {
-                    canBan = value;
-                    OnPropertyChanged(nameof(CanBan));
+                    isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
                 }
             }
         }
@@ -135,7 +135,7 @@ namespace CS341GroupProject.Model
             IsBanned = false;
             IsAdmin = false;
             Salt = salt;
-            CanBan = false;
+            IsSelected = false;
             CanUnban = false;
             HasTempPassword = false;
         }

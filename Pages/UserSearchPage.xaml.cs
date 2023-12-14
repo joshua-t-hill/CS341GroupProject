@@ -64,10 +64,10 @@ namespace CS341GroupProject
             // Unselect the current item
             UsersCollectionView.SelectedItem = null;
             
-            // selectedUser is already set to previousUser, so we just set selecteduser to null and reset CanBan for previousUser
+            // selectedUser is already set to previousUser, so we just set selecteduser to null and reset IsSelected for previousUser
             selectedUser = null;
             if (previousUser != null) { 
-                previousUser.CanBan = false;
+                previousUser.IsSelected = false;
             }
         }
 
@@ -85,14 +85,14 @@ namespace CS341GroupProject
             selectedUser = e.CurrentSelection.FirstOrDefault() as User;
             if (selectedUser != null)
             {
-                // Reset the CanBan property for the previously selected user
+                // Reset the IsSelected property for the previously selected user
                 if (previousUser != null)
                 {
-                    previousUser.CanBan = false;
+                    previousUser.IsSelected = false;
                 }
 
                 // Enable ban for the selected user
-                selectedUser.CanBan = true;
+                selectedUser.IsSelected = true;
 
                 // Save the selected user as the previous user for when a different user is selected, we can set disable the ban button on this one
                 previousUser = selectedUser;
@@ -126,7 +126,7 @@ namespace CS341GroupProject
 
                     //reset variables to restore default state
                     UsersCollectionView.SelectedItem = null;
-                    selectedUser.CanBan = false;
+                    selectedUser.IsSelected = false;
                 }
             }
         } 
@@ -157,7 +157,7 @@ namespace CS341GroupProject
 
                     //reset variables to restore default state
                     UsersCollectionView.SelectedItem = null;
-                    selectedUser.CanBan = false;
+                    selectedUser.IsSelected = false;
                 }
             }
         }
