@@ -19,7 +19,7 @@
            TextChanged="OnSearchTextChanged"
            Focused="OnSearchBarFocused"/>
 
-        <CollectionView x:Name="UsersCollectionView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding FilteredUsers}" SelectionChanged="OnUserSelected">
+        <CollectionView x:Name="UsersCollectionView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding FilteredUsers}" SelectionChanged="OnUserSelected" >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10">
@@ -29,7 +29,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Text="{Binding Username}" VerticalOptions="Center" />
-                        <Button Grid.Column="1" Text="Ban" IsEnabled="{Binding IsSelected}" CommandParameter="{Binding .}" Clicked="OnBanButtonClicked"/>
+                        <Button Grid.Column="1" Text="Ban" IsEnabled="{Binding IsSelected}" CommandParameter="{Binding .}" Clicked="OnBanButtonClicked" Margin="4"/>
                         <Button Grid.Column="2" Text="Reset Password" IsEnabled ="{Binding IsSelected}" Clicked="OnResetPasswordButtonClicked"/>
                     </Grid>
                 </DataTemplate>
