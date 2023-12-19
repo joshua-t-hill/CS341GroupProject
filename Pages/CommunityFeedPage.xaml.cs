@@ -85,7 +85,13 @@ public partial class CommunityFeedPage : ContentPage
         }
 
         //Start loading the next page 
-        LoadNextPage(PageNumber);
+        Boolean savePrevButton = PrevButtonEnabled;
+        Boolean saveNextButton = NextButtonEnabled;
+        PrevButtonEnabled = false;
+        NextButtonEnabled = false;
+        PageLoadingEvent.WaitOne();
+        PageLoadingEvent.Reset();
+        LoadPage(PageNumber, 1, savePrevButton, saveNextButton);
 
         this.BindingContext = this;
     }
@@ -116,8 +122,14 @@ public partial class CommunityFeedPage : ContentPage
             PageNumber = 1;
             PreviousPage.Clear();
 
-            //Start loading the next page 
-            LoadNextPage(PageNumber);
+            //Start loading the next page
+            Boolean savePrevButton = PrevButtonEnabled;
+            Boolean saveNextButton = NextButtonEnabled;
+            PrevButtonEnabled = false;
+            NextButtonEnabled = false;
+            PageLoadingEvent.WaitOne();
+            PageLoadingEvent.Reset();
+            LoadPage(PageNumber, 1, savePrevButton, saveNextButton);
 
         }
         //load saved page if it exists
@@ -151,8 +163,21 @@ public partial class CommunityFeedPage : ContentPage
     {
         // Base case: if at last page, do nothing
         if (PageNumber == TotalPages) { return; }
-        PageNumber++;
-        
+
+        //set button states
+        ++PageNumber;
+        if (PageNumber > 1) { PrevButtonEnabled = true; }
+        if (PageNumber == TotalPages) { NextButtonEnabled = false; }
+
+        // Save button states
+        Boolean savePrevButton = PrevButtonEnabled;
+        Boolean saveNextButton = NextButtonEnabled;
+        PrevButtonEnabled = false;
+        NextButtonEnabled = false;
+
+        //await loading of other pages
+        PageLoadingEvent.WaitOne();
+        PageLoadingEvent.Reset();
 
         // Swap pages (PreviousPage <- CurrentPage <- NextPage)
         PreviousPage.Clear();
@@ -166,20 +191,29 @@ public partial class CommunityFeedPage : ContentPage
             CurrentPage.Add(post);
         }
 
-        //set button states
-        if (PageNumber - 1 >= 1) { PrevButtonEnabled = true; }
-        if (PageNumber == TotalPages) { NextButtonEnabled = false; }
-
         // Load the new next page
-        LoadNextPage(PageNumber);
+        LoadPage(PageNumber, 1, savePrevButton, saveNextButton);
     }
 
     public void OnPreviousClicked(object sender, EventArgs e)
     {
         // Base case: if at first page, do nothing
         if (PageNumber == 1) { return; }
-        PageNumber--;
-        
+
+        //set button states
+        --PageNumber;
+        if (PageNumber < TotalPages) { NextButtonEnabled = true; }
+        if (PageNumber == 1) { PrevButtonEnabled = false; }
+
+        // save button states
+        Boolean savePrevButton = PrevButtonEnabled;
+        Boolean saveNextButton = NextButtonEnabled;
+        PrevButtonEnabled = false;
+        NextButtonEnabled = false;
+
+        //await loading of other pages
+        PageLoadingEvent.WaitOne();
+        PageLoadingEvent.Reset();
 
         // Swap pages (PreviousPage -> CurrentPage -> NextPage)
         NextPage.Clear();
@@ -193,84 +227,76 @@ public partial class CommunityFeedPage : ContentPage
             CurrentPage.Add(post);
         }
 
-        //set button states
-        if (PageNumber + 1 == TotalPages) { NextButtonEnabled = true; }
-        if (PageNumber == 1) { PrevButtonEnabled = false; }
+        
 
         // Load the new next page
-        LoadPreviousPage(PageNumber);
+        LoadPage(PageNumber, -1, savePrevButton, saveNextButton);
         
     }
 
 
-    private async void LoadNextPage(int basePage)
+    private async void LoadPage(int basePage, int direction, bool savePrevButton, bool saveNextButton)
     {
-        if (PageNumber == TotalPages) { NextPage.Clear();  return; }
-        // User must wait for pages to load when navigating to a new page
-        Boolean savePrevButton = PrevButtonEnabled;
-        Boolean saveNextButton = NextButtonEnabled;
-        PrevButtonEnabled = false;
-        NextButtonEnabled = false;
+        
 
         // Wait for any other page loading to finish, then reset the event and start loading the next page
         await Task.Run(() =>
         {
-            PageLoadingEvent.WaitOne();
-            PageLoadingEvent.Reset();
-            var nextPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage + 1);
+
+            //load next page
+            if (direction == 1)
+            {
+                //base case: if not at last page, load the next page
+                if (PageNumber != TotalPages)
+                {
+
+                    var nextPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage + 1);
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        NextPage.Clear();
+                        foreach (var post in nextPagePosts.Reverse())
+                        {
+                            NextPage.Add(post);
+                        }
+                    });
+                }
+                //base case continued: if at last page, clear the next page and restore buttons
+                else { NextPage.Clear(); }
+            }
+            //load previous page
+            else if (direction == -1)
+            {
+                //base case: if not at first page, load the previous page
+                if (PageNumber != 1)
+                {
+
+                    var previousPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage - 1);
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        PreviousPage.Clear();
+                        foreach (var post in previousPagePosts.Reverse())
+                        {
+                            PreviousPage.Add(post);
+                        }
+                    });
+                }
+                //base case continued: if at first page, clear the previous page and restore buttons
+                else { PreviousPage.Clear(); }
+            }
+
+
+            // Signal that the posts have been loaded
+            PageLoadingEvent.Set();
+
+            //load previous button states
+            PrevButtonEnabled = savePrevButton;
+            NextButtonEnabled = saveNextButton;
             
-            //MainThread.BeginInvokeOnMainThread(() =>
-            //{
-                NextPage.Clear();
-                foreach (var post in nextPagePosts.Reverse())
-                {
-                    NextPage.Add(post);
-                }
-
-                // Signal that the posts have been loaded
-                PageLoadingEvent.Set();
-
-                //load previous button states
-                PrevButtonEnabled = savePrevButton;
-                NextButtonEnabled = saveNextButton;
-            //});
         });
 
     }
-
     
-    private async void LoadPreviousPage(int basePage)
-    {
-        if (PageNumber == 1) { PreviousPage.Clear();  return; }
-        // User must wait for pages to load when navigating to a new page
-        Boolean savePrevButton = PrevButtonEnabled;
-        Boolean saveNextButton = NextButtonEnabled;
-        PrevButtonEnabled = false;
-        NextButtonEnabled = false;
-
-        // Wait for any other page loading to finish, then reset the event and start loading the previous page
-        await Task.Run(() =>
-        {
-            PageLoadingEvent.WaitOne();
-            PageLoadingEvent.Reset();
-            var previousPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage - 1);
-
-            //MainThread.BeginInvokeOnMainThread(() =>
-            //{
-                PreviousPage.Clear();
-                foreach (var post in previousPagePosts.Reverse())
-                {
-                    PreviousPage.Add(post);
-                }
-
-                // Signal that the posts have been loaded
-                PageLoadingEvent.Set();
-
-                //load previous button states
-                PrevButtonEnabled = savePrevButton;
-                NextButtonEnabled = saveNextButton;
-            //});
-        });
-    }
 
 }
