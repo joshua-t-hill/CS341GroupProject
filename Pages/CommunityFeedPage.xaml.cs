@@ -190,9 +190,19 @@ public partial class CommunityFeedPage : ContentPage
         {
             CurrentPage.Add(post);
         }
-
-        // Load the new next page
-        LoadPage(PageNumber, 1, savePrevButton, saveNextButton);
+        //base case 2: if at last page, just delete nextPage and restore buttons
+        if (PageNumber == TotalPages) 
+        { 
+            NextPage.Clear();
+            PrevButtonEnabled = savePrevButton;
+            NextButtonEnabled = saveNextButton;
+            PageLoadingEvent.Set();
+        }
+        else
+        {
+            // Load the new next page
+            LoadPage(PageNumber, 1, savePrevButton, saveNextButton);
+        }
     }
 
     public void OnPreviousClicked(object sender, EventArgs e)
@@ -226,11 +236,19 @@ public partial class CommunityFeedPage : ContentPage
         {
             CurrentPage.Add(post);
         }
-
-        
-
-        // Load the new next page
-        LoadPage(PageNumber, -1, savePrevButton, saveNextButton);
+        //base case 2: if at first page, just delete previousPage and restore buttons
+        if (PageNumber == 1)
+        {
+            PreviousPage.Clear();
+            PrevButtonEnabled = savePrevButton;
+            NextButtonEnabled = saveNextButton;
+            PageLoadingEvent.Set();
+        }
+        else
+        {
+            // Load the new previous page
+            LoadPage(PageNumber, -1, savePrevButton, saveNextButton);
+        }
         
     }
 
@@ -246,44 +264,30 @@ public partial class CommunityFeedPage : ContentPage
             //load next page
             if (direction == 1)
             {
-                //base case: if not at last page, load the next page
-                if (PageNumber != TotalPages)
+                var nextPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage + 1);
+
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-
-                    var nextPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage + 1);
-
-                    MainThread.BeginInvokeOnMainThread(() =>
+                    NextPage.Clear();
+                    foreach (var post in nextPagePosts.Reverse())
                     {
-                        NextPage.Clear();
-                        foreach (var post in nextPagePosts.Reverse())
-                        {
-                            NextPage.Add(post);
-                        }
-                    });
-                }
-                //base case continued: if at last page, clear the next page and restore buttons
-                else { NextPage.Clear(); }
+                        NextPage.Add(post);
+                    }
+                });
             }
             //load previous page
             else if (direction == -1)
             {
-                //base case: if not at first page, load the previous page
-                if (PageNumber != 1)
+                var previousPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage - 1);
+
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-
-                    var previousPagePosts = MauiProgram.BusinessLogic.DynamicSelectPosts(basePage - 1);
-
-                    MainThread.BeginInvokeOnMainThread(() =>
+                    PreviousPage.Clear();
+                    foreach (var post in previousPagePosts.Reverse())
                     {
-                        PreviousPage.Clear();
-                        foreach (var post in previousPagePosts.Reverse())
-                        {
-                            PreviousPage.Add(post);
-                        }
-                    });
-                }
-                //base case continued: if at first page, clear the previous page and restore buttons
-                else { PreviousPage.Clear(); }
+                        PreviousPage.Add(post);
+                    }
+                });
             }
 
 
