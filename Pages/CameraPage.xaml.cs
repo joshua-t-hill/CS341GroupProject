@@ -1,4 +1,6 @@
-using CS341GroupProject.Model;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace CS341GroupProject;
 /**
@@ -35,11 +37,25 @@ public partial class CameraPage : ContentPage
                 return;
             }
 
-            // Convert the photo stream to byte array
-            byte[] imageData = await ReadStream(photo.OpenReadAsync());
+            try
+            {
+                // Convert the photo stream to byte array
+                byte[] imageData = await ReadStream(photo.OpenReadAsync());
 
-            // Save the imageData in BusinessLogic to be displayed on the AddPlantPage
-            MauiProgram.BusinessLogic.TempImageData = imageData;
+                // Compress the image data here
+                int desiredQuality = 70; // Adjust the quality as needed
+                byte[] compressedImageData = CompressImage(imageData, desiredQuality);
+
+                // Save the imageData in BusinessLogic to be displayed on the AddPlantPage
+                MauiProgram.BusinessLogic.TempImageData = compressedImageData;
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error processing photo", e.Message, "OK");
+                return;
+            }
+
+            
             await Shell.Current.GoToAsync("AddPlant");
         }
     }
@@ -55,6 +71,29 @@ public partial class CameraPage : ContentPage
             }
             return ms.ToArray();
         }
+    }
+
+    /// <summary>
+    /// Compress image file data using SixLabors.ImageSharp to reduce the size of the image for increased performance
+    /// </summary>
+    /// <param name="imageData"></param>
+    /// <param name="quality"></param>
+    /// <returns></returns>
+    public static byte[] CompressImage(byte[] imageData, int quality)
+    {
+        using var image = Image.Load(imageData);
+
+        // Resize logic can be added here if needed
+
+        using var outputStream = new MemoryStream();
+        var encoder = new JpegEncoder
+        {
+            // Adjust quality between 1-100
+            Quality = quality
+        };
+        image.SaveAsJpeg(outputStream, encoder);
+
+        return outputStream.ToArray();
     }
 
 }
