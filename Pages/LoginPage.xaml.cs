@@ -39,9 +39,11 @@ public partial class LoginPage : ContentPage
 
         await SecureStorage.SetAsync("username", UsernameENT.Text);
 
-        
-        // Navigate to AppShell
-        Application.Current.MainPage = new AppShell();
+        // Update Shell
+        if (Application.Current.MainPage is AppShell shell)
+        {
+            shell.UpdateAuthenticationStatus(true);
+        }
 	}
 
     async void NewUserTapped(object sender, TappedEventArgs args)

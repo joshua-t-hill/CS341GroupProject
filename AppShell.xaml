@@ -5,7 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:CS341GroupProject"
     Shell.FlyoutBehavior="Disabled">
-
+    
+    <ShellContent Route="login" ContentTemplate="{DataTemplate pages:LoginPage}" />
+    
     <TabBar>
         <Tab Title="Map"
              Icon="maptabicon.png">
