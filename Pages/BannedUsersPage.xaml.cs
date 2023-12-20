@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using CS341GroupProject.Model;
 using Microsoft.Maui.Controls;
-/**
- * Author: Alex Ceithamer
- */
+
 namespace CS341GroupProject
 {
+    /**
+    * Author: Alex Ceithamer
+    */
     public partial class BannedUsersPage : ContentPage
     {
         private ObservableCollection<User> bannedUsers;

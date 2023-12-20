@@ -33,7 +33,6 @@ public class BusinessLogic : IBusinessLogic
     /// used by feed page to get a page of posts as needed instead of loading all posts at once (helps performance)
     /// </summary>
     /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
     /// <returns></returns>
     public ObservableCollection<Post> DynamicSelectPosts(int pageNumber)
     {

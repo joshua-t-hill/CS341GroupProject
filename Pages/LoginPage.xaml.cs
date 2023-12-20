@@ -18,20 +18,28 @@ public partial class LoginPage : ContentPage
 
 	async void OnLoginBtnClicked(object sender, EventArgs e)
 	{
-		Model.LoginError result = MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text);
+		loadingIndicator.IsVisible = true;
+		loadingIndicator.IsRunning = true;
+		Model.LoginError result = await Task.Run(() => MauiProgram.BusinessLogic.ConfirmLogin(UsernameENT.Text, PasswordENT.Text));
 
 		if (result == Model.LoginError.IncorrectInput)
 		{
+			loadingIndicator.IsVisible = false;
+			loadingIndicator.IsRunning = false;
             await DisplayAlert("Oops!", "Username or Password was incorrect.", "OK");
 			return;
 		}
 		else if (result == Model.LoginError.UserBanned)
 		{
+			loadingIndicator.IsVisible = false;
+			loadingIndicator.IsRunning = false;
             await DisplayAlert("Oops!", "This account has been banned.", "OK");
             return;
 		}
         else if (result == Model.LoginError.TempPasswordEntered)
         {
+			loadingIndicator.IsVisible = false;
+			loadingIndicator.IsRunning = false;
             await SecureStorage.SetAsync("username", UsernameENT.Text);
             await Navigation.PushAsync(new SetNewPasswordPage());
             return;
@@ -42,7 +50,10 @@ public partial class LoginPage : ContentPage
         // Update Shell
         if (Application.Current.MainPage is AppShell shell)
         {
+            loadingIndicator.IsVisible = false;
+            loadingIndicator.IsRunning = false;
             shell.UpdateAuthenticationStatus(true);
+            
         }
 	}
 

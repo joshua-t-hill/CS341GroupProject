@@ -6,7 +6,19 @@
              x:DataType="model:BusinessLogic"
              Title="MapPage"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps">
-    
-    <maps:Map x:Name="map"/>
-    
+
+    <Grid>
+        <maps:Map x:Name="map"/>
+
+        <!-- Activity Indicator -->
+        <ActivityIndicator x:Name="loadingIndicator" 
+                           IsVisible="False" 
+                           IsRunning="False"
+                           Color="ForestGreen"
+                           BackgroundColor="White" Opacity="0.7"
+                           Scale="1"
+                           HorizontalOptions="Fill" 
+                           VerticalOptions="Fill"/>
+    </Grid>
+
 </ContentPage>

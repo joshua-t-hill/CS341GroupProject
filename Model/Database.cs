@@ -416,7 +416,6 @@ public class Database : IDatabase
     /// used to select a certain number of posts from the database for pagination
     /// </summary>
     /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
     /// <returns></returns>
     public ObservableCollection<Post> SelectPostsAsync(int pageNumber)
     {

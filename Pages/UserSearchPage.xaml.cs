@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using CS341GroupProject.Model;
-/**
- * Author: Alex Ceithamer
- */
+
 namespace CS341GroupProject
 {
+    /**
+     * Author: Alex Ceithamer
+     */
     public partial class UserSearchPage : ContentPage
     {
         private ObservableCollection<User> AllUsers;

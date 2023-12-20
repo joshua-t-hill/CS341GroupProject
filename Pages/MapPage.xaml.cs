@@ -14,21 +14,32 @@ public partial class MapPage : ContentPage
 
     public MapPage()
     {
+        InitializeComponent();
         GenerateMapAsync();
     }
+
 
     /// <summary>
     /// All the work that needs to be done to properly load the Google map into the MapPage.
     /// </summary>
     private async void GenerateMapAsync()
     {
+        //disable tab bar and start loading indicator
+        loadingIndicator.IsVisible = true;
+        loadingIndicator.IsRunning = true;
+
         Location location = await GetCurrentLocation();
 
         MapSpan mapSpan = new(location, 0.01, 0.01);
 
         Map map = new(mapSpan);
 
-        PopulateMapWithPins(map);
+        await PopulateMapWithPins(map);
+
+        //re-enable tab bar and stop loading indicator
+        loadingIndicator.IsVisible = false;
+        loadingIndicator.IsRunning = false;
+
 
         Content = map;
     }
@@ -76,9 +87,9 @@ public partial class MapPage : ContentPage
     /// Sets the event behaviors for each pin on load.
     /// </summary>
     /// <param name="map"> the map that will be displayed on page </param>
-    private void PopulateMapWithPins(Map map)
+    private async Task PopulateMapWithPins(Map map)
     {
-        customPins = MauiProgram.BusinessLogic.CustomPins;
+        customPins = await Task.Run(() => MauiProgram.BusinessLogic.CustomPins);
 
         foreach (var pin in customPins)
         {
