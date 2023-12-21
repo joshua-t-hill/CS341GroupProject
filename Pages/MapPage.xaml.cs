@@ -25,6 +25,7 @@ public partial class MapPage : ContentPage
     private async void GenerateMapAsync()
     {
         //disable tab bar and start loading indicator
+        Shell.SetTabBarIsVisible(this, false);
         loadingIndicator.IsVisible = true;
         loadingIndicator.IsRunning = true;
 
@@ -39,6 +40,7 @@ public partial class MapPage : ContentPage
         //re-enable tab bar and stop loading indicator
         loadingIndicator.IsVisible = false;
         loadingIndicator.IsRunning = false;
+        Shell.SetTabBarIsVisible(this, true);
 
 
         Content = map;

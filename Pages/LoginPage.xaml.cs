@@ -50,10 +50,10 @@ public partial class LoginPage : ContentPage
         // Update Shell
         if (Application.Current.MainPage is AppShell shell)
         {
+            shell.UpdateAuthenticationStatus(true);
             loadingIndicator.IsVisible = false;
             loadingIndicator.IsRunning = false;
-            shell.UpdateAuthenticationStatus(true);
-            
+
         }
 	}
 
