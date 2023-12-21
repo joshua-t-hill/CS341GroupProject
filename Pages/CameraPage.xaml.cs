@@ -1,5 +1,6 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace CS341GroupProject;
@@ -43,8 +44,7 @@ public partial class CameraPage : ContentPage
                 byte[] imageData = await ReadStream(photo.OpenReadAsync());
 
                 // Compress the image data here
-                int desiredQuality = 70; // Adjust the quality as needed
-                byte[] compressedImageData = CompressImage(imageData, desiredQuality);
+                byte[] compressedImageData = CompressImage(imageData);
 
                 // Save the imageData in BusinessLogic to be displayed on the AddPlantPage
                 MauiProgram.BusinessLogic.TempImageData = compressedImageData;
@@ -79,21 +79,30 @@ public partial class CameraPage : ContentPage
     /// <param name="imageData"></param>
     /// <param name="quality"></param>
     /// <returns></returns>
-    public static byte[] CompressImage(byte[] imageData, int quality)
+    public static byte[] CompressImage(byte[] imageData)
     {
         using var image = Image.Load(imageData);
 
-        // Resize logic can be added here if needed
-
-        using var outputStream = new MemoryStream();
-        var encoder = new JpegEncoder
+        //resize if too large
+        if (image.Width > 2000 || image.Height > 2000)
         {
-            // Adjust quality between 1-100
-            Quality = quality
-        };
-        image.SaveAsJpeg(outputStream, encoder);
+            image.Mutate(x => x.Resize(image.Width / 2, image.Height / 2));
+        }
+        //adjust quality until low enough
+        byte[] catchVariable = null;
+        for (int quality = 90; quality > 0; quality -= 10)
+        {
+            using var outputStream = new MemoryStream();
+            var encoder = new JpegEncoder { Quality = quality };
+            image.SaveAsJpeg(outputStream, encoder);
 
-        return outputStream.ToArray();
+            if (outputStream.ToArray().Length < 100000)
+            {
+                return outputStream.ToArray();
+            }
+            catchVariable = outputStream.ToArray();
+        }
+        return catchVariable;
     }
 
 }

@@ -96,6 +96,7 @@ public partial class CommunityFeedPage : ContentPage
         this.BindingContext = this;
     }
 
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -123,13 +124,11 @@ public partial class CommunityFeedPage : ContentPage
             PreviousPage.Clear();
 
             //Start loading the next page
-            Boolean savePrevButton = PrevButtonEnabled;
-            Boolean saveNextButton = NextButtonEnabled;
             PrevButtonEnabled = false;
             NextButtonEnabled = false;
             PageLoadingEvent.WaitOne();
             PageLoadingEvent.Reset();
-            LoadPage(PageNumber, 1, savePrevButton, saveNextButton);
+            LoadPage(PageNumber, 1, false, true);
 
         }
         //load saved page if it exists
@@ -143,8 +142,6 @@ public partial class CommunityFeedPage : ContentPage
             SavePage.Clear();
 
         }
-
-
     }
 
     protected override void OnDisappearing()
@@ -205,6 +202,7 @@ public partial class CommunityFeedPage : ContentPage
         }
     }
 
+
     public void OnPreviousClicked(object sender, EventArgs e)
     {
         // Base case: if at first page, do nothing
@@ -249,14 +247,11 @@ public partial class CommunityFeedPage : ContentPage
             // Load the new previous page
             LoadPage(PageNumber, -1, savePrevButton, saveNextButton);
         }
-        
     }
 
 
     private async void LoadPage(int basePage, int direction, bool savePrevButton, bool saveNextButton)
     {
-        
-
         // Wait for any other page loading to finish, then reset the event and start loading the next page
         await Task.Run(() =>
         {
@@ -289,7 +284,6 @@ public partial class CommunityFeedPage : ContentPage
                     }
                 });
             }
-
 
             // Signal that the posts have been loaded
             PageLoadingEvent.Set();

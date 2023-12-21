@@ -28,6 +28,8 @@ public class Database : IDatabase
             Username = Constants.DB_USER,
             Password = Constants.DB_PASS,
             Database = Constants.DB_NAME,
+            Timeout = 30,
+            MaxPoolSize = 150,
             IncludeErrorDetail = true
         };
         return connStringBuilder.ConnectionString;
@@ -55,6 +57,7 @@ public class Database : IDatabase
             User userToAdd = new(username, password, email, isBanned, isAdmin, hasTempPassword); // creates a new user
             users.Add(userToAdd);
             Console.WriteLine(userToAdd);
+            conn.Close();
         }
         return users;
     }
@@ -76,6 +79,7 @@ public class Database : IDatabase
             Boolean isAdmin = reader.GetBoolean(3);
             Boolean hasTempPassword = reader.GetBoolean(4);
             User user = new(username, password, email, isBanned, isAdmin, hasTempPassword);
+            conn.Close();
             return user;
         }
         return null;
@@ -97,8 +101,10 @@ public class Database : IDatabase
             Boolean isBanned = reader.GetBoolean(2);
             Boolean isAdmin = reader.GetBoolean(3);
             User user = new(username, password, email, isBanned, isAdmin);
+            conn.Close();
             return user;
         }
+        conn.Close();
         return null;
     }
 
@@ -119,8 +125,10 @@ public class Database : IDatabase
         while (reader.Read())
         {
             String salt = reader.GetString(0);
+            conn.Close();
             return salt;
         }
+        conn.Close();
         return null;
     }
 
@@ -141,6 +149,7 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("is_admin", user.IsAdmin);
             cmd.ExecuteNonQuery();
             SelectAllUsers();
+            conn.Close();
         }
         catch (Npgsql.PostgresException pe)
         {
@@ -174,6 +183,7 @@ public class Database : IDatabase
             var numAffected = cmd.ExecuteNonQuery();
 
             SelectAllUsers();
+            conn.Close();
             return UserUpdateError.NoError;
         }
         catch (Npgsql.PostgresException pe)
@@ -205,6 +215,7 @@ public class Database : IDatabase
             var numAffected = cmd.ExecuteNonQuery();
 
             SelectAllUsers();
+            conn.Close();
             return true;
         }
         catch (Npgsql.PostgresException pe)
@@ -252,6 +263,7 @@ public class Database : IDatabase
 
             customPins.Add(pin);
         }
+        conn.Close();
 
         return customPins;
     }
@@ -280,6 +292,7 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("photo_id", photoId);
             cmd.ExecuteNonQuery();
             SelectAllMapPins();
+            conn.Close();
         }
         catch (Npgsql.PostgresException pe)
         {
@@ -311,8 +324,10 @@ public class Database : IDatabase
         while (reader.Read())
         {
             long id = reader.GetInt64(0);
+            conn.Close();
             return id;
         }
+        conn.Close();
         return -1;
     }
 
@@ -337,6 +352,7 @@ public class Database : IDatabase
             photos.Add(photoToAdd);
             Console.WriteLine(photoToAdd);
         }
+        conn.Close();
         return photos;
     }
 
@@ -357,6 +373,7 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("image_data", imageData);
             cmd.ExecuteNonQuery();
             SelectAllPhotos();
+            conn.Close();
         }
         catch (Npgsql.PostgresException pe)
         {
@@ -383,6 +400,7 @@ public class Database : IDatabase
         while (reader.Read())
         {
             Guid photoId = reader.GetGuid(0);
+            conn.Close();
             return new Photo(photoId, imageData);
         }
         return null;
@@ -407,6 +425,7 @@ public class Database : IDatabase
             long byteaLength = reader.GetBytes(0, 0, null, 0, 0);
             byte[] imageData = new byte[byteaLength];
             reader.GetBytes(0, 0, imageData, 0, (int)byteaLength);
+            conn.Close();
             return new Photo(photoId, imageData);
         }
         return null;
@@ -447,6 +466,7 @@ public class Database : IDatabase
             dynamicPosts.Add(post);
             Console.WriteLine(post);
         }
+        conn.Close();
         return dynamicPosts;
     }
 
@@ -474,6 +494,7 @@ public class Database : IDatabase
             cmd.Parameters.AddWithValue("notes", notes);
             cmd.Parameters.AddWithValue("photo_id", photoId);
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
         catch (Npgsql.PostgresException pe)
         {
