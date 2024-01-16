@@ -57,8 +57,9 @@ public class Database : IDatabase
             User userToAdd = new(username, password, email, isBanned, isAdmin, hasTempPassword); // creates a new user
             users.Add(userToAdd);
             Console.WriteLine(userToAdd);
-            conn.Close();
+            
         }
+        conn.Close();
         return users;
     }
 
