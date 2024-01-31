@@ -1,9 +1,5 @@
 using CS341GroupProject.Model;
-using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
-using Map = Microsoft.Maui.Controls.Maps.Map;
-using CommunityToolkit.Maui.Views;
-using CS341GroupProject.Pages.Subpages;
 
 namespace CS341GroupProject;
 public partial class MapPage : ContentPage
@@ -17,10 +13,11 @@ public partial class MapPage : ContentPage
         InitializeComponent();
         GenerateMapAsync();
     }
+    
 
 
     /// <summary>
-    /// All the work that needs to be done to properly load the Google map into the MapPage.
+    /// All the work that needs to be done to properly load the  map.
     /// </summary>
     private async void GenerateMapAsync()
     {
@@ -29,21 +26,20 @@ public partial class MapPage : ContentPage
         loadingIndicator.IsVisible = true;
         loadingIndicator.IsRunning = true;
 
-        Location location = await GetCurrentLocation();
+        var htmlSource = new HtmlWebViewSource
+        {
+            Html = LoadResourceText("CS341GroupProject.Pages.Subpages.osm.html")
+        };
+        webView.Source = htmlSource;
 
-        MapSpan mapSpan = new(location, 0.01, 0.01);
-
-        Map map = new(mapSpan);
-
-        await PopulateMapWithPins(map);
+        var location = await GetCurrentLocation();
+        SetMapView(location.Latitude, location.Longitude);
+        await PopulateMapWithPins();
 
         //re-enable tab bar and stop loading indicator
         loadingIndicator.IsVisible = false;
         loadingIndicator.IsRunning = false;
         Shell.SetTabBarIsVisible(this, true);
-
-
-        Content = map;
     }
 
     /// <summary>
@@ -85,25 +81,51 @@ public partial class MapPage : ContentPage
     }
 
     /// <summary>
+    /// Add a pin to the map's internal collection of pins to display.
+    /// </summary>
+    /// <param name="pin"></param>
+    private void AddPinToMap(PinData pin)
+    {
+        var photoBase64 = Convert.ToBase64String(pin.PhotoData);
+        var photoUrl = $"data:image/png;base64,{photoBase64}";
+        var script = $"addMarker({pin.Latitude}, {pin.Longitude}, '{pin.DatabaseId}', '{pin.Genus}', '{pin.Epithet}', '{photoUrl}')";
+        webView.EvaluateJavaScriptAsync(script);
+    }
+
+
+    private void RemovePinFromMap(string pinId)
+    {
+        var script = $"removeMarker('{pinId}')";
+        webView.EvaluateJavaScriptAsync(script);
+    }
+
+    private string LoadResourceText(string resourceID)
+    {
+        var assembly = this.GetType().Assembly;
+        using (var stream = assembly.GetManifestResourceStream(resourceID))
+        using (var reader = new StreamReader(stream))
+        {
+            return reader.ReadToEnd();
+        }
+    }
+
+    private void SetMapView(double latitude, double longitude)
+    {
+        var script = $"setMapView({latitude}, {longitude});";
+        webView.EvaluateJavaScriptAsync(script);
+    }
+
+    /// <summary>
     /// Get the pins from DB and add to Map's internal collection of pins to display.
     /// Sets the event behaviors for each pin on load.
     /// </summary>
-    /// <param name="map"> the map that will be displayed on page </param>
-    private async Task PopulateMapWithPins(Map map)
+    private async Task PopulateMapWithPins()
     {
         customPins = await Task.Run(() => MauiProgram.BusinessLogic.CustomPins);
 
         foreach (var pin in customPins)
         {
-            //sets the behavior for the event when a pin's info window is tapped on the map
-            //Has to be set in the CS file for the page as ShowPopupAsync is from Page class.
-            pin.InfoWindowClicked += async (s, args) =>
-            {
-                PlantDetailsPopup popup = new(pin);
-                await this.ShowPopupAsync(popup);
-            };
-
-            map.Pins.Add(pin);
+            AddPinToMap(pin);
         }
     }
 

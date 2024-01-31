@@ -48,15 +48,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Pages\Subpages\osm.html" />
 	  <None Remove="Resources\Images\flower.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Pages\Subpages\osm.html" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.96" />
-	  <PackageReference Include="Npgsql" Version="7.0.6" />
-	  <PackageReference Include="SixLabors.ImageSharp" Version="3.1.1" />
+	  <PackageReference Include="Npgsql" Version="8.0.1" />
+	  <PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>

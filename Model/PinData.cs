@@ -11,6 +11,7 @@ public class PinData : Pin
     public double Longitude { get; set; }
     public string Genus { get; set; }
     public string Epithet { get; set; }
+    public byte[] PhotoData { get; set; }
     public ImageSource Photo
     {
         get => photo;
@@ -32,17 +33,15 @@ public class PinData : Pin
             {
                 photoId = value;
                 OnPropertyChanged(nameof(PhotoId));
+                Photo photo = MauiProgram.BusinessLogic.SelectPhoto(photoId);
+                    
+                //set photo data so we can pass it to the plant pop-up page for map pins
+                PhotoData = photo.ImageData;
 
-                // Load and set the image on a separate thread
-                Task.Run(() =>
-                {
-                    Photo photo = MauiProgram.BusinessLogic.SelectPhoto(photoId);
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        this.photo = ImageSource.FromStream(() => new MemoryStream(photo.ImageData));
-                        OnPropertyChanged(nameof(Photo));
-                    });
-                });
+                //set photo to an image source
+                //this.photo = ImageSource.FromStream(() => new MemoryStream(photo.ImageData));
+
+                OnPropertyChanged(nameof(Photo));
             }
         }
     }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenStreetMap</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+
+    <!-- Marker Cluster Plugins-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #map {
+            flex: 1; /* Map takes up the remaining space */
+        }
+    </style>
+
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([44.0263, -88.5507], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var markers = {};
+
+        // Create a marker cluster group
+        var markerCluster = L.markerClusterGroup();
+
+        function addMarker(lat, lng, id, genus, epithet, photoUrl) {
+            var popupContent = `<div><img src="${photoUrl}" alt="Photo" style="width:100px;height:auto;"><p>Genus: ${genus}</p><p>Epithet: ${epithet}</p></div>`;
+            var marker = L.marker([lat, lng]);
+            marker.bindPopup(popupContent);
+            markers[id] = marker;
+            markerCluster.addLayer(marker); // Add marker to the cluster group
+        }
+
+        // Add the cluster group to the map
+        map.addLayer(markerCluster);
+
+        function removeMarker(id) {
+            if (markers[id]) {
+                markerCluster.removeLayer(markers[id]); // Remove from cluster
+                delete markers[id];
+            }
+        }
+
+        function setMapView(lat, lng) {
+            map.setView([lat, lng], 13); // 13 is the zoom level, adjust as needed
+        }
+    </script>
+</body>
+</html>

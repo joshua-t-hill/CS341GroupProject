@@ -255,7 +255,6 @@ public class Database : IDatabase
 
             PinData pin = new(id, latitude, longitude, genus, epithet, photoId)
             {
-                //Label = id.ToString(),
                 Label = "Username Placeholder",
                 Address = $"{genus} {epithet}",
                 Type = PinType.SavedPin,
